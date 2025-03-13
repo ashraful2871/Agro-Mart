@@ -76,7 +76,6 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink to="/sign-up">Profile</NavLink>
-              <NavLink to="/sign-up">Sating</NavLink>
             </li>
           </ul>
         </div>
