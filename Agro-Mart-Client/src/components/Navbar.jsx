@@ -11,7 +11,7 @@ const Navbar = () => {
             src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
             alt=""
           />
-          <Link to="/" className=" text-4xl font-bold font-syne">
+          <Link to="/" className="text-2xl md:text-4xl font-bold font-syne">
             AgroMart
           </Link>
         </div>
