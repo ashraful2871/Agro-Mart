@@ -20,7 +20,7 @@ const Slider = () => {
       }}
       speed={1000}
       modules={[EffectFade, Autoplay]}
-      className="mySwiper rounded-xl"
+      className="h-72 md:h-96 lg:h-[600px] rounded-xl"
     >
       {[
         {
@@ -67,9 +67,11 @@ const Slider = () => {
 
             {/* Text Content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
-              <h1 className="text-5xl font-bold font-syne">{slide.title}</h1>
-              <p className="text-lg mt-2">{slide.subtitle}</p>
-              <button className="mt-4 px-6 py-2 bg-white text-black rounded-full font-semibold">
+              <h1 className="text-3xl md:text-5xl font-bold font-syne">
+                {slide.title}
+              </h1>
+              <p className="text-base md:text-lg mt-2">{slide.subtitle}</p>
+              <button className="text-sm mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne">
                 Learn More →
               </button>
             </div>

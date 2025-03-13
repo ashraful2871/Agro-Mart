@@ -2,6 +2,20 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const links = (
+    <>
+      {" "}
+      <li>
+        <NavLink to="/login">Login</NavLink>
+      </li>
+      <li>
+        <NavLink to="/sign-up">SignUP</NavLink>
+      </li>
+      <li>
+        <NavLink to="/sign-up">Profile</NavLink>
+      </li>
+    </>
+  );
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
@@ -11,7 +25,7 @@ const Navbar = () => {
             src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
             alt=""
           />
-          <Link to="/" className=" text-4xl font-bold font-syne">
+          <Link to="/" className="text-2xl md:text-4xl font-bold font-syne">
             AgroMart
           </Link>
         </div>
@@ -68,15 +82,7 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <NavLink to="/login">Login</NavLink>
-            </li>
-            <li>
-              <NavLink to="/sign-up">SignUP</NavLink>
-            </li>
-            <li>
-              <NavLink to="/sign-up">Profile</NavLink>
-            </li>
+            {links}
           </ul>
         </div>
       </div>
