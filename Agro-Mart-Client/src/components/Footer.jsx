@@ -3,7 +3,7 @@ import pic from "../assets/freepik__background__21643.png"
 const Footer = () => {
     return (
         <div>
-            <div className="flex justify-between gap-10">
+            <div className="flex flex-col md:flex-row justify-between gap-10">
                 {/* newsletter */}
                 <div className="bg-green-700 p-7 text-white rounded-b-xl">
                     <h3 className="text-4xl font-bold">Sign up to our Newslatters</h3>
@@ -14,7 +14,7 @@ const Footer = () => {
         
                 <div>
                     {/* first div */}
-                    <div className="mb-2 flex justify-between">
+                    <div className="mb-2 flex flex-col md:flex-row justify-between">
                         {/* Project description */}
                         <div className=" flex flex-col justify-center">
                             <h3>
@@ -30,7 +30,7 @@ const Footer = () => {
                         </div>
                     </div>
                     {/* Next div */}
-                    <div className="grid grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {/* Contact Information */}
                         <div>
                           <h3 className="text-xl font-bold text-green-700 mb-4">Contact Us</h3>
