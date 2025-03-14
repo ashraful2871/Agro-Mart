@@ -8,9 +8,9 @@ const FaqSection = () => {
 
     const toggleFAQ = (index) => {
       if (activeFAQ === index) {
-        setActiveFAQ(null); // Close the FAQ if it's already open
+        setActiveFAQ(null); 
       } else {
-        setActiveFAQ(index); // Open the selected FAQ
+        setActiveFAQ(index); 
       }
     };
 
@@ -34,11 +34,13 @@ const FaqSection = () => {
       ];
 
     return (
-       <div className="">
+       <>
+       {/* its just for large device */}
+       <div className="hidden lg:block">
         {/* // bg-[#faf9f7] */}
-        <div className="flex justify-between py-20  relative">
-            <div><img src={FaqSectionsImageOne} alt="" className="h-96 w-[450px] rounded-xl"/></div>
-            <div className="max-w-xl">
+        <div className="flex flex-col md:flex-row justify-between py-20  relative">
+            <div className=""><img src={FaqSectionsImageOne} alt="" className="h-96 w-[450px] rounded-xl"/></div>
+            <div className="max-w-lg lg:max-w-xl">
                 <h3 className="text-xl text-green-700">Frequently Asked Questions</h3>
                 <h3 className="text-5xl font-bold my-2 font-syne">Do You Have Any Questions ?</h3>
                 <p>Explore the frequently asked questions below for quick solutions to common inquiries. We’ve got you covered with helpful insights and support.</p>
@@ -75,6 +77,40 @@ const FaqSection = () => {
     </div>
         </div>
        </div>
+
+       {/* Its for small and medium device */}
+       <div className="block lg:hidden">
+       <div className="py-20">
+            <div className="text-center">
+                <h3 className="text-xl text-green-700">Frequently Asked Questions</h3>
+                <h3 className="text-5xl font-bold my-2 font-syne">Do You Have Any Questions ?</h3>
+                <p>Explore the frequently asked questions below for quick solutions to common inquiries. We’ve got you covered with helpful insights and support.</p>
+            </div>
+            <div className="max-w-xl mx-auto mt-4">
+        {faqs.map((faq, index) => (
+        <div key={index} className="mb-4">
+          <button
+            className="w-full py-3 px-4 text-left bg-green-500 text-white rounded-lg flex justify-between items-center focus:outline-none hover:bg-green-400"
+            onClick={() => toggleFAQ(index)}
+          >
+            {faq.question}
+            <span className="text-xl">{activeFAQ === index ? "-" : "+"}</span>
+          </button>
+          <div
+            className={`${
+              activeFAQ === index
+                ? "opacity-100 max-h-[400px]"
+                : "opacity-0 max-h-0"
+            } mt-2 rounded-lg transition-all duration-500 ease-in-out overflow-hidden`}
+          >
+            <p>{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+        </div>
+        </div>
+       </div>
+       </>
     );
 };
 
