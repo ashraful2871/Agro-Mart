@@ -12,23 +12,7 @@ const Home = () => {
           vestibulum, libero sed ultricies aliquam, lorem purus ultricies nunc,
           nec tincidunt felis turpis nec justo. Donec eget semper nunc. Duis
           sollicitudin, arcu id aliquam vehicula, risus justo fermentum metus,
-          nec varius libero nunc a libero. Nullam nec urna nec ligula
-          sollicitudin luctus. Nullam nec urna nec ligula sollicitudin luctus.
-          Nullam nec urna nec ligula sollicitudin luctus. Nullam nec urna nec
-          ligula sollicitudin luctus. Nullam nec urna nec ligula sollicitudin
-          luctus. Nullam nec urna nec ligula sollicitudin luctus. Nullam nec
-          urna nec ligula sollicitudin luctus. Nullam nec urna nec ligula
-          sollicitudin luctus. Nullam nec urna nec ligula sollicitudin luctus.
-          Nullam nec urna nec ligula sollicitudin luctus. Nullam nec urna nec
-          ligula sollicitudin luctus. Nullam nec urna nec ligula sollicitudin
-          luctus. Nullam nec urna nec ligula sollicitudin luctus. Nullam nec
-          urna nec ligula sollicitudin luctus. Nullam nec urna nec ligula
-          sollicitudin luctus. Nullam nec urna nec ligula sollicitudin luctus.
-          Nullam nec urna nec ligula sollicitudin luctus. Nullam nec urna nec
-          ligula sollicitudin luctus. Nullam nec urna nec ligula sollicitudin
-          luctus. Nullam nec urna nec ligula sollicitudin luctus. Nullam nec
-          urna nec ligula sollicitudin luctus. Nullam nec urna nec ligula
-          sollicitudin luctus. Nullam nec urna nec ligula sollicitudin luctus.
+        
           </p>
       </div>
     </div>
