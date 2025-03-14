@@ -38,7 +38,7 @@ const FaqSection = () => {
        {/* its just for large device */}
        <div className="hidden lg:block">
         {/* // bg-[#faf9f7] */}
-        <div className="flex flex-col md:flex-row justify-between py-20  relative">
+        <div className="flex flex-col md:flex-row justify-between pt-20 pb-44 relative">
             <div className=""><img src={FaqSectionsImageOne} alt="" className="h-96 w-[450px] rounded-xl"/></div>
             <div className="max-w-lg lg:max-w-xl">
                 <h3 className="text-xl text-green-700">Frequently Asked Questions</h3>
@@ -48,7 +48,7 @@ const FaqSection = () => {
         </div>
         {/* Question & Answer */}
         <div className="relative">
-        <div className="ml-auto absolute -top-64 right-0 flex">
+        <div className="ml-auto absolute -top-[350px] right-0 flex">
         <div className="mr-24">
             <img src={FaqSectionsImageTwo} alt="" className="h-60 w-60 rounded-xl"/>
         </div>
