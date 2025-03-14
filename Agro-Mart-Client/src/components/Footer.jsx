@@ -18,8 +18,8 @@ const Footer = () => {
                         {/* Project description */}
                         <div className=" flex flex-col justify-center">
                             <h3>
-                                <span className="text-4xl font-bold text-green-700">Agro</span>
-                                <span className="text-4xl font-bold text-yellow-300">Mart</span>
+                                <span className="text-4xl font-bold text-green-700 font-syne">Agro</span>
+                                <span className="text-4xl font-bold text-yellow-300 font-syne">Mart</span>
                             </h3>
                             <p className="max-w-96">It's a platform enables farmers to sell agricultural products, manage inventory, and process orders while providing consumers with fresh farm produce at fair prices.
                             </p>
