@@ -21,6 +21,7 @@ const Home = () => {
           sollicitudin luctus. Nullam nec urna nec ligula sollicitudin luctus.
           Nullam nec urna nec ligula sollicitudin luctus. Nullam nec urna nec
           ligula sollicitudin luctus. Nullam nec urna nec ligula sollicitudin
+          ligula sollicitudin luctus. Nullam nec urna nec ligula sollicitudin
         </p>
       </div>
     </div>
