@@ -2,8 +2,8 @@ import pic from "../assets/freepik__background__21643.png"
 
 const Footer = () => {
     return (
-        <div>
-            <div className="flex flex-col md:flex-row justify-between gap-10">
+        <div className="bg-[#e1f178]">
+            <div className="w-10/12 mx-auto flex flex-col md:flex-row justify-between gap-10">
                 {/* newsletter */}
                 <div className="bg-green-700 p-7 text-white rounded-b-xl">
                     <h3 className="text-4xl font-bold">Sign up to our Newslatters</h3>
@@ -18,8 +18,8 @@ const Footer = () => {
                         {/* Project description */}
                         <div className=" flex flex-col justify-center">
                             <h3>
-                                <span className="text-4xl font-bold text-green-700">Agro</span>
-                                <span className="text-4xl font-bold text-yellow-300">Mart</span>
+                                <span className="text-4xl font-bold text-green-700 font-syne">Agro</span>
+                                <span className="text-4xl font-bold text-yellow-400 font-syne">Mart</span>
                             </h3>
                             <p className="max-w-96">It's a platform enables farmers to sell agricultural products, manage inventory, and process orders while providing consumers with fresh farm produce at fair prices.
                             </p>
