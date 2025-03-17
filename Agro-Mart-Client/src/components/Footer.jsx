@@ -42,7 +42,7 @@ const Footer = () => {
             </div>
             {/* image */}
             <div>
-              <img src={pic} alt="" className="h-64" />
+              <img src={pic} alt="" className="w-64" />
             </div>
           </div>
           {/* Next div */}

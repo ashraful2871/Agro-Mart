@@ -4,11 +4,12 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 
-const provide = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
 //async thunks for authentication
 
@@ -40,6 +41,18 @@ export const signInUser = createAsyncThunk(
         email,
         password
       );
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error.massage);
+    }
+  }
+);
+//google login
+export const googleLogin = createAsyncThunk(
+  "auth/googleLogin",
+  async (_, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
       return userCredential.user;
     } catch (error) {
       return rejectWithValue(error.massage);
@@ -108,6 +121,18 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(signUpUser.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+
+      .addCase(googleLogin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(googleLogin.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(googleLogin.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       })
