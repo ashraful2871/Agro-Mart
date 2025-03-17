@@ -2,23 +2,52 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { signUpUser } from "../store/authSlice";
+import { signUpUser, updateUserProfile } from "../store/authSlice";
 import toast from "react-hot-toast";
+import axios from "axios";
 
+const image_hosting_key = "be0132eb382f7838de12f3bbabfccc00";
+const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const SignUp = () => {
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("name");
     const email = formData.get("email");
+    const image = formData.get("image");
     const password = formData.get("password");
-    const userInfo = { name, email, password };
+
+    let imageUrl = "";
+
+    if (image) {
+      const imageFormData = new FormData();
+      imageFormData.append("image", image);
+
+      try {
+        const response = await axios.post(image_upload_api, imageFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(response.data.data.display_url);
+        if (response.data.success) {
+          imageUrl = response.data.data.display_url;
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Image upload failed:", error);
+        return;
+      }
+    }
+
+    const userInfo = { name, email, password, photo: imageUrl };
     console.log(userInfo);
     // sign UP user
     dispatch(signUpUser({ email, password }))
       .unwrap()
-      .then(() => {
+      .then((user) => {
+        dispatch(updateUserProfile({ name, photo: imageUrl }));
         toast.success("Account created successfully!");
       })
       .catch((error) => {
@@ -53,7 +82,7 @@ const SignUp = () => {
                 type="text"
                 name="name"
                 placeholder="Enter your name"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                className="w-full py-6 border rounded-lg input input-success "
                 required
               />
             </div>
@@ -64,8 +93,25 @@ const SignUp = () => {
                 type="email"
                 name="email"
                 placeholder="Enter your email address"
+                className="w-full py-6 border rounded-lg input input-success"
+                required
+              />
+            </div>
+
+            {/* Photo  */}
+            <div className="mb-4">
+              <label className="block text-gray-700">Photo</label>
+              {/* <input
+                type="email"
+                name="email"
+                placeholder="Enter your email address"
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
                 required
+              /> */}
+              <input
+                type="file"
+                name="image"
+                className="file-input w-full file-input-success border rounded-lg focus:ring-2 focus:ring-green-500"
               />
             </div>
 
@@ -76,7 +122,7 @@ const SignUp = () => {
                 type="password"
                 name="password"
                 placeholder="Enter your 5  digit PIN "
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                className="w-full py-6 border rounded-lg input input-success"
                 required
               />
             </div>
