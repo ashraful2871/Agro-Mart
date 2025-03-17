@@ -2,7 +2,7 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { signUpUser, updateUserProfile } from "../store/authSlice";
+import { googleLogin, signUpUser, updateUserProfile } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -19,11 +19,9 @@ const SignUp = () => {
     const password = formData.get("password");
 
     let imageUrl = "";
-
     if (image) {
       const imageFormData = new FormData();
       imageFormData.append("image", image);
-
       try {
         const response = await axios.post(image_upload_api, imageFormData, {
           headers: {
@@ -42,7 +40,7 @@ const SignUp = () => {
     }
 
     const userInfo = { name, email, password, photo: imageUrl };
-    console.log(userInfo);
+    // console.log(userInfo);
     // sign UP user
     dispatch(signUpUser({ email, password }))
       .unwrap()
@@ -53,6 +51,16 @@ const SignUp = () => {
       .catch((error) => {
         toast.error(error.message || "Sign up failed!");
       });
+  };
+
+  // google login
+
+  const handleGoogleSignUp = async () => {
+    try {
+      dispatch(googleLogin());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -101,13 +109,6 @@ const SignUp = () => {
             {/* Photo  */}
             <div className="mb-4">
               <label className="block text-gray-700">Photo</label>
-              {/* <input
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                required
-              /> */}
               <input
                 type="file"
                 name="image"
@@ -143,7 +144,7 @@ const SignUp = () => {
           </div>
 
           <button
-            //onClick={handleGoogleSignUp}
+            onClick={handleGoogleSignUp}
             className="w-full flex items-center justify-center border py-3 rounded-lg hover:bg-gray-100 transition"
           >
             <FcGoogle className="mr-2 text-2xl" /> Sign up with Google
