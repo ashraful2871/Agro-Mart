@@ -55,7 +55,7 @@ const SignUp = () => {
 
   // google login
 
-  const handleGoogleSignUp = async () => {
+  const handleContinueGoogle = async () => {
     try {
       dispatch(googleLogin());
     } catch (error) {
@@ -144,10 +144,10 @@ const SignUp = () => {
           </div>
 
           <button
-            onClick={handleGoogleSignUp}
+            onClick={handleContinueGoogle}
             className="w-full flex items-center justify-center border py-3 rounded-lg hover:bg-gray-100 transition"
           >
-            <FcGoogle className="mr-2 text-2xl" /> Sign up with Google
+            <FcGoogle className="mr-2 text-2xl" /> Continue With Google
           </button>
 
           <p className="mt-4 text-gray-600 text-center">
