@@ -1,8 +1,31 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { signUpUser } from "../store/authSlice";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const userInfo = { name, email, password };
+    console.log(userInfo);
+    // sign UP user
+    dispatch(signUpUser({ email, password }))
+      .unwrap()
+      .then(() => {
+        toast.success("Account created successfully!");
+      })
+      .catch((error) => {
+        toast.error(error.message || "Sign up failed!");
+      });
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Side - Animation (Hidden on Small Screens) */}
@@ -22,9 +45,7 @@ const SignUp = () => {
             Please enter your details
           </p>
 
-          <form
-          ////onSubmit={handleSubmit}
-          >
+          <form onSubmit={handleSubmit}>
             {/* name */}
             <div className="mb-4">
               <label className="block text-gray-700">Name</label>
