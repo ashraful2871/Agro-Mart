@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 
@@ -40,6 +41,25 @@ export const signInUser = createAsyncThunk(
         password
       );
       return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error.massage);
+    }
+  }
+);
+
+//update profile
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateUserProfile",
+  async ({ name, photo }, { rejectWithValue }) => {
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: photo,
+      });
+      return {
+        displayName: name,
+        photoURL: photo,
+      };
     } catch (error) {
       return rejectWithValue(error.massage);
     }

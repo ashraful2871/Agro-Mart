@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCF_fq1DpAQDKh7SlYORmKvlkljHU30QRs",
-  authDomain: "agro-mart-e2cb4.firebaseapp.com",
-  projectId: "agro-mart-e2cb4",
-  storageBucket: "agro-mart-e2cb4.firebasestorage.app",
-  messagingSenderId: "425758544009",
-  appId: "1:425758544009:web:d724e80f9ef85585f3b658",
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
 };
 
 // Initialize Firebase
