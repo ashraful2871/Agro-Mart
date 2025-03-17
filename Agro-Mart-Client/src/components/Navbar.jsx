@@ -1,7 +1,22 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { logOut } from "../store/authSlice";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const signOutUser = async () => {
+    try {
+      await dispatch(logOut()).unwrap();
+      toast.success("Successfully logged out");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Logout failed!");
+    }
+  };
   const links = (
     <>
       {" "}
@@ -13,6 +28,14 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/sign-up">Profile</NavLink>
+      </li>
+      <li>
+        <button
+          className="bg-red-400 hover:bg-red-700 text-white block text-center font-bold mt-5"
+          onClick={signOutUser}
+        >
+          Logout
+        </button>
       </li>
     </>
   );

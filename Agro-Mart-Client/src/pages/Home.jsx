@@ -6,7 +6,7 @@ import ReviewDisplay from "../components/ReviewDisplay/ReviewDisplay";
 
 const Home = () => {
   return (
-    <div>
+    <div className="space-y-7">
       <Slider></Slider>
 
       {/* FAQ Section */}

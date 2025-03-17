@@ -1,6 +1,35 @@
 import React from "react";
+import { FcGoogle } from "react-icons/fc";
 import { Link, NavLink } from "react-router-dom";
+import { googleLogin, signInUser } from "../store/authSlice";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 const Login = () => {
+  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    //sign  in user
+    dispatch(signInUser({ email, password }))
+      .unwrap()
+      .then(() => {
+        toast.success("Account created successfully!");
+      })
+      .catch((error) => {
+        toast.error(error.message || "Sign up failed!");
+      });
+  };
+  // google login
+  const handleContinueGoogle = async () => {
+    try {
+      dispatch(googleLogin());
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">
@@ -20,27 +49,25 @@ const Login = () => {
             Please enter your details
           </p>
 
-          <form
-          //</div>onSubmit={handleSubmit}
-          >
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Phone Number</label>
+              <label className="block text-gray-700">Email</label>
               <input
-                type="number"
-                name="mobile"
+                type="email"
+                name="email"
                 placeholder="Enter your number"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                className="w-full py-6 border rounded-lg input input-success"
                 required
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700">Pin</label>
+              <label className="block text-gray-700">Password</label>
               <input
                 type="password"
-                name="pin"
+                name="password"
                 placeholder="Enter your pin"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                className="w-full py-6 border rounded-lg input input-success"
                 required
               />
             </div>
@@ -62,6 +89,18 @@ const Login = () => {
               Sign in
             </button>
           </form>
+          <div className="flex items-center my-4">
+            <div className="border-b w-full"></div>
+            <span className="mx-3 text-gray-400">or</span>
+            <div className="border-b w-full"></div>
+          </div>
+
+          <button
+            onClick={handleContinueGoogle}
+            className="w-full flex items-center justify-center border py-3 rounded-lg hover:bg-gray-100 transition"
+          >
+            <FcGoogle className="mr-2 text-2xl" /> Continue With Google
+          </button>
           <p className="mt-4 text-gray-600 text-center">
             Don’t have an account?{" "}
             <Link to="/sign-up" className="text-green-600 hover:underline">
