@@ -1,18 +1,26 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const MainLayout = () => {
+  const location = useLocation();
+
+  const isLoginPage = location.pathname === "/login";
+  const isSignUpPage = location.pathname === "/sign-up";
   return (
     <>
-      <div className="max-w-7xl mx-auto space-y-5 px-5">
-        <Navbar></Navbar>
-        <div className="min-h-[500px] container mx-auto p-3 md:px-2 lg:px-0">
+      <div className="">
+        <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
+          <Navbar></Navbar>
+        </div>
+        <div className="min-h-[500px]  p-3 md:px-2 lg:px-0">
           <Outlet></Outlet>
         </div>
       </div>
-      <Footer></Footer>
+      <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
+        <Footer></Footer>
+      </div>
     </>
   );
 };

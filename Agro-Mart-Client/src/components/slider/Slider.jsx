@@ -20,7 +20,7 @@ const Slider = () => {
       }}
       speed={1000}
       modules={[EffectFade, Autoplay]}
-      className="h-72 md:h-96 lg:h-[600px] rounded-xl"
+      className="h-72 md:h-96 lg:h-[900px] -mt-3"
     >
       {[
         {
@@ -54,16 +54,16 @@ const Slider = () => {
         },
       ].map((slide, index) => (
         <SwiperSlide key={index}>
-          <div className="relative w-full h-[600px] zoom-effect">
+          <div className="relative w-full h-[600px] zoom-effect slider-image">
             {/* Background Image */}
             <img
               src={slide.img}
               alt={slide.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover "
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-black/45"></div>
 
             {/* Text Content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
