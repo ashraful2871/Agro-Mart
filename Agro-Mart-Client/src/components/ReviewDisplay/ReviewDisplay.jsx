@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import "./reviewStyle.css"; 
+import "./reviewStyle.css";
 
 export default () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [reviews, setReviews] = useState([]);
-  
+
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
     slideChanged(slider) {
@@ -20,44 +20,62 @@ export default () => {
 
   return (
     <div className="py-20">
+      <div className="flex items-center justify-center">
+        <div className="text-center">
+          <h5 className="text-green-700">Our Testimonials</h5>
+          <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
+            Hear What Our Global Clients Say
+          </h3>
+        </div>
+      </div>
 
-    <div className="flex items-center justify-center">
-    <div className="text-center">
-        <h5 className="text-green-700">Our Testimonials</h5>
-        <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">Hear What Our Global Clients Say</h3>
-    </div>
-    </div>
-
-          {/* <p><strong>{review.userName}</strong></p>
+      {/* <p><strong>{review.userName}</strong></p>
           <p><strong>Review:</strong> {review.review.substring(0,30)}</p>
           <p><small>Posted on: {new Date(review.createdAt).toLocaleString()}</small></p> */}
 
       <div className="navigation-wrapper">
         <div ref={sliderRef} className="keen-slider">
           <div className="keen-slider__slide number-slide2 flex-col">
-            <p className="my-2"><strong>Rating:</strong> 0 / 5</p>
-            <p className="max-w-2xl text-center">Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non quod aut obcaecati eaque minus, iure tempore mollitia in. Illo, molestias!
-            "</p>
-           <div className="my-7 text-center text-green-700">
-           <p><strong>userName</strong></p>
-           <p><small>Posted on: this date</small></p>
-           </div>
-
+            <p className="my-2">
+              <strong>Rating:</strong> 0 / 5
+            </p>
+            <p className="max-w-2xl text-center">
+              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
+              iure tempore mollitia in. Illo, molestias! "
+            </p>
+            <div className="my-7 text-center text-green-700">
+              <p>
+                <strong>userName</strong>
+              </p>
+              <p>
+                <small>Posted on: this date</small>
+              </p>
+            </div>
           </div>
           <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non quod aut obcaecati eaque minus, iure tempore mollitia in. Illo, molestias!
-            "</p>
+            <p className="max-w-2xl text-center">
+              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
+              iure tempore mollitia in. Illo, molestias! "
+            </p>
           </div>
           <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non quod aut obcaecati eaque minus, iure tempore mollitia in. Illo, molestias!
-            "</p>
+            <p className="max-w-2xl text-center">
+              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
+              iure tempore mollitia in. Illo, molestias! "
+            </p>
           </div>
           <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non quod aut obcaecati eaque minus, iure tempore mollitia in. Illo, molestias!
-            "</p>
+            <p className="max-w-2xl text-center">
+              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
+              iure tempore mollitia in. Illo, molestias! "
+            </p>
           </div>
         </div>
-        
+
         {loaded && instanceRef.current && (
           <>
             <Arrow
@@ -82,19 +100,19 @@ export default () => {
 
       {loaded && instanceRef.current && (
         <div className="dots">
-          {[...Array(instanceRef.current.track.details.slides.length).keys()].map(
-            (idx) => {
-              return (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    instanceRef.current?.moveToIdx(idx);
-                  }}
-                  className={"dot" + (currentSlide === idx ? " active" : "")}
-                ></button>
-              );
-            }
-          )}
+          {[
+            ...Array(instanceRef.current.track.details.slides.length).keys(),
+          ].map((idx) => {
+            return (
+              <button
+                key={idx}
+                onClick={() => {
+                  instanceRef.current?.moveToIdx(idx);
+                }}
+                className={"dot" + (currentSlide === idx ? " active" : "")}
+              ></button>
+            );
+          })}
         </div>
       )}
     </div>
@@ -106,7 +124,9 @@ function Arrow(props) {
   return (
     <svg
       onClick={props.onClick}
-      className={`arrow ${props.left ? "arrow--left" : "arrow--right"} ${disabled}`}
+      className={`arrow ${
+        props.left ? "arrow--left" : "arrow--right"
+      } ${disabled}`}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
