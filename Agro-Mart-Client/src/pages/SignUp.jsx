@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { googleLogin, signUpUser, updateUserProfile } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { FaArrowLeft } from "react-icons/fa";
 
 const image_hosting_key = "be0132eb382f7838de12f3bbabfccc00";
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -75,8 +76,8 @@ const SignUp = () => {
       {/* Right Side - Sign Up Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-6">
         <div className="max-w-sm w-full">
-          <h1 className="text-3xl font-bold text-gray-900 text-center">
-            Create your account
+          <h1 className="text-3xl font-bold text-green-700 text-center uppercase">
+            Create an account
           </h1>
           <p className="text-gray-500 mb-6 text-center">
             Please enter your details
@@ -152,10 +153,22 @@ const SignUp = () => {
 
           <p className="mt-4 text-gray-600 text-center">
             Already have an account?{" "}
-            <Link to="/login" className="text-green-600 hover:underline">
+            <Link
+              to="/login"
+              className="text-green-700 hover:underline font-semibold"
+            >
               Login
             </Link>
           </p>
+          <Link to="/">
+            {" "}
+            <div className=" text-green-800 text-center font-semibold flex justify-center mt-4 items-center gap-2">
+              <span>
+                <FaArrowLeft />
+              </span>
+              <span>Back to home</span>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

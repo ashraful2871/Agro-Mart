@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
@@ -54,6 +55,18 @@ export const googleLogin = createAsyncThunk(
     try {
       const userCredential = await signInWithPopup(auth, provider);
       return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error.massage);
+    }
+  }
+);
+//google login
+export const logOut = createAsyncThunk(
+  "auth/logOut",
+  async (_, { rejectWithValue }) => {
+    try {
+      await signOut(auth);
+      return null;
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -138,6 +151,9 @@ const authSlice = createSlice({
       })
       .addCase(InitializeAuthListener.fulfilled, (state) => {
         state.loading = false;
+      })
+      .addCase(logOut.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });
