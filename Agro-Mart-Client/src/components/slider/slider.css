@@ -36,3 +36,6 @@
 .swiper-slide-active .zoom-effect img {
   transform: scale(1.1); /* Slowly zoom in */
 }
+.slider-image {
+  clip-path: ellipse(150% 100% at center top); /* Curves only the bottom */
+}

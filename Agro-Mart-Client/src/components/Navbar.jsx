@@ -1,12 +1,42 @@
 import React from "react";
+import { useLocation, Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logOut } from "../store/authSlice";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
+
+  const links = (
+    <>
+      {" "}
+      <li>
+        <NavLink to="/" className={isHomePage ? "text-white" : ""}>
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          Shop
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          Contact
+        </NavLink>
+      </li>
+    </>
+  );
+
   const signOutUser = async () => {
     try {
       await dispatch(logOut()).unwrap();
@@ -17,96 +47,65 @@ const Navbar = () => {
       toast.error(error.message || "Logout failed!");
     }
   };
-  const links = (
-    <>
-      {" "}
-      <li>
-        <NavLink to="/login">Login</NavLink>
-      </li>
-      <li>
-        <NavLink to="/sign-up">SignUP</NavLink>
-      </li>
-      <li>
-        <NavLink to="/sign-up">Profile</NavLink>
-      </li>
-      <li>
-        <button
-          className="bg-red-400 hover:bg-red-700 text-white block text-center font-bold mt-5"
-          onClick={signOutUser}
-        >
-          Logout
-        </button>
-      </li>
-    </>
-  );
+
   return (
-    <div className="navbar bg-base-100 shadow-sm">
-      <div className="flex-1">
-        <div className="flex items-center">
+    <div
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
+        isHomePage
+          ? "bg-transparent absolute top-0 left-0 w-full"
+          : "bg-base-100 shadow-md"
+      }`}
+    >
+      {/* Left Section (Brand + Mobile Menu) */}
+      <div className="navbar-start">
+        <Link to="/" className="flex items-center">
           <img
-            className="h-10"
+            className="h-14"
             src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
-            alt=""
+            alt="AgroMart"
           />
-          <Link to="/" className="text-2xl md:text-4xl font-bold font-syne">
-            AgroMart
-          </Link>
-        </div>
-      </div>
-      <div className="flex-none">
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />{" "}
-              </svg>
-              <span className="badge badge-sm indicator-item">8</span>
-            </div>
-          </div>
-          <div
-            tabIndex={0}
-            className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
+          <span
+            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
+              isHomePage ? "text-white" : ""
+            }`}
           >
-            <div className="card-body">
-              <span className="text-lg font-bold">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
-              <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
-              </div>
-            </div>
-          </div>
-        </div>
+            AgroMart
+          </span>
+        </Link>
+      </div>
+
+      {/* Center Section (Navigation Links) */}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1 text-lg font-medium font-syne">
+          {links}
+        </ul>
+      </div>
+
+      {/* Right Section (Cart & Profile) */}
+      <div className="navbar-end flex gap-4">
+        {/* Cart */}
+
+        {/* Profile */}
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+            <div className="w-10 rounded-full bg-gray-300">
+              <img src="https://i.ibb.co.com/zWQYnrGM/user.png" alt="User" />
             </div>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            {links}
-          </ul>
+        </div>
+        <div className="dropdown dropdown-end text-lg text-white font-syne">
+          <span className="mr-2">
+            {" "}
+            <Link to="/login">Login</Link>
+          </span>
+          /{" "}
+          <span>
+            <Link to="/sign-up">Register</Link>
+          </span>
         </div>
       </div>
     </div>

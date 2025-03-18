@@ -10,7 +10,7 @@ const Home = () => {
       <Slider></Slider>
 
       {/* FAQ Section */}
-      <section>
+      <section className="max-w-screen-xl mx-auto mt-5 p-2">
         <FaqSection></FaqSection>
       </section>
       {/* Review Posting Section */}
