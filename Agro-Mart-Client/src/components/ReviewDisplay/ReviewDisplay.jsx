@@ -24,7 +24,7 @@ export default () => {
         <div className="text-center">
           <h5 className="text-green-700">Our Testimonials</h5>
           <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
-            Hear What Our Global Clients Say
+            Hear What Our Global Clients Say About Us
           </h3>
         </div>
       </div>
