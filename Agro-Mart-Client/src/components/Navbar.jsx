@@ -7,10 +7,35 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation(); // Get current page path
+  const location = useLocation();
 
-  // Check if the current page is the homepage
   const isHomePage = location.pathname === "/";
+
+  const links = (
+    <>
+      {" "}
+      <li>
+        <NavLink to="/" className={isHomePage ? "text-white" : ""}>
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          Shop
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+          Contact
+        </NavLink>
+      </li>
+    </>
+  );
 
   const signOutUser = async () => {
     try {
@@ -51,27 +76,8 @@ const Navbar = () => {
 
       {/* Center Section (Navigation Links) */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 text-lg font-medium">
-          <li>
-            <NavLink to="/" className={isHomePage ? "text-white" : ""}>
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="" className={isHomePage ? "text-white" : ""}>
-              Shop
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="" className={isHomePage ? "text-white" : ""}>
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="" className={isHomePage ? "text-white" : ""}>
-              Contact
-            </NavLink>
-          </li>
+        <ul className="menu menu-horizontal px-1 text-lg font-medium font-syne">
+          {links}
         </ul>
       </div>
 
@@ -86,15 +92,12 @@ const Navbar = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 rounded-full">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                alt="User"
-              />
+            <div className="w-10 rounded-full bg-gray-300">
+              <img src="https://i.ibb.co.com/zWQYnrGM/user.png" alt="User" />
             </div>
           </div>
         </div>
-        <div className="dropdown dropdown-end text-lg text-white">
+        <div className="dropdown dropdown-end text-lg text-white font-syne">
           <span className="mr-2">
             {" "}
             <Link to="/login">Login</Link>
