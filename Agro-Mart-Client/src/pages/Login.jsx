@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { googleLogin, signInUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { FaArrowLeft } from "react-icons/fa";
 const Login = () => {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
@@ -42,11 +43,11 @@ const Login = () => {
 
       <div className="w-full md:w-1/2 flex items-center justify-center p-6">
         <div className="max-w-sm w-full">
-          <h1 className="text-3xl font-bold text-gray-900 text-center">
-            Welcome back
+          <h1 className="text-3xl font-bold text-green-700 text-center uppercase">
+            Welcome back !
           </h1>
           <p className="text-gray-500 mb-6 text-center">
-            Please enter your details
+            Login to your account.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -103,10 +104,22 @@ const Login = () => {
           </button>
           <p className="mt-4 text-gray-600 text-center">
             Don’t have an account?{" "}
-            <Link to="/sign-up" className="text-green-600 hover:underline">
-              Sign Up
+            <Link
+              to="/register"
+              className="text-green-700 hover:underline font-semibold"
+            >
+              Register
             </Link>
           </p>
+          <Link to="/">
+            {" "}
+            <div className=" text-green-800 text-center font-semibold flex justify-center mt-4 items-center gap-2">
+              <span>
+                <FaArrowLeft />
+              </span>
+              <span>Back to home</span>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

@@ -104,7 +104,7 @@ const Navbar = () => {
           </span>
           /{" "}
           <span>
-            <Link to="/sign-up">Registration</Link>
+            <Link to="/sign-up">Register</Link>
           </span>
         </div>
       </div>

@@ -7,10 +7,10 @@ const MainLayout = () => {
   const location = useLocation();
 
   const isLoginPage = location.pathname === "/login";
-  const isSignUpPage = location.pathname === "/sign-up";
+  const isSignUpPage = location.pathname === "/register";
   return (
     <>
-      <div className="">
+      <div>
         <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
           <Navbar></Navbar>
         </div>
