@@ -25,9 +25,57 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
+
+    const database = client.db("AgroMart");
+    const productCollection = database.collection("products");
+
+    // Product management
+    app.post("/products", async (req, res) => {
+      const {
+        name,
+        category,
+        price,
+        description,
+        stockQuantity,
+        imageURL,
+        addedBy,
+      } = req.body;
+
+      const productData = {
+        name,
+        category,
+        price,
+        description,
+        stockQuantity,
+        imageURL,
+        addedBy,
+      };
+
+      try {
+        const result = await productCollection.insertOne(productData);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Error inserting the product." });
+        console.error(error);
+      }
+    });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
+
+    const usersCollection = client.db("agroMart").collection("users");
+    const productsCollection = client.db("agroMart").collection("products");
+
+    app.post("/products", (req, res) => {
+      const result = productsCollection.insertOne(req.body);
+      req.send(result);
+    });
+    app.get("/products", (req, res) => {
+      const result = productsCollection.find().toArray();
+      req.send(result);
+    });
+
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );

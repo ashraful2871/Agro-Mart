@@ -20,8 +20,13 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/shop" className={isHomePage ? "text-white" : ""}>
           Shop
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/produtcs" className={isHomePage ? "text-white" : ""}>
+          Products
         </NavLink>
       </li>
       <li>
@@ -32,6 +37,11 @@ const Navbar = () => {
       <li>
         <NavLink to="" className={isHomePage ? "text-white" : ""}>
           Contact
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard" className={isHomePage ? "text-white" : ""}>
+          Dashboard
         </NavLink>
       </li>
     </>
@@ -50,11 +60,10 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
-        isHomePage
-          ? "bg-transparent absolute top-0 left-0 w-full"
-          : "bg-base-100 shadow-md"
-      }`}
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${isHomePage
+        ? "bg-transparent absolute top-0 left-0 w-full"
+        : "bg-base-100 shadow-md"
+        }`}
     >
       {/* Left Section (Brand + Mobile Menu) */}
       <div className="navbar-start">
@@ -65,9 +74,8 @@ const Navbar = () => {
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
-              isHomePage ? "text-white" : ""
-            }`}
+            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${isHomePage ? "text-white" : ""
+              }`}
           >
             AgroMart
           </span>
@@ -104,7 +112,7 @@ const Navbar = () => {
           </span>
           /{" "}
           <span>
-            <Link to="/sign-up">Register</Link>
+            <Link to="/register">Register</Link>
           </span>
         </div>
       </div>
