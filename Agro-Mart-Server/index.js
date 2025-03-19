@@ -107,7 +107,7 @@ async function run() {
     // Update a product by ID
     app.patch("/dashboard/product-update/:id", async (req, res) => {
       const id = req.params.id;
-      const updatedProduct = req.body;
+      const { updatedProduct } = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: updatedProduct,
