@@ -8,12 +8,13 @@ const MainLayout = () => {
 
   const isLoginPage = location.pathname === "/login";
   const isHomePage = location.pathname === "/";
+  const isShopPage = location.pathname === "/shop";
   const isSignUpPage = location.pathname === "/register";
   return (
     <>
       <div
         className={`${
-          !isHomePage ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0" : ""
+          !isHomePage && !isShopPage ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0" : ""
         }`}
       >
         <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
