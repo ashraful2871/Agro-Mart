@@ -30,7 +30,7 @@ async function run() {
     // await client.db("admin").command({ ping: 1 });
 
     const usersCollection = client.db("agroMart").collection("users")
-    const productsCollection = client.db("agroMart").collection("product")
+    const productsCollection = client.db("agroMart").collection("products")
 
 
     console.log(
