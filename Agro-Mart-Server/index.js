@@ -7,8 +7,6 @@ const app = express();
 //middleware
 app.use(cors());
 app.use(express.json());
-//agro1234
-//tkWMj4u0as7kNvYI
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = process.env.MONGO_URI;
@@ -28,15 +26,33 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
 
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
 
     //users related apis
-    app.post("/users", (req, res) => {
-      const result = usersCollection.insertOne(req.body);
-      req.send(result);
+
+    ///save user inn db
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      // console.log(user);
+
+      const query = { email: user?.email };
+      const existingUser = await usersCollection.findOne(query);
+      if (existingUser) {
+        return response.send({
+          message: "user already in db",
+          insertedId: null,
+        });
+      }
+      const result = usersCollection.insertOne(user);
+      res.send(result);
     });
+
+    //get all user
     app.get("/users", (req, res) => {
       const result = usersCollection.find().toArray();
       req.send(result);
@@ -112,15 +128,6 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result);  
   });
-
-    // app.post("/products", (req, res) => {
-    //   const result = productsCollection.insertOne(req.body);
-    //   req.send(result);
-    // });
-    // app.get("/products", (req, res) => {
-    //   const result = productsCollection.find().toArray();
-    //   req.send(result);
-    // });
 
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
