@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, Link, NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logOut } from "../store/authSlice";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
@@ -14,7 +14,6 @@ const Navbar = () => {
 
   const links = (
     <>
-      {" "}
       <li>
         <NavLink to="/" className={isHomePage ? "text-white" : ""}>
           Home
@@ -94,30 +93,80 @@ const Navbar = () => {
 
       {/* Right Section (Cart & Profile) */}
       <div className="navbar-end flex gap-4">
-        {/* Cart */}
+        {/* Profile Dropdown */}
+        {user ? (
+          <div className="relative group">
+            <div className="flex items-center gap-2 cursor-pointer">
+              <div>
+                <div role="button" className="btn btn-ghost btn-circle avatar">
+                  <div className="w-10 rounded-full bg-gray-300">
+                    <img
+                      referrerPolicy="no-referrer"
+                      src={
+                        user.photoURL ||
+                        "https://i.ibb.co.com/zWQYnrGM/user.png"
+                      }
+                      alt="User"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span className="text-white font-syne">
+                  {user?.displayName}
+                </span>
+              </div>
+            </div>
 
-        {/* Profile */}
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full bg-gray-300">
-              <img src="https://i.ibb.co.com/zWQYnrGM/user.png" alt="User" />
+            {/* Dropdown */}
+            <div className="absolute right-16 mt-2 w-48 bg-white shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              <Link
+                to="/profile"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+              >
+                Profile
+              </Link>
+              <Link
+                to="/dashboard"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={signOutUser}
+                className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200"
+              >
+                Logout
+              </button>
             </div>
           </div>
-        </div>
-        <div className="dropdown dropdown-end text-lg text-white font-syne">
-          <span className="mr-2">
-            {" "}
-            <Link to="/login">Login</Link>
-          </span>
-          /{" "}
-          <span>
-            <Link to="/register">Register</Link>
-          </span>
-        </div>
+        ) : (
+          <>
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full bg-gray-300">
+                  <img
+                    src="https://i.ibb.co.com/zWQYnrGM/user.png"
+                    alt="User"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="dropdown dropdown-end text-lg text-white font-syne">
+              <span className="mr-2">
+                <Link to="/login">Login</Link>
+              </span>
+              /{" "}
+              <span>
+                <Link to="/register">Register</Link>
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
