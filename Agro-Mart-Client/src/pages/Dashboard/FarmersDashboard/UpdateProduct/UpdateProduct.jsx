@@ -27,14 +27,6 @@ const UpdateProduct = () => {
     fetchProduct();
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedProduct((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
