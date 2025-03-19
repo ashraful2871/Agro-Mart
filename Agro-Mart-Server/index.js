@@ -85,7 +85,7 @@ async function run() {
         imageURL,
         addedBy,
       };
-
+      ////
       try {
         const result = await productCollection.insertOne(productData);
         res.send(result);
