@@ -5,6 +5,7 @@ import { googleLogin, signInUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
+import axios from "axios";
 const Login = () => {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
@@ -26,7 +27,22 @@ const Login = () => {
   // google login
   const handleContinueGoogle = async () => {
     try {
-      dispatch(googleLogin());
+      dispatch(googleLogin())
+        .unwrap()
+        .then(async (user) => {
+          try {
+            const userInfo = {
+              name: user?.displayName,
+              email: user?.email,
+              photo: user?.photoURL,
+              uid: user?.uid,
+              role: "user",
+            };
+            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+          } catch (error) {
+            console.log(error);
+          }
+        });
     } catch (error) {
       console.log(error);
     }
