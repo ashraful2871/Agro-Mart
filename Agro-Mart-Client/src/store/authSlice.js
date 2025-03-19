@@ -74,6 +74,9 @@ export const logOut = createAsyncThunk(
 );
 
 //update profile
+//update profile
+//update profile
+//update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
   async ({ name, photo }, { rejectWithValue }) => {
