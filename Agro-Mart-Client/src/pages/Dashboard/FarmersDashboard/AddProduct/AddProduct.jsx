@@ -7,85 +7,61 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
-<<<<<<< HEAD
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const user = useSelector((state) => state.auth.user);
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(""); 
-        setLoading(true);
-=======
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.auth.user);
-  const axiosPublic = useAxiosPublic();
->>>>>>> 6f9b036262d18a4f22bb5b37b0c9a950c0e63ca5
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(""); // Reset error before submitting
-    setLoading(true); // Start loading
-
-    const form = e.target;
-    const name = form.name.value;
-    const image = form.image.files[0];
-    const imageURL = await imageUpload(image);
-    const category = form.category.value;
-    const price = parseFloat(form.price.value);
-    const description = form.description.value;
-    const stockQuantity = parseInt(form.stockQuantity.value);
-
-<<<<<<< HEAD
+        setLoading(true); 
+    
+        const form = e.target;
+        const name = form.name.value;
+        const image = form.image.files[0];
+        const imageURL = await imageUpload(image);
+        const category = form.category.value;
+        const price = parseFloat(form.price.value);
+        const description = form.description.value;
+        const stockQuantity = parseInt(form.stockQuantity.value);
+    
+        const productData = {
+            name,
+            category,
+            price,
+            description,
+            stockQuantity,
+            imageURL,
+            addedBy: {
+                name: user?.displayName,
+                email: user?.email,
+            },
+        };
+    
         axiosPublic.post("/products", productData)
-        .then((res) => {
-            if (res.data.insertedId) {
-                toast.success('Item successfully added!');
-                form.reset();
-                navigate("/dashboard/manageProduct")
-            } else {
-                toast.error('Item could not be added.');
-            }
-        })
-        .catch((err) => {
-            toast.error('An error occurred while adding the item.');
-            console.error(err);
-        });
-=======
-    const productData = {
-      name,
-      category,
-      price,
-      description,
-      stockQuantity,
-      imageURL,
-      addedBy: {
-        name: user?.displayName,
-        email: user?.email,
-      },
->>>>>>> 6f9b036262d18a4f22bb5b37b0c9a950c0e63ca5
+            .then((res) => {
+                if (res.data.insertedId) {
+                    toast.success('Product successfully added!');
+                    form.reset();
+                    navigate('/dashboard/manageProduct');
+                } else {
+                    toast.error('Product could not be added.');
+                }
+            })
+            .catch((err) => {
+                if (err.response && err.response.data.message) {
+                    setError(err.response.data.message); 
+                } else {
+                    setError('An error occurred while adding the product.');
+                }
+                console.error(err);
+            })
+            .finally(() => {
+                setLoading(false); 
+            });
     };
-    console.log(productData);
-    setLoading(false);
-
-    axiosPublic
-      .post("/products", productData)
-      .then((res) => {
-        if (res.data.insertedId) {
-          toast.success("Item successfully added!");
-          form.reset();
-        } else {
-          toast.error("Item could not be added.");
-        }
-      })
-      .catch((err) => {
-        toast.error("An error occurred while adding the item.");
-        console.error(err);
-      });
-  };
 
   return (
     <div className="max-w-5xl mx-auto">
