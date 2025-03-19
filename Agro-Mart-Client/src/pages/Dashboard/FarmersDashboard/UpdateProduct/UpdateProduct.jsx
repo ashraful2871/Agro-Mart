@@ -44,7 +44,7 @@ const UpdateProduct = () => {
                     text: "Your product has been updated.",
                     icon: "success"
                 });
-                navigate("/dashboard/manageProduct");
+                // navigate("/dashboard/manageProduct");
             }
         } catch (error) {
             console.error('Error updating the product:', error);
