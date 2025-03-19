@@ -10,7 +10,7 @@ app.use(express.json());
 //agro1234
 //tkWMj4u0as7kNvYI
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -25,12 +25,30 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
+    // Send a ping to confirm a successful connection
+    // await client.db("admin").command({ ping: 1 });
 
-    const database = client.db("AgroMart");
-    const productCollection = database.collection("products");
+    const usersCollection = client.db("AgroMart").collection("users");
+    const productCollection = client.db("AgroMart").collection("products");
 
-    // Product management
+    //users related apis
+    app.post("/users", (req, res) => {
+      const result = usersCollection.insertOne(req.body);
+      req.send(result);
+    });
+    app.get("/users", (req, res) => {
+      const result = usersCollection.find().toArray();
+      req.send(result);
+    });
+    app.get("/users/:uid", (req, res) => {
+      const result = usersCollection.findOne();
+      req.send(result);
+    });
+
+    // products related apis crud
+
+    // products create
     app.post("/products", async (req, res) => {
       const {
         name,
@@ -61,11 +79,17 @@ async function run() {
       }
     });
 
-    // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
-
-    const usersCollection = client.db("agroMart").collection("users");
-    const productsCollection = client.db("agroMart").collection("products");
+    // products get
+    app.get("/products", (req, res) => {
+      const result = productsCollection.find().toArray();
+      req.send(result);
+    });
+    // products get by _id
+    app.get("/products/:id", (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const result = productsCollection.findOne(query);
+      req.send(result);
+    });
 
     app.post("/products", (req, res) => {
       const result = productsCollection.insertOne(req.body);
