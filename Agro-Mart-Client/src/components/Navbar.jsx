@@ -26,7 +26,7 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/produtcs" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
           Products
         </NavLink>
       </li>
