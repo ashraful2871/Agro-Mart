@@ -81,11 +81,14 @@ const AddProduct = () => {
                             required
                         >
                             <option value="">Select a category</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Home & Kitchen">Home & Kitchen</option>
-                            <option value="Books">Books</option>
-                            <option value="Toys">Toys</option>
+                            <option value="Seeds & Plants">Seeds & Plants</option>
+                            <option value="Farming Equipment">Farming Equipment</option>
+                            <option value="Fertilizers & Pesticides">Fertilizers & Pesticides</option>
+                            <option value="Agricultural Tools">Agricultural Tools</option>
+                            <option value="Vegetables">Vegetables</option>
+                            <option value="Fruits">Fruits</option>
+                            <option value="Fresh Fish & Seafood">Fresh Fish & Seafood</option>
+                            <option value="Dairy & Milk Products">Dairy & Milk Products</option>
                         </select>
                     </div>
 

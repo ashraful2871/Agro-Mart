@@ -20,7 +20,7 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/shop" className={isHomePage ? "text-white" : ""}>
           Shop
         </NavLink>
       </li>
