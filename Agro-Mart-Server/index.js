@@ -60,6 +60,15 @@ async function run() {
     const usersCollection = client.db("agroMart").collection("users")
     const productsCollection = client.db("agroMart").collection("products")
 
+    app.post('/products', (req, res) => {
+      const result = productsCollection.insertOne(req.body)
+      req.send(result)
+    })
+    app.get('/products', (req, res) => {
+      const result = productsCollection.find().toArray()
+      req.send(result)
+    })
+
 
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
