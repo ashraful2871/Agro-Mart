@@ -1,14 +1,15 @@
 import React from "react";
 import { useLocation, Link, NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../store/authSlice";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const user = useAuth();
   const isHomePage = location.pathname === "/";
 
   const links = (
@@ -20,8 +21,13 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/shop" className={isHomePage ? "text-white" : ""}>
           Shop
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
+          Products
         </NavLink>
       </li>
       <li>
@@ -32,6 +38,11 @@ const Navbar = () => {
       <li>
         <NavLink to="" className={isHomePage ? "text-white" : ""}>
           Contact
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard" className={isHomePage ? "text-white" : ""}>
+          Dashboard
         </NavLink>
       </li>
     </>
@@ -104,7 +115,7 @@ const Navbar = () => {
           </span>
           /{" "}
           <span>
-            <Link to="/sign-up">Register</Link>
+            <Link to="/register">Register</Link>
           </span>
         </div>
       </div>
