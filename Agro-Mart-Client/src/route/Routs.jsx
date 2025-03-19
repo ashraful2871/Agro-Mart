@@ -3,6 +3,8 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
+import Dashboard from "../layout/Dashboard";
+import AddProduct from "../pages/Dashboard/FarmersDashboard/AddProduct/AddProduct";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -22,4 +24,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/dashboard",
+    element: <Dashboard></Dashboard>,
+    children: [
+      {
+        path: "addProduct",
+        element: <AddProduct></AddProduct>
+      }
+    ]
+  }
 ]);
