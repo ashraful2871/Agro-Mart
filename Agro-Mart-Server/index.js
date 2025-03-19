@@ -26,9 +26,6 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
 
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
@@ -112,7 +109,7 @@ async function run() {
     // Update a product by ID
     app.patch("/dashboard/product-update/:id", async (req, res) => {
       const id = req.params.id;
-      const updatedProduct = req.body;
+      const { updatedProduct } = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: updatedProduct,
