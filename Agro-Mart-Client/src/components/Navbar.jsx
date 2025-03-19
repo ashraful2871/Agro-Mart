@@ -1,14 +1,15 @@
 import React from "react";
 import { useLocation, Link, NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../store/authSlice";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const user = useAuth();
   const isHomePage = location.pathname === "/";
 
   const links = (
@@ -25,7 +26,7 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/produtcs" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
           Products
         </NavLink>
       </li>
@@ -60,10 +61,11 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${isHomePage
-        ? "bg-transparent absolute top-0 left-0 w-full"
-        : "bg-base-100 shadow-md"
-        }`}
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
+        isHomePage
+          ? "bg-transparent absolute top-0 left-0 w-full"
+          : "bg-base-100 shadow-md"
+      }`}
     >
       {/* Left Section (Brand + Mobile Menu) */}
       <div className="navbar-start">
@@ -74,8 +76,9 @@ const Navbar = () => {
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${isHomePage ? "text-white" : ""
-              }`}
+            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
+              isHomePage ? "text-white" : ""
+            }`}
           >
             AgroMart
           </span>
