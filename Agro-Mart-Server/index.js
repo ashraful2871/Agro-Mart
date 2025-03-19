@@ -96,25 +96,38 @@ async function run() {
     });
 
     // products get
-    app.get("/products", (req, res) => {
-      const result = productsCollection.find().toArray();
-      req.send(result);
-    });
-    // products get by _id
-    app.get("/products/:id", (req, res) => {
-      const query = { _id: new ObjectId(req.params.id) };
-      const result = productsCollection.findOne(query);
-      req.send(result);
+    app.get("/products", async (req, res) => {
+      const result = await productCollection.find().toArray();
+      res.send(result);
     });
 
-    // app.post("/products", (req, res) => {
-    //   const result = productsCollection.insertOne(req.body);
-    //   req.send(result);
-    // });
-    app.get("/products", (req, res) => {
-      const result = productsCollection.find().toArray();
-      req.send(result);
+    // Update a product by ID
+    app.get("/dashboard/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const product = await productCollection.findOne(query);
+      res.send(product);
     });
+
+    // Update a product by ID
+    app.patch("/dashboard/product-update/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedProduct = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: updatedProduct,
+      };
+      const result = await productCollection.updateOne(query, updateDoc);
+      res.send(result);
+    });
+
+    // Delete product using id
+    app.delete('/product/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }; 
+      const result = await productCollection.deleteOne(query);
+      res.send(result);  
+  });
 
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
