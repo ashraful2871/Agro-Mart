@@ -25,8 +25,6 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
-
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
 
@@ -112,7 +110,7 @@ async function run() {
       const updatedProduct = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
-        $set: { updatedProduct },
+        $set: updatedProduct,
       };
       const result = await productCollection.updateOne(query, updateDoc);
       res.send(result);
