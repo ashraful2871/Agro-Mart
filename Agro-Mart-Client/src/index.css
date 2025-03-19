@@ -9,3 +9,9 @@ body {
 .font-syne {
   font-family: "Syne", sans-serif;
 }
+.bg-image {
+  background-image: url(https://i.ibb.co.com/Y5mY0Cj/footer-bg-1.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
