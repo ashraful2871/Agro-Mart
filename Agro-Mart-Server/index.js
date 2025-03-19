@@ -11,7 +11,8 @@ app.use(express.json());
 //tkWMj4u0as7kNvYI
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nbwag.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sotib.mongodb.net/?appName=Cluster0`;
+console.log(uri)
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -25,7 +26,34 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
+
+    const database = client.db("AgroMart")
+    const productCollection = database.collection("products")
+
+    // Product management
+  app.post('/products', async (req, res) => {
+      const { name, category, price, description, stockQuantity, imageURL, addedBy } = req.body;
+  
+      const productData = {
+          name,
+          category,
+          price,
+          description,
+          stockQuantity,
+          imageURL,
+          addedBy,
+      };
+  
+      try {
+          const result = await productCollection.insertOne(productData);
+          res.send(result); 
+      } catch (error) {
+          res.status(500).send({ message: "Error inserting the product." });
+          console.error(error);
+      }
+  });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
 
