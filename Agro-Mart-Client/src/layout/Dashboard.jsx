@@ -10,12 +10,8 @@ const Dashboard = () => {
             <li>
               <NavLink to="/dashboard/addProduct">Add Product</NavLink>
             </li>
-            <li>
-              <NavLink to="/dashboard/manageProduct">Manage Product</NavLink>
-            </li>
           </>
 
-          {/* Shared nav links */}
           {/* Shared nav links */}
           <div className="divider"></div>
           <li>
@@ -62,9 +58,6 @@ const Dashboard = () => {
             <>
               <li>
                 <NavLink to="/dashboard/addProduct">Add Product</NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/manageProduct">Manage Product</NavLink>
               </li>
             </>
 

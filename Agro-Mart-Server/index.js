@@ -26,9 +26,6 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
-    // await client.db("admin").command({ ping: 1 });
 
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
@@ -85,7 +82,7 @@ async function run() {
         imageURL,
         addedBy,
       };
-
+      ////
       try {
         const result = await productCollection.insertOne(productData);
         res.send(result);
