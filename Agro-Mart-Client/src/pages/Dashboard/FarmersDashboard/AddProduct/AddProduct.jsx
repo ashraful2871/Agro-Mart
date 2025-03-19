@@ -4,17 +4,19 @@ import { imageUpload } from "../../../../api/utils";
 import { useSelector } from "react-redux"
 import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const user = useSelector((state) => state.auth.user);
     const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Reset error before submitting
-        setLoading(true); // Start loading
+        setError(""); 
+        setLoading(true);
 
         const form = e.target;
         const name = form.name.value;
@@ -45,6 +47,7 @@ const AddProduct = () => {
             if (res.data.insertedId) {
                 toast.success('Item successfully added!');
                 form.reset();
+                navigate("/dashboard/manageProduct")
             } else {
                 toast.error('Item could not be added.');
             }
