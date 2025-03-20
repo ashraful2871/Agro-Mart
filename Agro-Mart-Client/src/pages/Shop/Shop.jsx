@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { IoCart } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -12,10 +12,11 @@ const Shop = () => {
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6); 
+  const [itemsPerPage] = useState(6);
 
   // Fetch products from the database
   useEffect(() => {
@@ -47,14 +48,18 @@ const Shop = () => {
   // Handle search
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   // Handle category click
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
+
+  const handleDetails = (id) => {
+    navigate(`/dashboard/product/${id}`)
+  }
 
   // Filter and sort products
   const filteredProducts = products
@@ -100,8 +105,8 @@ const Shop = () => {
       <h1 className="text-3xl font-bold mb-5 text-center">Product Listing</h1>
 
       <div className="flex gap-7 w-11/12 mx-auto">
-        {/* Left Sidebar */}
-        <div className="w-1/4 p-5 rounded-lg shadow-sm">
+        {/* Left Sidebar for large screens */}
+        <div className="w-1/4 p-5 rounded-lg shadow-sm hidden lg:block">
           {/* Search Box */}
           <div className="bg-white p-4 rounded-lg mb-5">
             <h3 className="text-xl font-bold mb-4">Search</h3>
@@ -250,14 +255,185 @@ const Shop = () => {
         </div>
 
         {/* Product Listing */}
-        <div className="w-3/4">
+        <div className="w-full lg:w-3/4">
           {/* Filters */}
           <div className="my-5 flex justify-between">
-            <div>
+            <div className="hidden lg:block">
               <span className="text-xl font-semibold">
                 Showing {filteredProducts.length} products
               </span>
             </div>
+
+            {/* Drawer for small and medium screens */}
+            <div className="drawer drawer-end lg:hidden">
+              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+              <div className="drawer-content">
+                {/* Button to open the drawer for small and medium screens */}
+                <label
+                  htmlFor="my-drawer"
+                  className="btn bg-[#c3e858] drawer-button"
+                >
+                  Open Sidebar
+                </label>
+              </div>
+
+              {/* Sidebar content (this will be shown for mobile and tablet) */}
+              <div className="drawer-side z-50">
+                <label
+                  htmlFor="my-drawer"
+                  aria-label="close sidebar"
+                  className="drawer-overlay"
+                ></label>
+                <div className="w-64 p-5 bg-white rounded-lg shadow-sm">
+                  {/* Search Box */}
+                  <div className="bg-white p-4 rounded-lg mb-5">
+                    <h3 className="text-xl font-bold mb-4">Search</h3>
+                    <input
+                      type="text"
+                      placeholder="Search products by name..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      className="p-2 border border-gray-300 rounded-full w-full mb-5"
+                    />
+                  </div>
+
+                  {/* Categories */}
+                  <div className="bg-white p-4 rounded-lg mb-5">
+                    <h3 className="text-xl font-semibold mb-3">Categories</h3>
+                    <ul className="space-y-2">
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("")}
+                      >
+                        <div>All Categories</div>
+                        <div>({products.length})</div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Seeds & Plants")}
+                      >
+                        <div>Seeds & Plants</div>
+                        <div>
+                          ({products.filter((p) => p.category === "Seeds & Plants").length})
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Farming Equipment")}
+                      >
+                        <div>Farming Equipment</div>
+                        <div>
+                          ({products.filter((p) => p.category === "Farming Equipment").length})
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Fertilizers & Pesticides")}
+                      >
+                        <div>Fertilizers & Pesticides</div>
+                        <div>
+                          (
+                          {products.filter((p) => p.category === "Fertilizers & Pesticides")
+                            .length}
+                          )
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Agricultural Tools")}
+                      >
+                        <div>Agricultural Tools</div>
+                        <div>
+                          ({products.filter((p) => p.category === "Agricultural Tools").length})
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Vegetables")}
+                      >
+                        <div>Vegetables</div>
+                        <div>
+                          ({products.filter((p) => p.category === "Vegetables").length})
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Fruits")}
+                      >
+                        <div>Fruits</div>
+                        <div>
+                          ({products.filter((p) => p.category === "Fruits").length})
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Fresh Fish & Seafood")}
+                      >
+                        <div>Fresh Fish & Seafood</div>
+                        <div>
+                          (
+                          {products.filter((p) => p.category === "Fresh Fish & Seafood")
+                            .length}
+                          )
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() => handleCategoryClick("Dairy & Milk Products")}
+                      >
+                        <div>Dairy & Milk Products</div>
+                        <div>
+                          (
+                          {products.filter((p) => p.category === "Dairy & Milk Products")
+                            .length}
+                          )
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="bg-white p-4 rounded-lg mb-5">
+                    <h3 className="text-xl font-semibold mb-3">Tags</h3>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Agriculture
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Dairy
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Design
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Garden
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Healthy
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Landscaping
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Nature
+                      </span>
+                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                        Organic
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div>
               <select
                 onChange={handleSortChange}
@@ -272,31 +448,32 @@ const Shop = () => {
 
           {/* Products */}
           <div className="flex flex-wrap gap-5 rounded-br-3xl">
-            {currentProducts.map((product) => (
-              <div
-                key={product._id}
-                className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative"
-              >
-                <img
-                  src={product.imageURL}
-                  alt=""
-                  className="h-60 w-full bg-cover"
-                />
-                <h3 className="text-xl font-semibold my-2">{product.name}</h3>
-                <p className="text-gray-500 text-xl font-bold">
-                  {product.category}
-                </p>
-                <p className="text-green-700 font-bold mt-2">
-                  ${product.price.toFixed(2)}
-                </p>
-                <div className="absolute bottom-0 right-0 z-10">
-                  <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
-                    <IoCart />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+  {currentProducts.map((product) => (
+    <div
+      key={product._id}
+      onClick={() => handleDetails(product._id)} // Pass the product ID to handleDetails
+      className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative cursor-pointer" // Add cursor-pointer for better UX
+    >
+      <img
+        src={product.image}
+        alt=""
+        className="h-60 w-full bg-cover"
+      />
+      <h3 className="text-xl font-semibold my-2">{product.name}</h3>
+      <p className="text-gray-500 text-xl font-bold">
+        {product.category}
+      </p>
+      <p className="text-green-700 font-bold mt-2">
+        ${product.price.toFixed(2)}
+      </p>
+      <div className="absolute bottom-0 right-0 z-10">
+        <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
+          <IoCart />
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
 
           {/* Pagination Controls */}
           <div className="flex justify-center mt-8">
