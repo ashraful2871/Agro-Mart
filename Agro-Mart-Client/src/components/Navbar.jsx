@@ -95,7 +95,7 @@ const Navbar = () => {
       <div className="navbar-end flex gap-4">
         {/* Profile Dropdown */}
         {user ? (
-          <div className="relative group">
+          <div className="relative group hidden md:block">
             <div className="flex items-center gap-2 cursor-pointer">
               <div>
                 <div role="button" className="btn btn-ghost btn-circle avatar">
