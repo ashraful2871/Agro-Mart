@@ -54,7 +54,7 @@ const AddProduct = () => {
       }
     }
 
-    // Continue to product submission
+    // Continue to product submit
     const productData = {
       name,
       category,
