@@ -16,7 +16,7 @@ const UpdateProduct = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/dashboard/product/${id}`
+          `https://agro-mart-server.vercel.app/dashboard/product/${id}`
         );
         setProduct(response.data);
         setUpdatedProduct(response.data);
@@ -45,7 +45,7 @@ const UpdateProduct = () => {
     };
     try {
       const response = await axios.patch(
-        `http://localhost:5000/dashboard/product-update/${id}`,
+        `https://agro-mart-server.vercel.app/dashboard/product-update/${id}`,
         { updatedProduct }
       );
       if (response.status === 200) {
