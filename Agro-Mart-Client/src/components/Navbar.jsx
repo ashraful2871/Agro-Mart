@@ -9,7 +9,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const { user } = useAuth();
+  const user = useAuth();
+
   const isHomePage = location.pathname === "/";
 
   const links = (

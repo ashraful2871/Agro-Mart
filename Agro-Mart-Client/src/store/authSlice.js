@@ -10,13 +10,14 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const provider = new GoogleAuthProvider();
 const API_URL = import.meta.env.VITE_API_URL;
-
 //store and retrieve jwt token
 const storeToken = (token) => localStorage.setItem("accessToken", token);
 const removeToken = () => localStorage.removeItem("accessToken");
+// const dispatch = useDispatch();
 
 //async thunks to get jwt token from backend
 const fetchToken = async (email) => {
@@ -39,8 +40,10 @@ export const signUpUser = createAsyncThunk(
         email,
         password
       );
+      const user = userCredential.user;
       const token = await fetchToken(email);
-      return { user: userCredential.user, token };
+      // dispatch(setUser(user));
+      return { user, token };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.massage);
@@ -58,8 +61,10 @@ export const signInUser = createAsyncThunk(
         email,
         password
       );
+      const user = userCredential.user;
       const token = await fetchToken(email);
-      return { user: userCredential.user, token };
+      // dispatch(setUser(user));
+      return { user, token };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -71,8 +76,10 @@ export const googleLogin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
-      const token = await fetchToken(userCredential.user.email);
-      return { user: userCredential.user, token };
+      const user = userCredential.user;
+      const token = await fetchToken(user.email);
+      // dispatch(setUser(user));
+      return { user, token };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -92,9 +99,6 @@ export const logOut = createAsyncThunk(
   }
 );
 
-//update profile
-//update profile
-//update profile
 //update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
