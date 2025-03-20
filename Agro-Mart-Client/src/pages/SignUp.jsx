@@ -1,18 +1,19 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { googleLogin, signUpUser, updateUserProfile } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FaArrowLeft } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 
-const image_hosting_key = "be0132eb382f7838de12f3bbabfccc00";
+const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const SignUp = () => {
   const dispatch = useDispatch();
   const user = useAuth();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -49,6 +50,7 @@ const SignUp = () => {
       .then(async (user) => {
         dispatch(updateUserProfile({ name, photo: imageUrl }));
         toast.success("Account created successfully!");
+        navigate("/");
 
         try {
           const userInfo = {
@@ -83,6 +85,7 @@ const SignUp = () => {
               role: "user",
             };
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+            navigate("/");
           } catch (error) {
             console.log(error);
           }

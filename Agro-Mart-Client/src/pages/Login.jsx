@@ -1,6 +1,6 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { googleLogin, signInUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -18,10 +19,11 @@ const Login = () => {
     dispatch(signInUser({ email, password }))
       .unwrap()
       .then(() => {
-        toast.success("Account created successfully!");
+        toast.success("Account Login successfully!");
+        navigate("/");
       })
       .catch((error) => {
-        toast.error(error.message || "Sign up failed!");
+        toast.error(error.message || "Login failed!");
       });
   };
   // google login
@@ -39,6 +41,7 @@ const Login = () => {
               role: "user",
             };
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+            navigate("/");
           } catch (error) {
             console.log(error);
           }
