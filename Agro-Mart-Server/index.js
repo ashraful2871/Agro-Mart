@@ -81,7 +81,7 @@ async function run() {
         addedBy,
       };
       try {
-        const result = await productsCollection.insertOne(productData);
+        const result = await productCollection.insertOne(productData);
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Error inserting the product." });
