@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { ImSpinner9 } from "react-icons/im";
-import { imageUpload } from "../../../../api/utils";
 import { useSelector } from "react-redux";
-import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

@@ -99,7 +99,7 @@ const ManageProduct = () => {
               <img
                 src={product.image || "https://via.placeholder.com/150"}
                 alt={product.name}
-                className="h-72 w-full"
+                className="h-72 w-full bg-cover bg-center"
               />
             </figure>
             <div className="card-body">

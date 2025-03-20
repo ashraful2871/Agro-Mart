@@ -10,7 +10,6 @@ app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = process.env.MONGO_URI;
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -52,6 +51,7 @@ async function run() {
       const result = usersCollection.find().toArray();
       req.send(result);
     });
+
     app.get("/users/:uid", (req, res) => {
       const result = usersCollection.findOne();
       req.send(result);
