@@ -1,16 +1,19 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { googleLogin, signUpUser, updateUserProfile } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FaArrowLeft } from "react-icons/fa";
+import useAuth from "../hooks/useAuth";
 
-const image_hosting_key = "be0132eb382f7838de12f3bbabfccc00";
+const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const SignUp = () => {
   const dispatch = useDispatch();
+  const user = useAuth();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -40,14 +43,27 @@ const SignUp = () => {
       }
     }
 
-    const userInfo = { name, email, password, photo: imageUrl };
     // console.log(userInfo);
     // sign UP user
     dispatch(signUpUser({ email, password }))
       .unwrap()
-      .then((user) => {
+      .then(async (user) => {
         dispatch(updateUserProfile({ name, photo: imageUrl }));
         toast.success("Account created successfully!");
+        navigate("/");
+
+        try {
+          const userInfo = {
+            name,
+            email,
+            photo: imageUrl,
+            uid: user?.uid,
+            role: "user",
+          };
+          await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+        } catch (error) {
+          console.log(error);
+        }
       })
       .catch((error) => {
         toast.error(error.message || "Sign up failed!");
@@ -55,10 +71,25 @@ const SignUp = () => {
   };
 
   // google login
-
   const handleContinueGoogle = async () => {
     try {
-      dispatch(googleLogin());
+      dispatch(googleLogin())
+        .unwrap()
+        .then(async (user) => {
+          try {
+            const userInfo = {
+              name: user?.displayName,
+              email: user?.email,
+              photo: user?.photoURL,
+              uid: user?.uid,
+              role: "user",
+            };
+            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+            navigate("/");
+          } catch (error) {
+            console.log(error);
+          }
+        });
     } catch (error) {
       console.log(error);
     }
@@ -113,6 +144,7 @@ const SignUp = () => {
               <input
                 type="file"
                 name="image"
+                required
                 className="file-input w-full file-input-success border rounded-lg focus:ring-2 focus:ring-green-500"
               />
             </div>

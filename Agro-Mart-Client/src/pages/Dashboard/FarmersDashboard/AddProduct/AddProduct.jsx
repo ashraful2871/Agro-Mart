@@ -1,162 +1,197 @@
 import { useState } from "react";
 import { ImSpinner9 } from "react-icons/im";
 import { imageUpload } from "../../../../api/utils";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
+const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const AddProduct = () => {
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const user = useSelector((state) => state.auth.user);
-    const axiosPublic = useAxiosPublic();
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(""); // Reset error before submitting
-        setLoading(true); // Start loading
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
-        const form = e.target;
-        const name = form.name.value;
-        const image = form.image.files[0];
-        const imageURL = await imageUpload(image);
-        const category = form.category.value;
-        const price = parseFloat(form.price.value);
-        const description = form.description.value;
-        const stockQuantity = parseInt(form.stockQuantity.value);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-        const productData = {
-            name,
-            category,
-            price,
-            description,
-            stockQuantity,
-            imageURL,
-            addedBy: {
-                name: user?.displayName,
-                email: user?.email,
-            },
-        };
-        console.log(productData); 
-        setLoading(false); 
+    const form = e.target;
+    const name = form.name.value;
+    const category = form.category.value;
+    const price = parseFloat(form.price.value);
+    const description = form.description.value;
+    const stockQuantity = parseInt(form.stockQuantity.value);
+    const imageFile = form.image.files[0];
 
-        axiosPublic.post("/products", productData)
-        .then((res) => {
-            if (res.data.insertedId) {
-                toast.success('Item successfully added!');
-                form.reset();
-            } else {
-                toast.error('Item could not be added.');
-            }
-        })
-        .catch((err) => {
-            toast.error('An error occurred while adding the item.');
-            console.error(err);
+    let imageUrl = "";
+    if (imageFile) {
+      const imageFormData = new FormData();
+      imageFormData.append("image", imageFile);
+
+      try {
+        const response = await axios.post(image_upload_api, imageFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
+
+        console.log("Upload Response:", response);
+
+        if (response.data.success) {
+          imageUrl = response.data.data.display_url;
+        } else {
+          console.error("Upload failed:", response.data);
+          toast.error("Image upload failed: " + response.data.error.message);
+          return;
+        }
+      } catch (error) {
+        console.error("Upload error:", error.response?.data || error.message);
+        toast.error("Image upload failed. Check API key and file type.");
+        return;
+      }
+    }
+
+    // Continue to product submission
+    const productData = {
+      name,
+      category,
+      price,
+      description,
+      stockQuantity,
+      image: imageUrl,
+      addedBy: {
+        name: user?.displayName,
+        email: user?.email,
+      },
     };
 
-    return (
-        <div className="max-w-5xl mx-auto">
-            <h3 className="text-4xl mb-10 text-center">Add Product</h3>
-            <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Product Name */}
-                    <div>
-                        <label className="block font-bold mb-1">Product Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            className="input input-bordered w-full"
-                            placeholder="Product Name"
-                            required
-                        />
-                    </div>
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/products`,
+        productData
+      );
 
-                    {/* Category */}
-                    <div>
-                        <label className="block font-bold mb-1">Category</label>
-                        <select
-                            name="category"
-                            className="input input-bordered w-full"
-                            required
-                        >
-                            <option value="">Select a category</option>
-                            <option value="Seeds & Plants">Seeds & Plants</option>
-                            <option value="Farming Equipment">Farming Equipment</option>
-                            <option value="Fertilizers & Pesticides">Fertilizers & Pesticides</option>
-                            <option value="Agricultural Tools">Agricultural Tools</option>
-                            <option value="Vegetables">Vegetables</option>
-                            <option value="Fruits">Fruits</option>
-                            <option value="Fresh Fish & Seafood">Fresh Fish & Seafood</option>
-                            <option value="Dairy & Milk Products">Dairy & Milk Products</option>
-                        </select>
-                    </div>
+      console.log("Product Added:", data);
+      toast.success("Product successfully added!");
+      form.reset();
+      navigate("/dashboard/manageProduct");
+    } catch (err) {
+      setError("An error occurred while adding the product.");
+      console.error("Product Upload Error:", err.response?.data || err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    {/* Image Upload */}
-                    <div>
-                        <label className="input input-bordered flex items-center gap-2 mt-7 pt-2 w-full">
-                            <span>Upload Image</span>
-                            <input type="file" name="image" accept="image/*" required />
-                        </label>
-                    </div>
+  return (
+    <div className="max-w-5xl mx-auto">
+      <h3 className="text-4xl mb-10 text-center">Add Product</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Product Name */}
+          <div>
+            <label className="block font-bold mb-1">Product Name</label>
+            <input
+              type="text"
+              name="name"
+              className="input input-bordered w-full"
+              placeholder="Product Name"
+              required
+            />
+          </div>
 
-                    {/* Price */}
-                    <div>
-                        <label className="block font-bold mb-1">Price</label>
-                        <input
-                            type="number"
-                            name="price"
-                            className="input input-bordered w-full"
-                            placeholder="Price"
-                            required
-                            min="0"
-                        />
-                    </div>
+          {/* Category */}
+          <div>
+            <label className="block font-bold mb-1">Category</label>
+            <select
+              name="category"
+              className="input input-bordered w-full"
+              required
+            >
+              <option value="">Select a category</option>
+              <option value="Seeds & Plants">Seeds & Plants</option>
+              <option value="Farming Equipment">Farming Equipment</option>
+              <option value="Fertilizers & Pesticides">
+                Fertilizers & Pesticides
+              </option>
+              <option value="Agricultural Tools">Agricultural Tools</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Fresh Fish & Seafood">Fresh Fish & Seafood</option>
+              <option value="Dairy & Milk Products">
+                Dairy & Milk Products
+              </option>
+            </select>
+          </div>
 
-                    {/* Description */}
-                    <div className="md:col-span-2">
-                        <label className="block font-bold mb-1">Description</label>
-                        <textarea
-                            name="description"
-                            className="input input-bordered w-full"
-                            placeholder="Product Description"
-                            required
-                            rows="4"
-                        ></textarea>
-                    </div>
+          {/* Image Upload */}
+          <div>
+            <label className="input input-bordered flex items-center gap-2 mt-7 pt-2 w-full">
+              <span>Upload Image</span>
+              <input type="file" name="image" accept="image/*" required />
+            </label>
+          </div>
 
-                    {/* Stock Quantity */}
-                    <div>
-                        <label className="block font-bold mb-1">Stock Quantity</label>
-                        <input
-                            type="number"
-                            name="stockQuantity"
-                            className="input input-bordered w-full"
-                            placeholder="Stock Quantity"
-                            required
-                            min="0"
-                        />
-                    </div>
-                </div>
+          {/* Price */}
+          <div>
+            <label className="block font-bold mb-1">Price</label>
+            <input
+              type="number"
+              name="price"
+              className="input input-bordered w-full"
+              placeholder="Price"
+              required
+              min="0"
+            />
+          </div>
 
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="btn w-full text-black text-bold text-lg bg-[#F6FCDF] hover:bg-[#c3e858] mt-4"
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <ImSpinner9 className="animate-spin mr-2" /> 
-                    ) : (
-                        "Add Product"
-                    )}
-                </button>
-            </form>
+          {/* Description */}
+          <div className="md:col-span-2">
+            <label className="block font-bold mb-1">Description</label>
+            <textarea
+              name="description"
+              className="input input-bordered w-full"
+              placeholder="Product Description"
+              required
+              rows="4"
+            ></textarea>
+          </div>
 
-            {/* Display Error */}
-            {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+          {/* Stock Quantity */}
+          <div>
+            <label className="block font-bold mb-1">Stock Quantity</label>
+            <input
+              type="number"
+              name="stockQuantity"
+              className="input input-bordered w-full"
+              placeholder="Stock Quantity"
+              required
+              min="0"
+            />
+          </div>
         </div>
-    );
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="btn w-full text-black text-bold text-lg bg-[#F6FCDF] hover:bg-[#c3e858] mt-4"
+          disabled={loading}
+        >
+          {loading ? (
+            <ImSpinner9 className="animate-spin mr-2" />
+          ) : (
+            "Add Product"
+          )}
+        </button>
+      </form>
+
+      {/* Display Error */}
+      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+    </div>
+  );
 };
 
 export default AddProduct;

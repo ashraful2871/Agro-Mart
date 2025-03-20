@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-require('dotenv').config();
+const cors = require("cors");
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 
 //middleware
 app.use(cors());
 app.use(express.json());
-
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = process.env.MONGO_URI;
@@ -25,11 +24,9 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
-
-
-    //  db collection
+    // Send a ping to confirm a successful connection
     const usersCollection = client.db("AgroMart").collection("users");
-    const productsCollection = client.db("AgroMart").collection("products");
+    const productCollection = client.db("AgroMart").collection("products");
 
     //users related apis
 
@@ -41,7 +38,7 @@ async function run() {
       const query = { email: user?.email };
       const existingUser = await usersCollection.findOne(query);
       if (existingUser) {
-        return response.send({
+        return res.send({
           message: "user already in db",
           insertedId: null,
         });
@@ -51,28 +48,26 @@ async function run() {
     });
 
     //get all user
-    app.get("/users", async (req, res) => {
-      const result = await usersCollection.find().toArray();
-      res.send(result);
+    app.get("/users", (req, res) => {
+      const result = usersCollection.find().toArray();
+      req.send(result);
     });
-    app.get("/user/:uid", (req, res) => {
-      const query = { uid: req.params.uid }
-      const result = usersCollection.findOne(query);
-      res.send(result);
+    app.get("/users/:uid", (req, res) => {
+      const result = usersCollection.findOne();
+      req.send(result);
     });
 
     // products related apis crud
 
     // products create
     app.post("/products", async (req, res) => {
-      console.log(productData)
       const {
         name,
         category,
         price,
         description,
         stockQuantity,
-        imageURL,
+        image,
         addedBy,
       } = req.body;
 
@@ -82,10 +77,9 @@ async function run() {
         price,
         description,
         stockQuantity,
-        imageURL,
+        image,
         addedBy,
       };
-
       try {
         const result = await productsCollection.insertOne(productData);
         res.send(result);
@@ -97,23 +91,37 @@ async function run() {
 
     // products get
     app.get("/products", async (req, res) => {
-      const result = await productsCollection.find().toArray();
-      res.send(result);
-    });
-    // products get by _id
-    app.get("/product/:id", (req, res) => {
-      const query = { _id: new ObjectId(req.params.id) };
-      const result = productsCollection.findOne(query);
+      const result = await productCollection.find().toArray();
       res.send(result);
     });
 
-    // products delete by _id
-    app.delete('/product/:id', async (req, res) => {
-      const query = { _id: new ObjectId(req.params.id) }
-      const result = await productsCollection.deleteOne(query)
-      res.send(result)
-    })
+    // Update a product by ID
+    app.get("/dashboard/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const product = await productCollection.findOne(query);
+      res.send(product);
+    });
 
+    // Update a product by ID
+    app.patch("/dashboard/product-update/:id", async (req, res) => {
+      const id = req.params.id;
+      const { updatedProduct } = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: updatedProduct,
+      };
+      const result = await productCollection.updateOne(query, updateDoc);
+      res.send(result);
+    });
+
+    // Delete product using id
+    app.delete("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await productCollection.deleteOne(query);
+      res.send(result);
+    });
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
@@ -127,7 +135,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 
 app.listen(port, () => {
   console.log(`server is running on port: ${port}`);
