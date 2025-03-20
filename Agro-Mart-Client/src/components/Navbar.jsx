@@ -24,11 +24,11 @@ const Navbar = () => {
           Shop
         </NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
           Products
         </NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink to="" className={isHomePage ? "text-white" : ""}>
           About
