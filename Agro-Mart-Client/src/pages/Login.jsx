@@ -1,6 +1,6 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { googleLogin, signInUser } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import axios from "axios";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -20,7 +21,7 @@ const Login = () => {
       .unwrap()
       .then(() => {
         toast.success("Account Login successfully!");
-        navigate("/");
+        navigate(location?.state ? location?.state : "/");
       })
       .catch((error) => {
         toast.error(error.message || "Login failed!");

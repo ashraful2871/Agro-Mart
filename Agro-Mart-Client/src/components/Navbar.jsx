@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const user = useAuth();
+  const { user } = useAuth();
   const isHomePage = location.pathname === "/";
 
   const links = (
@@ -111,8 +111,12 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-              <div className="">
-                <span className="text-white font-syne">
+              <div>
+                <span
+                  className={`${
+                    !isHomePage ? "text-black" : "text-white"
+                  } font-syne`}
+                >
                   {user?.displayName}
                 </span>
               </div>
@@ -156,7 +160,11 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-            <div className="dropdown dropdown-end text-lg text-white font-syne">
+            <div
+              className={`${
+                !isHomePage ? "text-black" : "text-white"
+              } dropdown dropdown-end text-lg  font-syne`}
+            >
               <span className="mr-2">
                 <Link to="/login">Login</Link>
               </span>

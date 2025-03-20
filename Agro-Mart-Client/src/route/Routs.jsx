@@ -9,6 +9,7 @@ import Shop from "../pages/Shop/Shop";
 import ManageProduct from "../pages/Dashboard/FarmersDashboard/ManageProduct/ManageProduct";
 import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/UpdateProduct";
 import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
+import Privet from "../privet/Privet";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -20,7 +21,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: <Shop></Shop>,
+        element: (
+          <Privet>
+            <Shop></Shop>
+          </Privet>
+        ),
       },
       {
         path: "/login",
@@ -42,7 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "product/:id",
-        element: <ProductDetails></ProductDetails>
+        element: <ProductDetails></ProductDetails>,
       },
       {
         path: "manageProduct",

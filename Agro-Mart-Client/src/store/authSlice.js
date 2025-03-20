@@ -9,11 +9,26 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
+import axios from "axios";
 
 const provider = new GoogleAuthProvider();
+const API_URL = import.meta.env.VITE_API_URL;
 
+//store and retrieve jwt token
+const storeToken = (token) => localStorage.setItem("accessToken", token);
+const removeToken = () => localStorage.removeItem("accessToken");
+
+//async thunks to get jwt token from backend
+const fetchToken = async (email) => {
+  try {
+    const { data } = await axios.post(`${API_URL}/jwt`, { email });
+    storeToken(data.token);
+    return data.token;
+  } catch (error) {
+    console.log("error fetching token", error);
+  }
+};
 //async thunks for authentication
-
 //sign up user
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
@@ -24,7 +39,8 @@ export const signUpUser = createAsyncThunk(
         email,
         password
       );
-      return userCredential.user;
+      const token = await fetchToken(email);
+      return { user: userCredential.user, token };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.massage);
@@ -42,7 +58,8 @@ export const signInUser = createAsyncThunk(
         email,
         password
       );
-      return userCredential.user;
+      const token = await fetchToken(email);
+      return { user: userCredential.user, token };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -54,7 +71,8 @@ export const googleLogin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
-      return userCredential.user;
+      const token = await fetchToken(userCredential.user.email);
+      return { user: userCredential.user, token };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -66,6 +84,7 @@ export const logOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await signOut(auth);
+      removeToken();
       return null;
     } catch (error) {
       return rejectWithValue(error.massage);
