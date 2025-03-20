@@ -271,7 +271,7 @@ const Shop = () => {
           </div>
 
           {/* Products */}
-          <div className="flex flex-wrap gap-5">
+          <div className="flex flex-wrap gap-5 rounded-br-3xl">
             {currentProducts.map((product) => (
               <div
                 key={product._id}
@@ -290,7 +290,7 @@ const Shop = () => {
                   ${product.price.toFixed(2)}
                 </p>
                 <div className="absolute bottom-0 right-0 z-10">
-                  <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl">
+                  <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
                     <IoCart />
                   </button>
                 </div>
