@@ -25,11 +25,6 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
-          Products
-        </NavLink>
-      </li>
-      <li>
         <NavLink to="" className={isHomePage ? "text-white" : ""}>
           About
         </NavLink>
@@ -60,11 +55,10 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
-        isHomePage
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${isHomePage
           ? "bg-transparent absolute top-0 left-0 w-full"
           : "bg-base-100 shadow-md"
-      }`}
+        }`}
     >
       {/* Left Section (Brand + Mobile Menu) */}
       <div className="navbar-start">
@@ -75,9 +69,8 @@ const Navbar = () => {
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
-              isHomePage ? "text-white" : ""
-            }`}
+            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${isHomePage ? "text-white" : ""
+              }`}
           >
             AgroMart
           </span>

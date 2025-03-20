@@ -67,10 +67,7 @@ const AddProduct = () => {
     };
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/products`,
-        productData
-      );
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/products`,productData);
 
       console.log("Product Added:", data);
       toast.success("Product successfully added!");
