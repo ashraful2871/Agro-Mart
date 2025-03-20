@@ -87,7 +87,7 @@ const Slider = () => {
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="text-3xl md:text-5xl font-bold font-syne"
+                      className="text-xl md:text-5xl font-bold font-syne"
                     >
                       {line}
                     </motion.h1>
@@ -101,7 +101,7 @@ const Slider = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-base md:text-lg mt-2 font-syne"
+                  className="text-xs md:text-lg mt-2 font-syne"
                 >
                   {slide.subtitle}
                 </motion.p>
@@ -113,7 +113,7 @@ const Slider = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-sm mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne"
+                  className="text-xs mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne"
                 >
                   Learn More →
                 </motion.button>

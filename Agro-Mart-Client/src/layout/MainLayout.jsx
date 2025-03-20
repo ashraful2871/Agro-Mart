@@ -14,13 +14,15 @@ const MainLayout = () => {
     <>
       <div
         className={`${
-          !isHomePage && !isShopPage ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0" : ""
+          !isHomePage && !isShopPage
+            ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0"
+            : ""
         }`}
       >
         <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
           <Navbar></Navbar>
         </div>
-        <div className="min-h-[814px]  p-3 md:px-2 lg:px-0">
+        <div className="min-h-[814px]  md:px-2 lg:px-0">
           <Outlet></Outlet>
         </div>
       </div>
