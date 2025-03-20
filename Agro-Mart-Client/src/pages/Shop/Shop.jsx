@@ -58,8 +58,8 @@ const Shop = () => {
   };
 
   const handleDetails = (id) => {
-    navigate(`/dashboard/product/${id}`)
-  }
+    navigate(`/dashboard/product/${id}`);
+  };
 
   // Filter and sort products
   const filteredProducts = products
@@ -85,7 +85,10 @@ const Shop = () => {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -137,7 +140,12 @@ const Shop = () => {
               >
                 <div>Seeds & Plants</div>
                 <div>
-                  ({products.filter((p) => p.category === "Seeds & Plants").length})
+                  (
+                  {
+                    products.filter((p) => p.category === "Seeds & Plants")
+                      .length
+                  }
+                  )
                 </div>
               </li>
               <div className="divider"></div>
@@ -147,7 +155,12 @@ const Shop = () => {
               >
                 <div>Farming Equipment</div>
                 <div>
-                  ({products.filter((p) => p.category === "Farming Equipment").length})
+                  (
+                  {
+                    products.filter((p) => p.category === "Farming Equipment")
+                      .length
+                  }
+                  )
                 </div>
               </li>
               <div className="divider"></div>
@@ -158,8 +171,11 @@ const Shop = () => {
                 <div>Fertilizers & Pesticides</div>
                 <div>
                   (
-                  {products.filter((p) => p.category === "Fertilizers & Pesticides")
-                    .length}
+                  {
+                    products.filter(
+                      (p) => p.category === "Fertilizers & Pesticides"
+                    ).length
+                  }
                   )
                 </div>
               </li>
@@ -170,7 +186,12 @@ const Shop = () => {
               >
                 <div>Agricultural Tools</div>
                 <div>
-                  ({products.filter((p) => p.category === "Agricultural Tools").length})
+                  (
+                  {
+                    products.filter((p) => p.category === "Agricultural Tools")
+                      .length
+                  }
+                  )
                 </div>
               </li>
               <div className="divider"></div>
@@ -201,8 +222,11 @@ const Shop = () => {
                 <div>Fresh Fish & Seafood</div>
                 <div>
                   (
-                  {products.filter((p) => p.category === "Fresh Fish & Seafood")
-                    .length}
+                  {
+                    products.filter(
+                      (p) => p.category === "Fresh Fish & Seafood"
+                    ).length
+                  }
                   )
                 </div>
               </li>
@@ -214,8 +238,11 @@ const Shop = () => {
                 <div>Dairy & Milk Products</div>
                 <div>
                   (
-                  {products.filter((p) => p.category === "Dairy & Milk Products")
-                    .length}
+                  {
+                    products.filter(
+                      (p) => p.category === "Dairy & Milk Products"
+                    ).length
+                  }
                   )
                 </div>
               </li>
@@ -315,7 +342,13 @@ const Shop = () => {
                       >
                         <div>Seeds & Plants</div>
                         <div>
-                          ({products.filter((p) => p.category === "Seeds & Plants").length})
+                          (
+                          {
+                            products.filter(
+                              (p) => p.category === "Seeds & Plants"
+                            ).length
+                          }
+                          )
                         </div>
                       </li>
                       <div className="divider"></div>
@@ -325,30 +358,49 @@ const Shop = () => {
                       >
                         <div>Farming Equipment</div>
                         <div>
-                          ({products.filter((p) => p.category === "Farming Equipment").length})
-                        </div>
-                      </li>
-                      <div className="divider"></div>
-                      <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
-                        onClick={() => handleCategoryClick("Fertilizers & Pesticides")}
-                      >
-                        <div>Fertilizers & Pesticides</div>
-                        <div>
                           (
-                          {products.filter((p) => p.category === "Fertilizers & Pesticides")
-                            .length}
+                          {
+                            products.filter(
+                              (p) => p.category === "Farming Equipment"
+                            ).length
+                          }
                           )
                         </div>
                       </li>
                       <div className="divider"></div>
                       <li
                         className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
-                        onClick={() => handleCategoryClick("Agricultural Tools")}
+                        onClick={() =>
+                          handleCategoryClick("Fertilizers & Pesticides")
+                        }
+                      >
+                        <div>Fertilizers & Pesticides</div>
+                        <div>
+                          (
+                          {
+                            products.filter(
+                              (p) => p.category === "Fertilizers & Pesticides"
+                            ).length
+                          }
+                          )
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() =>
+                          handleCategoryClick("Agricultural Tools")
+                        }
                       >
                         <div>Agricultural Tools</div>
                         <div>
-                          ({products.filter((p) => p.category === "Agricultural Tools").length})
+                          (
+                          {
+                            products.filter(
+                              (p) => p.category === "Agricultural Tools"
+                            ).length
+                          }
+                          )
                         </div>
                       </li>
                       <div className="divider"></div>
@@ -358,7 +410,12 @@ const Shop = () => {
                       >
                         <div>Vegetables</div>
                         <div>
-                          ({products.filter((p) => p.category === "Vegetables").length})
+                          (
+                          {
+                            products.filter((p) => p.category === "Vegetables")
+                              .length
+                          }
+                          )
                         </div>
                       </li>
                       <div className="divider"></div>
@@ -368,32 +425,47 @@ const Shop = () => {
                       >
                         <div>Fruits</div>
                         <div>
-                          ({products.filter((p) => p.category === "Fruits").length})
-                        </div>
-                      </li>
-                      <div className="divider"></div>
-                      <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
-                        onClick={() => handleCategoryClick("Fresh Fish & Seafood")}
-                      >
-                        <div>Fresh Fish & Seafood</div>
-                        <div>
                           (
-                          {products.filter((p) => p.category === "Fresh Fish & Seafood")
-                            .length}
+                          {
+                            products.filter((p) => p.category === "Fruits")
+                              .length
+                          }
                           )
                         </div>
                       </li>
                       <div className="divider"></div>
                       <li
                         className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
-                        onClick={() => handleCategoryClick("Dairy & Milk Products")}
+                        onClick={() =>
+                          handleCategoryClick("Fresh Fish & Seafood")
+                        }
+                      >
+                        <div>Fresh Fish & Seafood</div>
+                        <div>
+                          (
+                          {
+                            products.filter(
+                              (p) => p.category === "Fresh Fish & Seafood"
+                            ).length
+                          }
+                          )
+                        </div>
+                      </li>
+                      <div className="divider"></div>
+                      <li
+                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        onClick={() =>
+                          handleCategoryClick("Dairy & Milk Products")
+                        }
                       >
                         <div>Dairy & Milk Products</div>
                         <div>
                           (
-                          {products.filter((p) => p.category === "Dairy & Milk Products")
-                            .length}
+                          {
+                            products.filter(
+                              (p) => p.category === "Dairy & Milk Products"
+                            ).length
+                          }
                           )
                         </div>
                       </li>
@@ -448,32 +520,32 @@ const Shop = () => {
 
           {/* Products */}
           <div className="flex flex-wrap gap-5 rounded-br-3xl">
-  {currentProducts.map((product) => (
-    <div
-      key={product._id}
-      onClick={() => handleDetails(product._id)} // Pass the product ID to handleDetails
-      className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative cursor-pointer" // Add cursor-pointer for better UX
-    >
-      <img
-        src={product.image}
-        alt=""
-        className="h-60 w-full bg-cover"
-      />
-      <h3 className="text-xl font-semibold my-2">{product.name}</h3>
-      <p className="text-gray-500 text-xl font-bold">
-        {product.category}
-      </p>
-      <p className="text-green-700 font-bold mt-2">
-        ${product.price.toFixed(2)}
-      </p>
-      <div className="absolute bottom-0 right-0 z-10">
-        <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
-          <IoCart />
-        </button>
-      </div>
-    </div>
-  ))}
-</div>
+            {currentProducts.map((product) => (
+              <div
+                key={product._id}
+                onClick={() => handleDetails(product._id)} // Pass the product ID to handleDetails
+                className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative cursor-pointer" // Add cursor-pointer for better UX
+              >
+                <img
+                  src={product.image}
+                  alt=""
+                  className="h-60 w-full bg-cover"
+                />
+                <h3 className="text-xl font-semibold my-2">{product.name}</h3>
+                <p className="text-gray-500 text-xl font-bold">
+                  {product.category}
+                </p>
+                <p className="text-green-700 font-bold mt-2">
+                  ${product.price.toFixed(2)}
+                </p>
+                <div className="absolute bottom-0 right-0 z-10">
+                  <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
+                    <IoCart />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {/* Pagination Controls */}
           <div className="flex justify-center mt-8">
@@ -503,7 +575,8 @@ const Shop = () => {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={
-                currentPage === Math.ceil(filteredProducts.length / itemsPerPage)
+                currentPage ===
+                Math.ceil(filteredProducts.length / itemsPerPage)
               }
               className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
             >
