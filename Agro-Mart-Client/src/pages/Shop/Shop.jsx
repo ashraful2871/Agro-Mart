@@ -82,7 +82,6 @@ const Shop = () => {
       }
     });
 
-  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -93,12 +92,10 @@ const Shop = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Loading state
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
 
-  // Error state
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
   }
