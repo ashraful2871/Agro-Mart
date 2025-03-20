@@ -1,8 +1,8 @@
-require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
-const port = process.env.PORT || 5000;
 const app = express();
+const cors = require("cors");
+require("dotenv").config();
+const port = process.env.PORT || 5000;
 
 //middleware
 app.use(cors());
@@ -10,7 +10,6 @@ app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = process.env.MONGO_URI;
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -52,6 +51,7 @@ async function run() {
       const result = usersCollection.find().toArray();
       req.send(result);
     });
+
     app.get("/users/:uid", (req, res) => {
       const result = usersCollection.findOne();
       req.send(result);
@@ -123,6 +123,9 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/", async (req, res) => {
+      res.send("Agro is running");
+    });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
@@ -133,9 +136,6 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.get("/", async (req, res) => {
-  res.send("Agro is running");
-});
 app.listen(port, () => {
   console.log(`server is running on port: ${port}`);
 });

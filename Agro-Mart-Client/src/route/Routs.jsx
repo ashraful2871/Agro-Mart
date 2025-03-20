@@ -8,6 +8,7 @@ import AddProduct from "../pages/Dashboard/FarmersDashboard/AddProduct/AddProduc
 import Shop from "../pages/Shop/Shop";
 import ManageProduct from "../pages/Dashboard/FarmersDashboard/ManageProduct/ManageProduct";
 import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/UpdateProduct";
+import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: <Shop></Shop>
+        element: <Shop></Shop>,
       },
       {
         path: "/login",
@@ -37,16 +38,20 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "addProduct",
-        element: <AddProduct></AddProduct>
+        element: <AddProduct></AddProduct>,
+      },
+      {
+        path: "product/:id",
+        element: <ProductDetails></ProductDetails>
       },
       {
         path: "manageProduct",
-        element: <ManageProduct></ManageProduct>
+        element: <ManageProduct></ManageProduct>,
       },
       {
         path: "product-update/:id",
-        element: <UpdateProduct></UpdateProduct>
-      }
-    ]
-  }
+        element: <UpdateProduct></UpdateProduct>,
+      },
+    ],
+  },
 ]);
