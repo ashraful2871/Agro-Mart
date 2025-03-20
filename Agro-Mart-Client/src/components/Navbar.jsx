@@ -112,7 +112,7 @@ const Navbar = () => {
                 </div>
               </div>
               <div>
-                <span className="text-white font-syne">
+                <span className={!isHomePage ? "text-black" : "text-white font-syne"}>
                   {user?.displayName}
                 </span>
               </div>
