@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: <Shop></Shop>
+        element: <Shop></Shop>,
       },
       {
         path: "/login",
@@ -37,16 +37,16 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "addProduct",
-        element: <AddProduct></AddProduct>
+        element: <AddProduct></AddProduct>,
       },
       {
         path: "manageProduct",
-        element: <ManageProduct></ManageProduct>
+        element: <ManageProduct></ManageProduct>,
       },
       {
         path: "product-update/:id",
-        element: <UpdateProduct></UpdateProduct>
-      }
-    ]
-  }
+        element: <UpdateProduct></UpdateProduct>,
+      },
+    ],
+  },
 ]);

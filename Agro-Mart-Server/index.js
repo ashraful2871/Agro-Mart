@@ -1,8 +1,8 @@
-require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
-const port = process.env.PORT || 5000;
 const app = express();
+const cors = require("cors");
+require("dotenv").config();
+const port = process.env.PORT || 5000;
 
 //middleware
 app.use(cors());
@@ -81,7 +81,7 @@ async function run() {
         addedBy,
       };
       try {
-        const result = await productCollection.insertOne(productData);
+        const result = await productsCollection.insertOne(productData);
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Error inserting the product." });
@@ -123,6 +123,9 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/", async (req, res) => {
+      res.send("Agro is running");
+    });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
@@ -133,9 +136,6 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.get("/", async (req, res) => {
-  res.send("Agro is running");
-});
 app.listen(port, () => {
   console.log(`server is running on port: ${port}`);
 });
