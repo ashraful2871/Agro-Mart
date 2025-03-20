@@ -38,7 +38,7 @@ async function run() {
       const query = { email: user?.email };
       const existingUser = await usersCollection.findOne(query);
       if (existingUser) {
-        return response.send({
+        return res.send({
           message: "user already in db",
           insertedId: null,
         });
@@ -67,7 +67,7 @@ async function run() {
         price,
         description,
         stockQuantity,
-        imageURL,
+        image,
         addedBy,
       } = req.body;
 
@@ -77,10 +77,9 @@ async function run() {
         price,
         description,
         stockQuantity,
-        imageURL,
+        image,
         addedBy,
       };
-      ////
       try {
         const result = await productCollection.insertOne(productData);
         res.send(result);
