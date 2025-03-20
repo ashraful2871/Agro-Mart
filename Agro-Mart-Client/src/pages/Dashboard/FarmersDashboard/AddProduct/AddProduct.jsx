@@ -5,63 +5,86 @@ import { useSelector } from "react-redux";
 import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
+const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const AddProduct = () => {
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const user = useSelector((state) => state.auth.user);
-    const axiosPublic = useAxiosPublic();
-    const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(""); 
-        setLoading(true); 
-    
-        const form = e.target;
-        const name = form.name.value;
-        const image = form.image.files[0];
-        const imageURL = await imageUpload(image);
-        const category = form.category.value;
-        const price = parseFloat(form.price.value);
-        const description = form.description.value;
-        const stockQuantity = parseInt(form.stockQuantity.value);
-    
-        const productData = {
-            name,
-            category,
-            price,
-            description,
-            stockQuantity,
-            imageURL,
-            addedBy: {
-                name: user?.displayName,
-                email: user?.email,
-            },
-        };
-    
-        axiosPublic.post("/products", productData)
-            .then((res) => {
-                if (res.data.insertedId) {
-                    toast.success('Product successfully added!');
-                    form.reset();
-                    navigate('/dashboard/manageProduct');
-                } else {
-                    toast.error('Product could not be added.');
-                }
-            })
-            .catch((err) => {
-                if (err.response && err.response.data.message) {
-                    setError(err.response.data.message); 
-                } else {
-                    setError('An error occurred while adding the product.');
-                }
-                console.error(err);
-            })
-            .finally(() => {
-                setLoading(false); 
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const form = e.target;
+    const name = form.name.value;
+    const category = form.category.value;
+    const price = parseFloat(form.price.value);
+    const description = form.description.value;
+    const stockQuantity = parseInt(form.stockQuantity.value);
+    const imageFile = form.image.files[0];
+
+    let imageUrl = "";
+    if (imageFile) {
+      const imageFormData = new FormData();
+      imageFormData.append("image", imageFile);
+
+      try {
+        const response = await axios.post(image_upload_api, imageFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log("Upload Response:", response);
+
+        if (response.data.success) {
+          imageUrl = response.data.data.display_url;
+        } else {
+          console.error("Upload failed:", response.data);
+          toast.error("Image upload failed: " + response.data.error.message);
+          return;
+        }
+      } catch (error) {
+        console.error("Upload error:", error.response?.data || error.message);
+        toast.error("Image upload failed. Check API key and file type.");
+        return;
+      }
+    }
+
+    // Continue to product submission
+    const productData = {
+      name,
+      category,
+      price,
+      description,
+      stockQuantity,
+      image: imageUrl,
+      addedBy: {
+        name: user?.displayName,
+        email: user?.email,
+      },
     };
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/products`,
+        productData
+      );
+
+      console.log("Product Added:", data);
+      toast.success("Product successfully added!");
+      form.reset();
+      navigate("/dashboard/manageProduct");
+    } catch (err) {
+      setError("An error occurred while adding the product.");
+      console.error("Product Upload Error:", err.response?.data || err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto">

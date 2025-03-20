@@ -15,9 +15,9 @@ const ManageProduct = () => {
   const fetchProducts = async () => {
     try {
       const response = await axiosPublic.get("/products");
-      console.log("Fetched Products:", response.data); 
+      console.log("Fetched Products:", response.data);
       if (Array.isArray(response.data)) {
-        setProducts(response.data); 
+        setProducts(response.data);
       } else {
         setError("Fetched data is not in the expected format.");
       }
@@ -62,10 +62,9 @@ const ManageProduct = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-
           await axiosPublic.delete(`/product/${id}`);
 
-          fetchProducts(); 
+          fetchProducts();
 
           Swal.fire({
             title: "Deleted!",
@@ -85,20 +84,20 @@ const ManageProduct = () => {
   };
 
   const handleUpdate = (id) => {
-    navigate(`/dashboard/product-update/${id}`)
-}
+    navigate(`/dashboard/product-update/${id}`);
+  };
 
   return (
     <div className="max-w-5xl mx-auto">
       <h3 className="text-4xl mb-10 text-center">Manage Products</h3>
-      
+
       {/* Display all products */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
         {products.map((product) => (
           <div className="card bg-base-100 w-80 shadow-sm" key={product._id}>
             <figure>
               <img
-                src={product.imageURL || "https://via.placeholder.com/150"}
+                src={product.image || "https://via.placeholder.com/150"}
                 alt={product.name}
                 className="h-72 w-full"
               />
@@ -106,19 +105,21 @@ const ManageProduct = () => {
             <div className="card-body">
               <h2 className="card-title">
                 {product.name}
-                <div className="badge badge-secondary">{product.stockQuantity || 0}</div>
+                <div className="badge badge-secondary">
+                  {product.stockQuantity || 0}
+                </div>
               </h2>
               <p>{product.description}</p>
               <div className="card-actions justify-between mt-2">
                 <button
-                    onClick={() => handleUpdate(product._id)}
-                    className="btn badge badge-outline"
+                  onClick={() => handleUpdate(product._id)}
+                  className="btn badge badge-outline"
                 >
-                    <MdBrowserUpdated /> Update
+                  <MdBrowserUpdated /> Update
                 </button>
                 {/* Delete button */}
                 <button
-                  onClick={() => handleDelete(product._id)} 
+                  onClick={() => handleDelete(product._id)}
                   className="btn badge badge-outline"
                 >
                   <FaTrashAlt /> Delete
