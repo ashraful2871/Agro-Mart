@@ -500,13 +500,14 @@ const Shop = () => {
             {products.map((product) => (
               <div
                 key={product._id}
-                onClick={() => handleDetails(product._id)} // Pass the product ID to handleDetails
                 className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative cursor-pointer" // Add cursor-pointer for better UX
               >
                 <img
                   src={product.image}
                   alt=""
                   className="h-60 w-full bg-cover"
+                  key={product._id}
+                  onClick={() => handleDetails(product._id)} 
                 />
                 <h3 className="text-xl font-semibold my-2">{product.name}</h3>
                 <p className="text-gray-500 text-xl font-bold">
