@@ -43,7 +43,7 @@ export const signUpUser = createAsyncThunk(
       const user = userCredential.user;
       const token = await fetchToken(email);
       // dispatch(setUser(user));
-      return { user, token };
+      return { user };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.massage);
@@ -64,7 +64,7 @@ export const signInUser = createAsyncThunk(
       const user = userCredential.user;
       const token = await fetchToken(email);
       // dispatch(setUser(user));
-      return { user, token };
+      return { user };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -79,7 +79,7 @@ export const googleLogin = createAsyncThunk(
       const user = userCredential.user;
       const token = await fetchToken(user.email);
       // dispatch(setUser(user));
-      return { user, token };
+      return { user };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -119,14 +119,21 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 ///async thunk observer
-
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
     return new Promise((resolve) => {
-      const unSub = onAuthStateChanged(auth, (currentUser) => {
-        dispatch(setUser(currentUser));
-        console.log(currentUser);
+      const unSub = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+            const newToken = await fetchToken(currentUser.email);
+            storeToken(newToken);
+          }
+          dispatch(setUser({ user: currentUser }));
+        } else {
+          dispatch(setUser(null));
+        }
         dispatch(setLoading(false));
         resolve();
       });

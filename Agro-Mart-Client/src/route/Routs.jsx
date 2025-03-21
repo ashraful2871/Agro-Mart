@@ -10,10 +10,12 @@ import ManageProduct from "../pages/Dashboard/FarmersDashboard/ManageProduct/Man
 import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/UpdateProduct";
 import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
 import Privet from "../privet/Privet";
+import Error from "../components/error/Error";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",

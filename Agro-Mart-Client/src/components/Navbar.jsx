@@ -10,7 +10,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
-
+  console.log(user);
   const isHomePage = location.pathname === "/";
 
   const links = (
@@ -104,7 +104,7 @@ const Navbar = () => {
                     <img
                       referrerPolicy="no-referrer"
                       src={
-                        user.photoURL ||
+                        user?.photoURL ||
                         "https://i.ibb.co.com/zWQYnrGM/user.png"
                       }
                       alt="User"

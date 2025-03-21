@@ -2,10 +2,12 @@ import React from "react";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/loading/Loading";
 import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Privet = ({ children }) => {
-  const { user, loading } = useAuth();
-
+  const user = useAuth();
+  const loading = useSelector((state) => state.auth.loading);
+  console.log(loading);
   if (loading) {
     return <Loading></Loading>;
   }
