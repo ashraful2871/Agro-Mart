@@ -22,8 +22,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosPublic.get("/products");
-        console.log("Fetched Products:", response.data);
+        const response = await axiosPublic.get(`/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`);
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {
@@ -38,7 +37,8 @@ const Shop = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [sortBy, searchQuery,selectedCategory]);
+  console.log(selectedCategory)
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -61,30 +61,10 @@ const Shop = () => {
     navigate(`/dashboard/product/${id}`);
   };
 
-  // Filter and sort products
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesSearch = product.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory
-        ? product.category === selectedCategory
-        : true;
-      return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortBy === "price-low-to-high") {
-        return a.price - b.price;
-      } else if (sortBy === "price-high-to-low") {
-        return b.price - a.price;
-      } else {
-        return 0;
-      }
-    });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = filteredProducts.slice(
+  const currentProducts = products.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
@@ -284,7 +264,7 @@ const Shop = () => {
           <div className="my-5 flex justify-between">
             <div className="hidden lg:block">
               <span className="text-xl font-semibold">
-                Showing {filteredProducts.length} products
+                Showing {products.length} products
               </span>
             </div>
 
@@ -508,16 +488,16 @@ const Shop = () => {
                 onChange={handleSortChange}
                 className="py-2 px-4 border border-gray-300 rounded-full"
               >
-                <option value="default">Default sorting</option>
-                <option value="price-low-to-high">Price: Low to High</option>
-                <option value="price-high-to-low">Price: High to Low</option>
+                <option value=''>Default sorting</option>
+                <option value={1}>Price: Low to High</option>
+                <option value={-1}>Price: High to Low</option>
               </select>
             </div>
           </div>
 
           {/* Products */}
           <div className="flex flex-wrap gap-5 rounded-br-3xl">
-            {currentProducts.map((product) => (
+            {products.map((product) => (
               <div
                 key={product._id}
                 onClick={() => handleDetails(product._id)} // Pass the product ID to handleDetails
@@ -554,7 +534,7 @@ const Shop = () => {
               Previous
             </button>
             {Array.from(
-              { length: Math.ceil(filteredProducts.length / itemsPerPage) },
+              { length: Math.ceil(products.length / itemsPerPage) },
               (_, i) => (
                 <button
                   key={i + 1}
@@ -573,7 +553,7 @@ const Shop = () => {
               onClick={() => paginate(currentPage + 1)}
               disabled={
                 currentPage ===
-                Math.ceil(filteredProducts.length / itemsPerPage)
+                Math.ceil(products.length / itemsPerPage)
               }
               className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
             >

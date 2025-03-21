@@ -15,27 +15,37 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/" className={({ isActive}) => isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/shop" className={({ isActive}) => isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/shop"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Shop
         </NavLink>
       </li>
       <li>
-        <NavLink to="/products" className={({ isActive}) => isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""}>
-          Products
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/about" className={({ isActive}) => isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""}>
+        <NavLink to="" className={isHomePage ? "text-white" : ""}>
           About
         </NavLink>
       </li>
       <li>
-        <NavLink to="/contact" className={({ isActive}) => isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Contact
         </NavLink>
       </li>
@@ -112,7 +122,11 @@ const Navbar = () => {
                 </div>
               </div>
               <div>
-                <span className={!isHomePage ? "text-black" : "text-white font-syne"}>
+                <span
+                  className={
+                    !isHomePage ? "text-black" : "text-white font-syne"
+                  }
+                >
                   {user?.displayName}
                 </span>
               </div>
