@@ -15,12 +15,22 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/shop" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/shop"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Shop
         </NavLink>
       </li>
@@ -30,7 +40,12 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Contact
         </NavLink>
       </li>
@@ -55,10 +70,11 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${isHomePage
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
+        isHomePage
           ? "bg-transparent absolute top-0 left-0 w-full"
           : "bg-base-100 shadow-md"
-        }`}
+      }`}
     >
       {/* Left Section (Brand + Mobile Menu) */}
       <div className="navbar-start">
@@ -69,8 +85,9 @@ const Navbar = () => {
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${isHomePage ? "text-white" : ""
-              }`}
+            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
+              isHomePage ? "text-white" : ""
+            }`}
           >
             AgroMart
           </span>
@@ -105,7 +122,11 @@ const Navbar = () => {
                 </div>
               </div>
               <div>
-                <span className={!isHomePage ? "text-black" : "text-white font-syne"}>
+                <span
+                  className={
+                    !isHomePage ? "text-black" : "text-white font-syne"
+                  }
+                >
                   {user?.displayName}
                 </span>
               </div>
