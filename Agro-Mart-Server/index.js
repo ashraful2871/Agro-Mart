@@ -103,7 +103,25 @@ async function run() {
 
     // products get
     app.get("/products", async (req, res) => {
-      const result = await productCollection.find().toArray();
+      let filter = {}
+      let sortByPrice = {}
+      if (req.query.sort && req.query.sort !== "default") {
+        sortByPrice = { price: parseInt(req.query.sort) }
+        console.log(sortByPrice)
+      }
+      if (req.query.searchQuery) {
+        filter.name = {
+          $regex: req.query.searchQuery,
+          $options: "i"  // Case-insensitive search
+        }
+      }
+      if (req.query.selectedCategory) {
+        filter.category = {
+          $regex: req.query.selectedCategory,
+         $options: "i"
+        }
+      }
+      const result = await productCollection.find(filter).sort(sortByPrice).toArray();
       res.send(result);
     });
 

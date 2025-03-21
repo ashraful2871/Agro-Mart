@@ -75,7 +75,7 @@ const ProductDetails = () => {
         </div>
 
         {/* Checkout Icons */}
-        <div className="flex justify-between mt-6 bg-gray-100 py-5 px-20 rounded-xl">
+        <div className="flex justify-between mt-6 bg-gray-100 py-5 px-7 lg:px-20 rounded-xl">
           <img src="https://i.ibb.co.com/23ncVSv0/card-11378186.png" alt="Visa" className="w-12 h-auto" />
           <img src="https://i.ibb.co.com/84DHynxv/logo-14082995.png" alt="Mastercard" className="w-12 h-auto" />
           <img src="https://i.ibb.co.com/d04xmJ6g/parking-card-1367193.png" alt="PayPal" className="w-12 h-auto" />

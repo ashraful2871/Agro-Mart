@@ -11,6 +11,8 @@ import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/Upd
 import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
 import Privet from "../privet/Privet";
 import Error from "../components/error/Error";
+import About from "../pages/About/MainAboutFile/About";
+import Contact from "../pages/Contact/MainContactFile/Contact";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +30,14 @@ export const router = createBrowserRouter([
             <Shop></Shop>
           </Privet>
         ),
+      },
+      {
+        path: "/about",
+        element: <About></About>,
+      },
+      {
+        path: "/contact",
+        element: <Contact></Contact>,
       },
       {
         path: "/login",

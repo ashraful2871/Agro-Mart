@@ -6,7 +6,7 @@ const Products = () => {
     const axiosPublic = useAxiosPublic()
     const [products, setProducts] = useState([])
     useEffect(() => {
-        axiosPublic.get("/products")
+        axiosPublic.get(`/products`)
             .then((res) => {
                 setProducts(res.data)
             })
@@ -15,7 +15,7 @@ const Products = () => {
 
     return (
         <div>
-            Comming soon
+            
             <div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-2'>
                 {
                     products.map(product => <ProductCart key={product._id} product={product}></ProductCart>)

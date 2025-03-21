@@ -16,18 +16,23 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/shop" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/shop"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Shop
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/products" className={isHomePage ? "text-white" : ""}>
-          Products
         </NavLink>
       </li>
       <li>
@@ -36,7 +41,12 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="" className={isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           Contact
         </NavLink>
       </li>
