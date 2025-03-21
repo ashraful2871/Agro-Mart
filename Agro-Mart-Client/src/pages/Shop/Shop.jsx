@@ -268,21 +268,25 @@ const Shop = () => {
 
             {/* Drawer for small and medium screens */}
             <div className="drawer drawer-end lg:hidden">
-              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+              <input
+                id="my-drawer-4"
+                type="checkbox"
+                className="drawer-toggle"
+              />
               <div className="drawer-content">
                 {/* Button to open the drawer for small and medium screens */}
                 <label
-                  htmlFor="my-drawer"
+                  htmlFor="my-drawer-4"
                   className="btn bg-[#c3e858] drawer-button"
                 >
-                  Open Sidebar
+                  Filter
                 </label>
               </div>
 
               {/* Sidebar content (this will be shown for mobile and tablet) */}
               <div className="drawer-side z-50">
                 <label
-                  htmlFor="my-drawer"
+                  htmlFor="my-drawer-4"
                   aria-label="close sidebar"
                   className="drawer-overlay"
                 ></label>

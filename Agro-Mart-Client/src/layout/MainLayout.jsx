@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import LabelBottomNavigation from "../components/mobile-bar/MobileBar";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -22,6 +23,9 @@ const MainLayout = () => {
       >
         <div className="min-h-[814px]  md:px-2 lg:px-0">
           <Outlet></Outlet>
+        </div>
+        <div>
+          <LabelBottomNavigation></LabelBottomNavigation>
         </div>
       </div>
       <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>

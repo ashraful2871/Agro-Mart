@@ -20,3 +20,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
+  color: green;
+}
