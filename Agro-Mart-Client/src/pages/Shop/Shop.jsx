@@ -22,7 +22,9 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosPublic.get(`/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`);
+        const response = await axiosPublic.get(
+          `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`
+        );
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {
@@ -37,8 +39,8 @@ const Shop = () => {
     };
 
     fetchProducts();
-  }, [sortBy, searchQuery,selectedCategory]);
-  console.log(selectedCategory)
+  }, [sortBy, searchQuery, selectedCategory]);
+  console.log(selectedCategory);
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -61,13 +63,9 @@ const Shop = () => {
     navigate(`/dashboard/product/${id}`);
   };
 
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -81,7 +79,7 @@ const Shop = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-10">
+    <div className="py-10">
       <h1 className="text-3xl font-bold mb-5 text-center">Product Listing</h1>
 
       <div className="flex gap-7 w-11/12 mx-auto">
@@ -488,7 +486,7 @@ const Shop = () => {
                 onChange={handleSortChange}
                 className="py-2 px-4 border border-gray-300 rounded-full"
               >
-                <option value=''>Default sorting</option>
+                <option value="">Default sorting</option>
                 <option value={1}>Price: Low to High</option>
                 <option value={-1}>Price: High to Low</option>
               </select>
@@ -552,8 +550,7 @@ const Shop = () => {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={
-                currentPage ===
-                Math.ceil(products.length / itemsPerPage)
+                currentPage === Math.ceil(products.length / itemsPerPage)
               }
               className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
             >
