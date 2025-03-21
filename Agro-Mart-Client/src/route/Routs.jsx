@@ -10,6 +10,7 @@ import ManageProduct from "../pages/Dashboard/FarmersDashboard/ManageProduct/Man
 import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/UpdateProduct";
 import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
 import About from "../pages/About/MainAboutFile/About";
+import Contact from "../pages/Contact/MainContactFile/Contact";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About></About>
+      },
+      {
+        path: "/contact",
+        element: <Contact></Contact>
       },
       {
         path: "/login",
