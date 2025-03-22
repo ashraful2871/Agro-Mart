@@ -13,6 +13,7 @@ import Privet from "../privet/Privet";
 import Error from "../components/error/Error";
 import About from "../pages/About/MainAboutFile/About";
 import Contact from "../pages/Contact/MainContactFile/Contact";
+import Overview from "../pages/Dashboard/overview/Overview";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +54,13 @@ export const router = createBrowserRouter([
     path: "/dashboard",
     element: <Dashboard></Dashboard>,
     children: [
+      // admin route
+      {
+        path: "overview",
+        element: <Overview></Overview>,
+      },
+
+      //farmer route
       {
         path: "addProduct",
         element: <AddProduct></AddProduct>,
