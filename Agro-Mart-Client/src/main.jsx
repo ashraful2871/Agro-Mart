@@ -8,12 +8,15 @@ import { Provider } from "react-redux";
 import store from "./store/store.js";
 import AuthObserver from "./auth/AuthObserver.jsx";
 import { Toaster } from "react-hot-toast";
+import { StyledEngineProvider } from "@mui/material";
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <StyledEngineProvider injectFirst>
+          <RouterProvider router={router} />
+        </StyledEngineProvider>
         <Toaster></Toaster>
         <AuthObserver></AuthObserver>
       </QueryClientProvider>

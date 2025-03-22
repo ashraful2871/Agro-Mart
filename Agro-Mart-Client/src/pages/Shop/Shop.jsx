@@ -22,7 +22,9 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosPublic.get(`/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`);
+        const response = await axiosPublic.get(
+          `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`
+        );
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {
@@ -37,8 +39,8 @@ const Shop = () => {
     };
 
     fetchProducts();
-  }, [sortBy, searchQuery,selectedCategory]);
-  console.log(selectedCategory)
+  }, [sortBy, searchQuery, selectedCategory]);
+  console.log(selectedCategory);
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -61,13 +63,9 @@ const Shop = () => {
     navigate(`/dashboard/product/${id}`);
   };
 
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -81,7 +79,7 @@ const Shop = () => {
   }
 
   return (
-    <div className="bg-gray-100 py-10">
+    <div className="py-10">
       <h1 className="text-3xl font-bold mb-5 text-center">Product Listing</h1>
 
       <div className="flex gap-7 w-11/12 mx-auto">
@@ -270,21 +268,25 @@ const Shop = () => {
 
             {/* Drawer for small and medium screens */}
             <div className="drawer drawer-end lg:hidden">
-              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+              <input
+                id="my-drawer-4"
+                type="checkbox"
+                className="drawer-toggle"
+              />
               <div className="drawer-content">
                 {/* Button to open the drawer for small and medium screens */}
                 <label
-                  htmlFor="my-drawer"
+                  htmlFor="my-drawer-4"
                   className="btn bg-[#c3e858] drawer-button"
                 >
-                  Open Sidebar
+                  Filter
                 </label>
               </div>
 
               {/* Sidebar content (this will be shown for mobile and tablet) */}
               <div className="drawer-side z-50">
                 <label
-                  htmlFor="my-drawer"
+                  htmlFor="my-drawer-4"
                   aria-label="close sidebar"
                   className="drawer-overlay"
                 ></label>
@@ -488,7 +490,7 @@ const Shop = () => {
                 onChange={handleSortChange}
                 className="py-2 px-4 border border-gray-300 rounded-full"
               >
-                <option value=''>Default sorting</option>
+                <option value="">Default sorting</option>
                 <option value={1}>Price: Low to High</option>
                 <option value={-1}>Price: High to Low</option>
               </select>
@@ -553,8 +555,7 @@ const Shop = () => {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={
-                currentPage ===
-                Math.ceil(products.length / itemsPerPage)
+                currentPage === Math.ceil(products.length / itemsPerPage)
               }
               className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
             >

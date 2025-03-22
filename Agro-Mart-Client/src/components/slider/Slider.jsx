@@ -55,7 +55,7 @@ const Slider = () => {
       autoplay={{ delay: 5000, disableOnInteraction: false }}
       speed={1000}
       modules={[EffectFade, Autoplay]}
-      className="h-72 md:h-96 lg:h-[900px] -mt-3"
+      className="h-[550px] md:h-96 lg:h-[900px] -mt-3"
       onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
     >
       {slides.map((slide, index) => (
@@ -77,7 +77,7 @@ const Slider = () => {
 
             {/* Text Content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
-              <AnimatePresence mode="wait" key={activeIndex}>
+              <AnimatePresence mode="sync" key={activeIndex}>
                 <div key={index}>
                   {slide.title.map((line, i) => (
                     <motion.h1
@@ -87,7 +87,7 @@ const Slider = () => {
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="text-xl md:text-5xl font-bold font-syne"
+                      className="text-3xl md:text-5xl font-bold font-syne"
                     >
                       {line}
                     </motion.h1>
@@ -101,7 +101,7 @@ const Slider = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-xs md:text-lg mt-2 font-syne"
+                  className="text-sm md:text-lg mt-2 font-syne"
                 >
                   {slide.subtitle}
                 </motion.p>
@@ -113,7 +113,7 @@ const Slider = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-xs mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne"
+                  className="text-sm mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne"
                 >
                   Learn More →
                 </motion.button>

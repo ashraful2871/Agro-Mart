@@ -9,12 +9,15 @@ import Shop from "../pages/Shop/Shop";
 import ManageProduct from "../pages/Dashboard/FarmersDashboard/ManageProduct/ManageProduct";
 import UpdateProduct from "../pages/Dashboard/FarmersDashboard/UpdateProduct/UpdateProduct";
 import ProductDetails from "../pages/Dashboard/FarmersDashboard/ProductDetails/ProductDetails";
+import Privet from "../privet/Privet";
+import Error from "../components/error/Error";
 import About from "../pages/About/MainAboutFile/About";
 import Contact from "../pages/Contact/MainContactFile/Contact";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",
@@ -22,15 +25,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: <Shop></Shop>,
+        element: (
+          <Privet>
+            <Shop></Shop>
+          </Privet>
+        ),
       },
       {
         path: "/about",
-        element: <About></About>
+        element: <About></About>,
       },
       {
         path: "/contact",
-        element: <Contact></Contact>
+        element: <Contact></Contact>,
       },
       {
         path: "/login",
@@ -52,7 +59,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "product/:id",
-        element: <ProductDetails></ProductDetails>
+        element: <ProductDetails></ProductDetails>,
       },
       {
         path: "manageProduct",

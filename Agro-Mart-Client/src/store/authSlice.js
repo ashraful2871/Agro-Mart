@@ -9,11 +9,27 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const provider = new GoogleAuthProvider();
+const API_URL = import.meta.env.VITE_API_URL;
+//store and retrieve jwt token
+const storeToken = (token) => localStorage.setItem("accessToken", token);
+const removeToken = () => localStorage.removeItem("accessToken");
+// const dispatch = useDispatch();
 
+//async thunks to get jwt token from backend
+const fetchToken = async (email) => {
+  try {
+    const { data } = await axios.post(`${API_URL}/jwt`, { email });
+    storeToken(data.token);
+    return data.token;
+  } catch (error) {
+    console.log("error fetching token", error);
+  }
+};
 //async thunks for authentication
-
 //sign up user
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
@@ -24,7 +40,10 @@ export const signUpUser = createAsyncThunk(
         email,
         password
       );
-      return userCredential.user;
+      const user = userCredential.user;
+      const token = await fetchToken(email);
+      // dispatch(setUser(user));
+      return { user };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.massage);
@@ -42,7 +61,10 @@ export const signInUser = createAsyncThunk(
         email,
         password
       );
-      return userCredential.user;
+      const user = userCredential.user;
+      const token = await fetchToken(email);
+      // dispatch(setUser(user));
+      return { user };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -54,7 +76,10 @@ export const googleLogin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
-      return userCredential.user;
+      const user = userCredential.user;
+      const token = await fetchToken(user.email);
+      // dispatch(setUser(user));
+      return { user };
     } catch (error) {
       return rejectWithValue(error.massage);
     }
@@ -66,6 +91,7 @@ export const logOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await signOut(auth);
+      removeToken();
       return null;
     } catch (error) {
       return rejectWithValue(error.massage);
@@ -73,9 +99,6 @@ export const logOut = createAsyncThunk(
   }
 );
 
-//update profile
-//update profile
-//update profile
 //update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
@@ -96,14 +119,21 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 ///async thunk observer
-
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
     return new Promise((resolve) => {
-      const unSub = onAuthStateChanged(auth, (currentUser) => {
-        dispatch(setUser(currentUser));
-        console.log(currentUser);
+      const unSub = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+            const newToken = await fetchToken(currentUser.email);
+            storeToken(newToken);
+          }
+          dispatch(setUser({ user: currentUser }));
+        } else {
+          dispatch(setUser(null));
+        }
         dispatch(setLoading(false));
         resolve();
       });
