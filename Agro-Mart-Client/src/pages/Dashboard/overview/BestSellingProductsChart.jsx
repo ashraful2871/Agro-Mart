@@ -12,7 +12,7 @@ const BestSellingProductsChart = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-lg font-bold mb-4">Best Selling Products</h2>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={335}>
         <PieChart>
           <Pie
             data={data}
@@ -26,7 +26,18 @@ const BestSellingProductsChart = () => {
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Legend />
+          <Legend
+            layout="horizontal"
+            align="center"
+            verticalAlign="bottom"
+            wrapperStyle={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, max-content)",
+              justifyContent: "center",
+              gap: "10px",
+              marginTop: "10px",
+            }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>
