@@ -38,7 +38,8 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/about" className={isHomePage ? "text-white" : ""}>
+        <NavLink to="/about" className={({ isActive }) =>
+            isActive ? "text-yellow-400" :isHomePage ? "text-white" : ""}>
           About
         </NavLink>
       </li>
@@ -79,7 +80,7 @@ const Navbar = () => {
           : "bg-base-100 shadow-md"
       }`}
     >
-      {/* Left Section (Brand + Mobile Menu) */}
+      {/* Left Section */}
       <div className="navbar-start">
         <Link to="/" className="flex items-center">
           <img
