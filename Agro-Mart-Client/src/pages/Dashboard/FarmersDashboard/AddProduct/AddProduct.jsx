@@ -82,7 +82,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto my-20">
       <h3 className="text-4xl mb-10 text-center">Add Product</h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

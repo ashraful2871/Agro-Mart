@@ -88,7 +88,7 @@ const ManageProduct = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto my-20">
       <h3 className="text-4xl mb-10 text-center">Manage Products</h3>
 
       {/* Display all products */}
