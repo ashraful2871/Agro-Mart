@@ -32,7 +32,7 @@ const Dashboard = () => {
         </ul>
       </div>
 
-      {/* Drawer for small and medium screens */}
+      {/* Drawer for small and medium scrn */}
       <div className="drawer drawer-mobile">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
