@@ -1,7 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 
 //middleware
@@ -27,8 +28,19 @@ async function run() {
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
 
-    //users related apis
+    //generate jwt token
+    app.post("/jwt", async (req, res) => {
+      const { email } = req.body;
+      if (!email) {
+        res.status(400).send({ message: "email is required" });
+      }
+      const token = jwt.sign({ email }, process.env.TOKEN_SECRET_KEY, {
+        expiresIn: "365d",
+      });
+      res.send({ token });
+    });
 
+    //users related apis
     ///save user inn db
     app.post("/users", async (req, res) => {
       const user = req.body;

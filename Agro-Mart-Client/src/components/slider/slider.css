@@ -34,8 +34,14 @@
 }
 
 .swiper-slide-active .zoom-effect img {
-  transform: scale(1.1); /* Slowly zoom in */
+  transform: scale(1.1);
 }
 .slider-image {
-  clip-path: ellipse(150% 100% at center top); /* Curves only the bottom */
+  clip-path: ellipse(150% 100% at center top);
+}
+
+@media (max-width: 768px) {
+  .slider-image {
+    clip-path: ellipse(110% 90% at center top);
+  }
 }
