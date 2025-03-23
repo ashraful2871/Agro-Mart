@@ -21,20 +21,6 @@ const AdminMenu = () => {
         <li>
           <NavLink to="/dashboard/manageProduct">Manage Product</NavLink>
         </li>
-        {/* Shared nav links */}
-       <div className="divider"></div>
-       <li>
-         <NavLink to="/">Home</NavLink>
-       </li>
-       <li>
-         <NavLink to="/shop">Shop</NavLink>
-       </li>
-       <li>
-         <NavLink to="/about">About</NavLink>
-       </li>
-       <li>
-         <NavLink to="/contact">Contact</NavLink>
-       </li>
       </ul>
     </div>
   );
