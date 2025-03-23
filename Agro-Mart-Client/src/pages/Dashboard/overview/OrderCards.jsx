@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   FaShoppingCart,
   FaSyncAlt,
   FaTruck,
   FaCheckCircle,
 } from "react-icons/fa";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const orderData = [
   {
@@ -40,12 +41,15 @@ const orderData = [
 ];
 
 const OrderCards = () => {
+  const { theme } = useContext(ThemeContext);
   return (
     <div className="grid grid-cols-4 gap-4">
       {orderData.map((item) => (
         <div
           key={item.id}
-          className="flex items-center p-4 bg-white shadow-md rounded-lg "
+          className={`flex items-center p-4 ${
+            theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+          }  shadow-md rounded-lg `}
         >
           <div
             className={`w-12 h-12 flex items-center justify-center rounded-full ${item.bgColor}`}
@@ -53,8 +57,8 @@ const OrderCards = () => {
             {item.icon}
           </div>
           <div className="ml-4">
-            <h2 className="text-gray-500 text-sm">{item.title}</h2>
-            <p className="text-lg font-bold text-gray-800">
+            <h2 className="text-base-content text-sm">{item.title}</h2>
+            <p className="text-lg font-bold text-base-content">
               {item.value}{" "}
               {item.extra && (
                 <span className={item.extraClass}>{item.extra}</span>

@@ -20,10 +20,10 @@ const Overview = () => {
         <OrderCards></OrderCards>
       </div>
       <div className="grid grid-cols-2 gap-3  items-stretch">
-        <div className="  w-full">
+        <div className="  ">
           <WeeklySalesChart />
         </div>
-        <div className="   w-full">
+        <div className="  ">
           <BestSellingProductsChart />
         </div>
       </div>
