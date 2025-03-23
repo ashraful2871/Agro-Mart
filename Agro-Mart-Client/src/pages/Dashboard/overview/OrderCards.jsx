@@ -6,42 +6,66 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
-
-const orderData = [
-  {
-    id: 1,
-    icon: <FaShoppingCart className="text-orange-500" />,
-    title: "Total Order",
-    value: "864",
-    bgColor: "bg-orange-100",
-  },
-  {
-    id: 2,
-    icon: <FaSyncAlt className="text-blue-500" />,
-    title: "Orders Pending",
-    value: "270",
-    extra: "(204669.96)",
-    extraClass: "text-red-500 font-bold",
-    bgColor: "bg-blue-100",
-  },
-  {
-    id: 3,
-    icon: <FaTruck className="text-teal-500" />,
-    title: "Orders Processing",
-    value: "120",
-    bgColor: "bg-teal-100",
-  },
-  {
-    id: 4,
-    icon: <FaCheckCircle className="text-green-500" />,
-    title: "Orders Delivered",
-    value: "373",
-    bgColor: "bg-green-100",
-  },
-];
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const OrderCards = () => {
   const { theme } = useContext(ThemeContext);
+  const orderData = [
+    {
+      id: 1,
+      icon: (
+        <MdOutlineShoppingCart
+          className={`${
+            theme === "dark" ? "text-white" : "text-orange-500"
+          }  text-xl`}
+        />
+      ),
+      title: "Total Order",
+      value: "864",
+      bgColor: `${theme === "dark" ? "bg-orange-500" : "bg-orange-100"}`,
+    },
+    {
+      id: 2,
+      icon: (
+        <FaSyncAlt
+          className={`${
+            theme === "dark" ? "text-white" : "text-blue-500"
+          }  text-xl`}
+        />
+      ),
+      title: "Orders Pending",
+      value: "270",
+      extra: "(204669.96)",
+      extraClass: "text-red-500 ",
+      bgColor: `${theme === "dark" ? "bg-blue-500" : "bg-blue-100"}`,
+    },
+    {
+      id: 3,
+      icon: (
+        <FaTruck
+          className={`${
+            theme === "dark" ? "text-white" : "text-teal-500"
+          }  text-xl`}
+        />
+      ),
+      title: "Orders Processing",
+      value: "120",
+      bgColor: `${theme === "dark" ? "bg-teal-500" : "bg-teal-100"}`,
+    },
+    {
+      id: 4,
+      icon: (
+        <FaCheckCircle
+          className={`${
+            theme === "dark" ? "text-white" : "text-green-500"
+          }  text-xl`}
+        />
+      ),
+      title: "Orders Delivered",
+      value: "373",
+      bgColor: `${theme === "dark" ? "bg-green-500" : "bg-green-100"}`,
+    },
+  ];
   return (
     <div className="grid grid-cols-4 gap-4">
       {orderData.map((item) => (
