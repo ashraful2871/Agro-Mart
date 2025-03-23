@@ -56,7 +56,7 @@ const Dashboard = () => {
           <div className="">
             <DashNav></DashNav>
           </div>
-          <div className="max-w-[1320px] mx-auto ">
+          <div className="px-8 mx-auto ">
             <Outlet />
           </div>
         </div>
