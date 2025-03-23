@@ -47,7 +47,7 @@ const salesData = [
 
 const SalesCards = () => {
   return (
-    <div className="grid grid-cols-5 gap-4 border">
+    <div className="grid grid-cols-5 gap-3 border">
       {salesData.map((item) => (
         <div
           key={item.id}
@@ -56,13 +56,6 @@ const SalesCards = () => {
           <div className="flex justify-center">{item.icon}</div>
           <h2 className="text-lg font-semibold text-center">{item.title}</h2>
           <p className="text-2xl font-bold text-center">{item.amount}</p>
-          {item.cash !== undefined && (
-            <div className="grid grid-cols-3 gap-3 text-sm text-center mt-2">
-              <p>Cash: {item.cash}</p>
-              <p>Card: {item.card}</p>
-              <p>Credit: {item.credit}</p>
-            </div>
-          )}
         </div>
       ))}
     </div>
