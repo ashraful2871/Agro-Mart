@@ -14,6 +14,7 @@ import Error from "../components/error/Error";
 import About from "../pages/About/MainAboutFile/About";
 import Contact from "../pages/Contact/MainContactFile/Contact";
 import Overview from "../pages/Dashboard/overview/Overview";
+import Customers from "../pages/Customers/Customers";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
       {
         path: "overview",
         element: <Overview></Overview>,
+      },
+      {
+        path: "all-users",
+        element:<Customers></Customers>
       },
 
       //farmer route
