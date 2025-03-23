@@ -13,12 +13,14 @@ const Home = () => {
       <Slider></Slider>
 
       {/* Agriculture Progress */}
-      <AgricultureProcess></AgricultureProcess>
+      <div className="">
+        <AgricultureProcess></AgricultureProcess>
+      </div>
 
       {/* FAQ Section */}
-      <section className="max-w-screen-xl mx-auto mt-5 p-2">
+      <div className="max-w-screen-xl mx-auto p-2">
         <FaqSection></FaqSection>
-      </section>
+      </div>
 
       {/* Review Posting Section */}
       {/* <section>
@@ -26,17 +28,17 @@ const Home = () => {
       </section> */}
 
       {/* Why Choose Us */}
-      <section>
+      <div>
         <WhyChooseUs></WhyChooseUs>
-      </section>
+      </div>
 
       {/* Parallax Section */}
       <ParallaxSection></ParallaxSection>
 
       {/* Review Display */}
-      <section>
+      <div>
         <ReviewDisplay></ReviewDisplay>
-      </section>
+      </div>
     </div>
   );
 };

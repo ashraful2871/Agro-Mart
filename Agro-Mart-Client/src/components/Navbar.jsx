@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation, Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../store/authSlice";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import Sidebar from "./nav-sidebar/Sidebar";
+import { ThemeContext } from "../provider/ThemeProvider";
+import Theme from "./theme/Theme";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   console.log(user);
   const isHomePage = location.pathname === "/";
 
@@ -38,8 +41,12 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/about" className={({ isActive }) =>
-            isActive ? "text-yellow-400" :isHomePage ? "text-white" : ""}>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+          }
+        >
           About
         </NavLink>
       </li>
@@ -53,11 +60,11 @@ const Navbar = () => {
           Contact
         </NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to="/dashboard" className={isHomePage ? "text-white" : ""}>
           Dashboard
         </NavLink>
-      </li>
+      </li> */}
     </>
   );
 
@@ -107,6 +114,10 @@ const Navbar = () => {
 
       {/* Right Section (Cart & Profile) */}
       <div className="navbar-end flex gap-4">
+        {/* toggle theme */}
+        <div>
+          <Theme></Theme>
+        </div>
         {/* Profile Dropdown */}
         {user ? (
           <>
@@ -149,7 +160,7 @@ const Navbar = () => {
                   Profile
                 </Link>
                 <Link
-                  to="/dashboard"
+                  to="/dashboard/overview"
                   className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
                 >
                   Dashboard
