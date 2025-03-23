@@ -5,11 +5,15 @@ import ReviewPosting from "../components/ReviewPosting/ReviewPosting";
 import ReviewDisplay from "../components/ReviewDisplay/ReviewDisplay";
 import WhyChooseUs from "./Home/WhyChooseUs/WhyChooseUs";
 import ParallaxSection from "./Home/ParallaxSection/ParallaxSection";
+import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 
 const Home = () => {
   return (
     <div className="space-y-7">
       <Slider></Slider>
+
+      {/* Agriculture Progress */}
+      <AgricultureProcess></AgricultureProcess>
 
       {/* FAQ Section */}
       <section className="max-w-screen-xl mx-auto mt-5 p-2">

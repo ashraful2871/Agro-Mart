@@ -9,7 +9,11 @@ import store from "./store/store.js";
 import AuthObserver from "./auth/AuthObserver.jsx";
 import { Toaster } from "react-hot-toast";
 import { StyledEngineProvider } from "@mui/material";
+// import emailjs from "@emailjs/browser";
+
 const queryClient = new QueryClient();
+// emailjs.init("61mSC3agsF3cMsWXG");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
