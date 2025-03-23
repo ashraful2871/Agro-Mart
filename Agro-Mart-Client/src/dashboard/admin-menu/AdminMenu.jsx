@@ -13,7 +13,7 @@ const AdminMenu = () => {
           <NavLink to="/dashboard/all-users">Customers</NavLink>
         </li>
         <li>
-          <NavLink to="/dashboard/all-materials">Orders</NavLink>
+          <NavLink to="/dashboard/all-orders">Orders</NavLink>
         </li>
         <li>
           <NavLink to="/dashboard/addProduct">Add Product</NavLink>
