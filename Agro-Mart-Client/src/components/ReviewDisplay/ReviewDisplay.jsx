@@ -19,7 +19,9 @@ export default () => {
   });
 
   return (
-    <div className="py-20">
+    <div 
+    className="pt-20">
+      <div className="">
       <div className="flex items-center justify-center">
         <div className="text-center">
           <h5 className="text-green-700">Our Testimonials</h5>
@@ -29,24 +31,29 @@ export default () => {
         </div>
       </div>
 
-      {/* <p><strong>{review.userName}</strong></p>
-          <p><strong>Review:</strong> {review.review.substring(0,30)}</p>
-          <p><small>Posted on: {new Date(review.createdAt).toLocaleString()}</small></p> */}
-
-      <div className="navigation-wrapper">
+      <div
+      className="pb-20"
+      style={{ 
+        backgroundImage: `url('https://i.ibb.co.com/1JsMjXv0/bg-1.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
+      <div 
+      className="navigation-wrapper max-w-4xl mx-auto">
         <div ref={sliderRef} className="keen-slider">
           <div className="keen-slider__slide number-slide2 flex-col">
             <p className="my-2">
               <strong>Rating:</strong> 0 / 5
             </p>
-            <p className="max-w-2xl text-center">
+            <p className="w-3/4 text-center">
               Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
               consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
               iure tempore mollitia in. Illo, molestias! "
             </p>
             <div className="my-7 text-center text-green-700">
               <p>
-                <strong>userName</strong>
+                <strong>User Name</strong>
               </p>
               <p>
                 <small>Posted on: this date</small>
@@ -115,6 +122,8 @@ export default () => {
           })}
         </div>
       )}
+      </div>
+      </div>
     </div>
   );
 };

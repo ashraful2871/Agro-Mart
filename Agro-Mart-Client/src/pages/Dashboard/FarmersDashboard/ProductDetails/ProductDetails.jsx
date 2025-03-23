@@ -27,7 +27,7 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 my-20">
         <div className="card lg:card-side bg-base-100 shadow-sm">
         <figure>
           <img
