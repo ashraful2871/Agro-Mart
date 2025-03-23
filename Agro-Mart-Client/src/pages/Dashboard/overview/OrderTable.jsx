@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaPrint } from "react-icons/fa";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const orders = [
   {
@@ -76,7 +77,7 @@ const statusColors = {
 
 const OrderTable = () => {
   const [orderData, setOrderData] = useState(orders);
-
+  const { theme } = useContext(ThemeContext);
   const handleStatusChange = (id, newStatus) => {
     setOrderData((prevOrders) =>
       prevOrders.map((order) =>
@@ -86,10 +87,18 @@ const OrderTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-md">
+    <div
+      className={`overflow-x-auto ${
+        theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"
+      } p-6 rounded-lg shadow-md`}
+    >
       <table className="table w-full">
         <thead>
-          <tr className="bg-gray-100 text-gray-700">
+          <tr
+            className={`${
+              theme === "dark" ? "bg-base-100" : "bg-gray-100"
+            }  text-base-content`}
+          >
             <th>INVOICE NO</th>
             <th>ORDER TIME</th>
             <th>CUSTOMER NAME</th>
@@ -136,7 +145,7 @@ const OrderTable = () => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <p className="text-sm text-gray-600">SHOWING 1-8 OF 861</p>
+        <p className="text-sm text-base-content">SHOWING 1-8 OF 861</p>
         <div className="join">
           <button className="join-item btn btn-sm">{"<"}</button>
           <button className="join-item btn btn-sm btn-success">1</button>

@@ -47,7 +47,7 @@ const salesData = [
 
 const SalesCards = () => {
   return (
-    <div className="grid grid-cols-5 gap-3 border">
+    <div className="grid grid-cols-5 gap-3 ">
       {salesData.map((item) => (
         <div
           key={item.id}

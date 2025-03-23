@@ -1,5 +1,6 @@
 import React from "react";
 import Drawer from "../drawer/Drawer";
+import Theme from "../../../components/theme/Theme";
 
 const DashNav = () => {
   return (
@@ -7,6 +8,7 @@ const DashNav = () => {
       <div className="flex-1">
         <Drawer></Drawer>
       </div>
+      <Theme></Theme>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

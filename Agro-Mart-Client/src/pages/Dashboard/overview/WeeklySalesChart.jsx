@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   LineChart,
   Line,
@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const salesData = [
   { date: "2025-03-16", sales: 1, orders: 1 },
@@ -21,16 +22,20 @@ const salesData = [
 
 const WeeklySalesChart = () => {
   const [activeTab, setActiveTab] = useState("Sales");
-
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div
+      className={`${
+        theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+      } p-6 rounded-lg shadow-md`}
+    >
       <h2 className="text-lg font-bold mb-4">Weekly Sales</h2>
       <div className="border-b">
         <button
-          className={`mr-4 pb-2 font-semibold ${
+          className={`mr-4 pb-2 font-semibold  ${
             activeTab === "Sales"
               ? "text-green-600 border-b-2 border-green-600"
-              : "text-gray-500"
+              : "text-base-content"
           }`}
           onClick={() => setActiveTab("Sales")}
         >
@@ -40,7 +45,7 @@ const WeeklySalesChart = () => {
           className={`pb-2 font-semibold ${
             activeTab === "Orders"
               ? "text-orange-600 border-b-2 border-orange-600"
-              : "text-gray-500"
+              : "text-base-content"
           }`}
           onClick={() => setActiveTab("Orders")}
         >

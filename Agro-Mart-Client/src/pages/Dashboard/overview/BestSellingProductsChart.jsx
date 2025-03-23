@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const data = [
   { name: "Mint", value: 400, color: "#16A34A" },
@@ -9,8 +10,13 @@ const data = [
 ];
 
 const BestSellingProductsChart = () => {
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div
+      className={`${
+        theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+      } bg-white p-6 rounded-lg shadow-md`}
+    >
       <h2 className="text-lg font-bold mb-4">Best Selling Products</h2>
       <ResponsiveContainer width="100%" height={335}>
         <PieChart>
