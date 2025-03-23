@@ -24,3 +24,7 @@ body {
 .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
   color: green;
 }
+a.active {
+  color: "";
+  background-color: transparent;
+}
