@@ -54,16 +54,16 @@ const Customers = () => {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="my-4">
-        <h2 className="text-2xl font-bold">Customers</h2>
-        <div className="space-x-2 p-4 w-full bg-blue-950 rounded-xl ">
+      <div className="my-4 space-y-2">
+        <h2 className="text-2xl font-bold ">Customers</h2>
+        <div className="space-x-2 p-4 w-full bg-[#1f2937] rounded-xl ">
           <button className="bg-transparent text-white border-2 border-white px-4 py-2 rounded">Export</button>
           <button className="bg-transparent text-white border-2 border-white px-4 py-2 rounded">Import</button>
         </div>
       </div>
 
       {/* Search & Filter */}
-      <div className="flex mb-4 bg-blue-950 p-4 space-x-4 rounded-xl">
+      <div className="flex mb-4 bg-[#1f2937] p-4 space-x-4 rounded-xl">
         <input
           type="text"
           placeholder="Search by name, email, or ID"
@@ -82,7 +82,7 @@ const Customers = () => {
 
       {/* Table (Responsive) */}
       <div className="overflow-x-auto">
-        <table className="w-full border border-white bg-blue-950 p-4 rounded-xl text-white">
+        <table className="w-full  bg-[#1f2937] p-4 rounded-xl text-white">
           <thead>
             <tr className=" text-left">
               <th className="p-2">ID</th>
