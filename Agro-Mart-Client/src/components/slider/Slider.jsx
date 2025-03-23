@@ -62,7 +62,12 @@ const Slider = () => {
         <SwiperSlide key={index}>
           <div className="relative w-full h-[600px] zoom-effect slider-image">
             {/* Background Image with Zoom Effect */}
-            <motion.img
+            <img
+              src={slide.img}
+              alt="slide"
+              className="w-full h-full object-cover "
+            />
+            {/* <motion.img
               src={slide.img}
               alt="slide"
               className="w-full h-full object-cover "
@@ -70,7 +75,7 @@ const Slider = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 4, ease: "easeInOut" }}
-            />
+            /> */}
 
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/45"></div>
