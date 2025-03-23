@@ -49,7 +49,7 @@ const Dashboard = () => {
           <div className="border">
             <DashNav></DashNav>
           </div>
-          <div className="px-28 ">
+          <div className="px-8 ">
             <Outlet />
           </div>
         </div>
