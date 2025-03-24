@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const users = [
   {
@@ -54,20 +55,33 @@ const users = [
 ];
 
 const UserTable = () => {
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <div className="flex justify-between mb-4">
+    <div
+      className={`p-6 ${
+        theme === "dark" ? "bg-[#111827]" : "bg-white"
+      }  shadow-md rounded-lg`}
+    >
+      <div
+        className={`${
+          theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+        } flex justify-between mb-4 py-8 px-5 rounded-lg`}
+      >
         <div className="space-x-2">
           <button className="btn btn-outline">Export</button>
           <button className="btn btn-outline">Import</button>
         </div>
       </div>
 
-      <div className="mb-4 grid grid-cols-6 gap-8">
+      <div
+        className={` ${
+          theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+        } mb-4 grid grid-cols-6 gap-8 py-8 px-5 rounded-lg`}
+      >
         <input
           type="text"
           placeholder="Search by name/email/phone"
-          className="input input-bordered w-full col-span-4"
+          className="input input-bordered w-full col-span-4 py-7"
         />
         <button className="btn btn-success bg-green-700 ml-2 text-white">
           Filter
