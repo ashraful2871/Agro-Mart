@@ -33,7 +33,7 @@ const AdminMenu = () => {
         </li>
         <li className="py-3">
           <NavLink
-            to="/dashboard/all-materials"
+            to="/dashboard/all-orders"
             className={({ isActive }) =>
               isActive ? "text-green-600 border-l-4 border-green-600" : ""
             }
