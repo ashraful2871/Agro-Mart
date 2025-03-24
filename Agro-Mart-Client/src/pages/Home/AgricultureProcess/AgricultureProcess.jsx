@@ -45,7 +45,7 @@ const AgricultureProcess = () => {
         </div>
 
         {/* Right Side Content */}
-        <div className="lg:w-1/2 lg:pl-12 ">
+        <div className="lg:w-1/2 lg:pl-12 mt-4 md:mt-14 lg:mt-40">
           <h3 className="text-green-600 font-bold uppercase text-sm">
             Work Process
           </h3>
@@ -75,11 +75,14 @@ const AgricultureProcess = () => {
           </div>
 
           {/* Process Steps */}
+          {/* top-[400px] right-10 left-10 */}
+          {/* md:top-96 md:right-14 md:left-14 */}
+          {/* lg:bottom-10 lg:right-28 */}
           <div
-            className="mt-8 gap-6 absolute z-10 max-w-6xl mx-auto
-          grid grid-cols-1 top-[400pz] right-10 left-10
-          md:grid-cols-2 md:top-96 md:right-14 md:left-14
-          lg:grid-cols-4 lg:bottom-10 lg:right-28 "
+            className="mt-8 gap-6 absolute z-10 max-w-6xl mx-auto h-fit
+          grid grid-cols-1 bottom-0 right-10 left-10 
+          md:grid-cols-2 md:bottom-80
+          lg:grid-cols-4  lg:bottom-14 xl:bottom-24 2xl:bottom-40"
           >
             {steps.map((step) => (
               <div
