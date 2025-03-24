@@ -21,7 +21,7 @@ const MainLayout = () => {
           !isHomePage && !isShopPage ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0" : ""
         }`}
       >
-        <div className="min-h-[814px]  md:px-2 lg:px-0">
+        <div className={`min-h-[814px]  md:px-2 lg:px-0 ${!isHomePage ? "pt-10" : ""}`}>
           <Outlet></Outlet>
         </div>
         <div>
