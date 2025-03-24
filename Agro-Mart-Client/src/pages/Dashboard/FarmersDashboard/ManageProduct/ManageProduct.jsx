@@ -4,6 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { MdBrowserUpdated } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../../components/loading/Loading";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
@@ -34,11 +35,7 @@ const ManageProduct = () => {
   }, [axiosPublic]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
-      </div>
-    );
+    return <Loading></Loading>;
   }
 
   if (error) {
@@ -88,13 +85,13 @@ const ManageProduct = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-20">
+    <div className="">
       <h3 className="text-4xl mb-10 text-center">Manage Products</h3>
 
       {/* Display all products */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
         {products.map((product) => (
-          <div className="card bg-base-100 w-80 shadow-sm" key={product._id}>
+          <div className="card bg-base-100  shadow-sm" key={product._id}>
             <figure>
               <img
                 src={product.image || "https://via.placeholder.com/150"}
