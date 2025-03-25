@@ -3,7 +3,7 @@ import ServiceSlides from "./ServiceSlides";
 
 const Service = () => {
     return (
-        <div className="flex flex-col lg:flex-row gap-8 pt-20 ">
+        <div className="flex flex-col lg:flex-row gap-8 pt-20 lg:ml-10">
             <div className="space-y-4 lg:w-1/3 flex flex-col justify-center text-center ">
                 <h4 className="uppercase text-green-700 font-bold text-lg">Our services</h4>
                 <h3 className="font-bold text-3xl">What We Provide</h3>

@@ -34,7 +34,7 @@ const AgricultureProcess = () => {
 
   return (
     <section className="relative">
-      <div className=" flex flex-col lg:flex-row h-[1650px] md:h-fit">
+      <div className=" flex flex-col lg:flex-row ">
         {/* Left Side Image */}
         <div className="lg:w-1/2 rounded-tr-[300px]">
           <img
@@ -87,9 +87,9 @@ const AgricultureProcess = () => {
             {steps.map((step) => (
               <div
                 key={step.id}
-                className="bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-green-500 "
+                className="bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border"
               >
-                <span className="text-base-content text-5xl text-green-600  font-bold">
+                <span className="text-base-content text-3xl text-green-600  font-bold">
                   {step.id}
                 </span>
                 <h4 className="text-lg font-bold text-base-content mt-2 flex items-center">

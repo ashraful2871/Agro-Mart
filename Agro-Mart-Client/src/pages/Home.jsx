@@ -15,7 +15,7 @@ const Home = () => {
 
       <div className="p-1">
         {/* Agriculture Progress */}
-        <div className="max-w-screen-xl mx-auto p-2">
+        <div className="">
           <AgricultureProcess></AgricultureProcess>
         </div>
 
