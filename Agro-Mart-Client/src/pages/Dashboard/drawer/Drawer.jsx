@@ -2,6 +2,7 @@ import React from "react";
 import { LuLogOut } from "react-icons/lu";
 import { TiThMenu } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import AdminMenu from "../../../dashboard/admin-menu/AdminMenu";
 
 const Drawer = () => {
   return (
@@ -11,7 +12,7 @@ const Drawer = () => {
         {/* Responsive Drawer Toggle */}
         <label
           htmlFor="my-drawer"
-          className="btn btn-primary bg-blue-500 hover:bg-blue-600 font-semibold text-white text-lg m-2"
+          className="btn btn-primary bg-green-700 hover:bg-green-700 font-semibold text-white text-lg m-2 border border-none"
         >
           <TiThMenu />
         </label>
@@ -22,12 +23,14 @@ const Drawer = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 text-base-content h-full w-80 p-4">
+        <ul className="menu bg-base-200 text-base-content h-full w-72 p-4">
           <div className="mb-6 text-center">
             <Link to="/" className="text-xl font-bold text-green-700">
-              Collaborative Study
+              Agro MArt
             </Link>
           </div>
+
+          <AdminMenu />
           {/* {role === "admin" && <AdminMenu />}
             {role === "tutor" && <TutorMenu />}
             {role === "student" && <StudentMenu />} */}

@@ -11,41 +11,54 @@ const data = [
 
 const BestSellingProductsChart = () => {
   const { theme } = useContext(ThemeContext);
+
   return (
     <div
       className={`${
         theme === "dark" ? "bg-[#1F2937]" : "bg-white"
-      }  p-6 rounded-lg shadow-md`}
+      } p-4 md:p-6 rounded-lg shadow-md w-full h-full`}
     >
       <h2 className="text-lg font-bold mb-4">Best Selling Products</h2>
-      <ResponsiveContainer width="100%" height={335}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Pie>
-          <Legend
-            layout="horizontal"
-            align="center"
-            verticalAlign="bottom"
-            wrapperStyle={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, max-content)",
-              justifyContent: "center",
-              gap: "10px",
-              marginTop: "10px",
-            }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      <div className="w-full ">
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius="80%"
+              innerRadius="60%"
+              paddingAngle={2}
+              label={({ name, percent }) =>
+                `${name}: ${(percent * 100).toFixed(0)}%`
+              }
+              labelLine={false}
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Legend
+              layout="horizontal"
+              align="center"
+              verticalAlign="bottom"
+              wrapperStyle={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: "8px 16px",
+                paddingTop: "16px",
+                fontSize: "14px",
+              }}
+              formatter={(value, entry, index) => (
+                <span className="text-sm">{data[index].name}</span>
+              )}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

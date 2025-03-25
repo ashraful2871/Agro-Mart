@@ -10,16 +10,15 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 const provider = new GoogleAuthProvider();
 const API_URL = import.meta.env.VITE_API_URL;
-//store and retrieve jwt token
+
+// Token management
 const storeToken = (token) => localStorage.setItem("accessToken", token);
 const removeToken = () => localStorage.removeItem("accessToken");
-// const dispatch = useDispatch();
 
-//async thunks to get jwt token from backend
+// Fetch JWT token from backend
 const fetchToken = async (email) => {
   try {
     const { data } = await axios.post(`${API_URL}/jwt`, { email });
@@ -27,13 +26,14 @@ const fetchToken = async (email) => {
     return data.token;
   } catch (error) {
     console.log("error fetching token", error);
+    throw error;
   }
 };
-//async thunks for authentication
-//sign up user
+
+// Sign up user with profile data
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, name, photo }, { rejectWithValue }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -41,17 +41,28 @@ export const signUpUser = createAsyncThunk(
         password
       );
       const user = userCredential.user;
+
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: photo,
+      });
       const token = await fetchToken(email);
-      // dispatch(setUser(user));
-      return { user };
+
+      return {
+        user: {
+          ...user,
+          displayName: name,
+          photoURL: photo,
+        },
+      };
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error.massage);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-// sign in user
+// Sign in user
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
   async ({ email, password }, { rejectWithValue }) => {
@@ -63,14 +74,14 @@ export const signInUser = createAsyncThunk(
       );
       const user = userCredential.user;
       const token = await fetchToken(email);
-      // dispatch(setUser(user));
       return { user };
     } catch (error) {
-      return rejectWithValue(error.massage);
+      return rejectWithValue(error.message);
     }
   }
 );
-//google login
+
+// Google login
 export const googleLogin = createAsyncThunk(
   "auth/googleLogin",
   async (_, { rejectWithValue }) => {
@@ -78,14 +89,14 @@ export const googleLogin = createAsyncThunk(
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
       const token = await fetchToken(user.email);
-      // dispatch(setUser(user));
       return { user };
     } catch (error) {
-      return rejectWithValue(error.massage);
+      return rejectWithValue(error.message);
     }
   }
 );
-//google login
+
+// Logout
 export const logOut = createAsyncThunk(
   "auth/logOut",
   async (_, { rejectWithValue }) => {
@@ -94,12 +105,12 @@ export const logOut = createAsyncThunk(
       removeToken();
       return null;
     } catch (error) {
-      return rejectWithValue(error.massage);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-//update profile
+// Update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
   async ({ name, photo }, { rejectWithValue }) => {
@@ -113,24 +124,27 @@ export const updateUserProfile = createAsyncThunk(
         photoURL: photo,
       };
     } catch (error) {
-      return rejectWithValue(error.massage);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-///async thunk observer
+// Auth state observer
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
     return new Promise((resolve) => {
       const unSub = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
+          await currentUser.reload();
+          const updatedUser = auth.currentUser;
+
           const token = localStorage.getItem("accessToken");
           if (!token) {
-            const newToken = await fetchToken(currentUser.email);
+            const newToken = await fetchToken(updatedUser.email);
             storeToken(newToken);
           }
-          dispatch(setUser({ user: currentUser }));
+          dispatch(setUser({ user: updatedUser }));
         } else {
           dispatch(setUser(null));
         }
@@ -170,7 +184,17 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       })
-
+      .addCase(signInUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signInUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(signInUser.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
       .addCase(googleLogin.pending, (state) => {
         state.loading = true;
       })
@@ -181,6 +205,18 @@ const authSlice = createSlice({
       .addCase(googleLogin.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user = {
+            ...state.user,
+            user: {
+              ...state.user.user,
+              displayName: action.payload.displayName,
+              photoURL: action.payload.photoURL,
+            },
+          };
+        }
       })
       .addCase(InitializeAuthListener.fulfilled, (state) => {
         state.loading = false;
