@@ -6,6 +6,7 @@ import ReviewDisplay from "../components/ReviewDisplay/ReviewDisplay";
 import WhyChooseUs from "./Home/WhyChooseUs/WhyChooseUs";
 import ParallaxSection from "./Home/ParallaxSection/ParallaxSection";
 import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
+import Service from "./Home/Service/Service";
 
 const Home = () => {
   return (
@@ -18,10 +19,15 @@ const Home = () => {
           <AgricultureProcess></AgricultureProcess>
         </div>
 
-        {/* FAQ Section */}
-        <div className="max-w-screen-xl mx-auto p-2">
-          <FaqSection></FaqSection>
-        </div>
+      {/* Our Services */}
+      <div>
+        <Service></Service>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="max-w-screen-xl mx-auto p-2">
+        <FaqSection></FaqSection>
+      </div>
 
         {/* Review Posting Section */}
         {/* <section>
