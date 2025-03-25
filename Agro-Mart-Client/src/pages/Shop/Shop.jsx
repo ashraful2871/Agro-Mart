@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { IoCart } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/loading/Loading";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -40,7 +41,6 @@ const Shop = () => {
 
     fetchProducts();
   }, [sortBy, searchQuery, selectedCategory]);
-  console.log(selectedCategory);
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -71,7 +71,11 @@ const Shop = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
-    return <div className="text-center text-xl">Loading...</div>;
+    return (
+      <div className="text-center text-xl">
+        <Loading></Loading>
+      </div>
+    );
   }
 
   if (error) {
@@ -509,7 +513,7 @@ const Shop = () => {
                   alt=""
                   className="h-60 w-full bg-cover"
                   key={product._id}
-                  onClick={() => handleDetails(product._id)} 
+                  onClick={() => handleDetails(product._id)}
                 />
                 <h3 className="text-xl font-semibold my-2">{product.name}</h3>
                 <p className="text-gray-500 text-xl font-bold">

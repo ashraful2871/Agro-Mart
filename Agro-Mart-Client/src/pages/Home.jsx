@@ -10,13 +10,14 @@ import Service from "./Home/Service/Service";
 
 const Home = () => {
   return (
-    <div className="space-y-7">
+    <div className="space-y-7 ">
       <Slider></Slider>
 
-      {/* Agriculture Progress */}
-      <div className="">
-        <AgricultureProcess></AgricultureProcess>
-      </div>
+      <div className="p-1">
+        {/* Agriculture Progress */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <AgricultureProcess></AgricultureProcess>
+        </div>
 
       {/* Our Services */}
       <div>
@@ -28,22 +29,23 @@ const Home = () => {
         <FaqSection></FaqSection>
       </div>
 
-      {/* Review Posting Section */}
-      {/* <section>
+        {/* Review Posting Section */}
+        {/* <section>
         <ReviewPosting></ReviewPosting>
       </section> */}
 
-      {/* Why Choose Us */}
-      <div>
-        <WhyChooseUs></WhyChooseUs>
-      </div>
+        {/* Why Choose Us */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <WhyChooseUs></WhyChooseUs>
+        </div>
 
-      {/* Parallax Section */}
-      <ParallaxSection></ParallaxSection>
+        {/* Parallax Section */}
+        <ParallaxSection></ParallaxSection>
 
-      {/* Review Display */}
-      <div>
-        <ReviewDisplay></ReviewDisplay>
+        {/* Review Display */}
+        <div>
+          <ReviewDisplay></ReviewDisplay>
+        </div>
       </div>
     </div>
   );

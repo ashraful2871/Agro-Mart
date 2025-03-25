@@ -21,7 +21,7 @@ const Login = () => {
       .unwrap()
       .then(() => {
         toast.success("Account Login successfully!");
-        navigate(location?.state ? location?.state : "/");
+        navigate(location?.state?.from || "/");
       })
       .catch((error) => {
         toast.error(error.message || "Login failed!");
@@ -30,27 +30,30 @@ const Login = () => {
   // google login
   const handleContinueGoogle = async () => {
     try {
-      dispatch(googleLogin())
-        .unwrap()
-        .then(async (user) => {
-          try {
-            const userInfo = {
-              name: user?.displayName,
-              email: user?.email,
-              photo: user?.photoURL,
-              uid: user?.uid,
-              role: "user",
-            };
-            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
-            navigate("/");
-          } catch (error) {
-            console.log(error);
-          }
-        });
+      const result = await dispatch(googleLogin()).unwrap();
+      const user = result?.user;
+
+      if (user) {
+        navigate(location?.state?.from || "/"); // Navigate immediately
+
+        // Send user info to the backend (without delaying navigation)
+        const userInfo = {
+          name: user?.displayName,
+          email: user?.email,
+          photo: user?.photoURL,
+          uid: user?.uid,
+          role: "user",
+        };
+        axios
+          .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
+          .catch(console.log);
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Google login failed!");
     }
   };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">

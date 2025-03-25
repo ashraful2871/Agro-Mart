@@ -14,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const user = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(user);
+  console.log(user?.displayName);
   const isHomePage = location.pathname === "/";
 
   const links = (
@@ -34,8 +34,15 @@ const Navbar = () => {
         <NavLink
           to="/shop"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           Shop
         </NavLink>
@@ -44,8 +51,15 @@ const Navbar = () => {
         <NavLink
           to="/about"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           About
         </NavLink>
@@ -54,8 +68,15 @@ const Navbar = () => {
         <NavLink
           to="/contact"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           Contact
         </NavLink>

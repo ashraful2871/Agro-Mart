@@ -2,18 +2,18 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { googleLogin, signUpUser, updateUserProfile } from "../store/authSlice";
+import { googleLogin, signUpUser } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FaArrowLeft } from "react-icons/fa";
-import useAuth from "../hooks/useAuth";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
 const SignUp = () => {
   const dispatch = useDispatch();
-  const user = useAuth();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -32,66 +32,68 @@ const SignUp = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(response.data.data.display_url);
         if (response.data.success) {
           imageUrl = response.data.data.display_url;
         }
       } catch (error) {
         console.log(error);
-        toast.error("Image upload failed:", error);
+        toast.error("Image upload failed");
         return;
       }
     }
 
-    // console.log(userInfo);
-    // sign UP user
-    dispatch(signUpUser({ email, password }))
-      .unwrap()
-      .then(async (user) => {
-        dispatch(updateUserProfile({ name, photo: imageUrl }));
+    try {
+      // Dispatch signUpUser with all needed data
+      const result = await dispatch(
+        signUpUser({ email, password, name, photo: imageUrl })
+      ).unwrap();
+
+      if (result?.user) {
         toast.success("Account created successfully!");
         navigate("/");
 
+        // Save user to database
         try {
           const userInfo = {
             name,
             email,
             photo: imageUrl,
-            uid: user?.uid,
+            uid: result.user.uid,
             role: "user",
           };
           await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
         } catch (error) {
           console.log(error);
         }
-      })
-      .catch((error) => {
-        toast.error(error.message || "Sign up failed!");
-      });
+      }
+    } catch (error) {
+      toast.error(error.message || "Sign up failed!");
+    }
   };
 
-  // google login
   const handleContinueGoogle = async () => {
     try {
-      dispatch(googleLogin())
-        .unwrap()
-        .then(async (user) => {
-          try {
-            const userInfo = {
-              name: user?.displayName,
-              email: user?.email,
-              photo: user?.photoURL,
-              uid: user?.uid,
-              role: "user",
-            };
-            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
-            navigate("/");
-          } catch (error) {
-            console.log(error);
-          }
-        });
+      const result = await dispatch(googleLogin()).unwrap();
+      const user = result?.user;
+
+      if (user) {
+        navigate("/");
+
+        // Send user info to the backend
+        const userInfo = {
+          name: user?.displayName,
+          email: user?.email,
+          photo: user?.photoURL,
+          uid: user?.uid,
+          role: "user",
+        };
+        axios
+          .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
+          .catch(console.log);
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Google login failed!");
     }
   };
 
@@ -99,9 +101,7 @@ const SignUp = () => {
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Side - Animation (Hidden on Small Screens) */}
       <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">
-        {/* <div className="w-full max-w-sm">
-            <Lottie animationData={signAni} loop={true} />
-          </div> */}
+        {/* Animation can be added here */}
       </div>
 
       {/* Right Side - Sign Up Form */}
@@ -126,6 +126,7 @@ const SignUp = () => {
                 required
               />
             </div>
+
             {/* email address */}
             <div className="mb-4">
               <label className="block text-gray-700">Email address</label>
@@ -138,7 +139,7 @@ const SignUp = () => {
               />
             </div>
 
-            {/* Photo  */}
+            {/* Photo */}
             <div className="mb-4">
               <label className="block text-gray-700">Photo</label>
               <input
@@ -149,13 +150,13 @@ const SignUp = () => {
               />
             </div>
 
-            {/* Pin Number */}
+            {/* Password */}
             <div className="mb-4">
               <label className="block text-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
-                placeholder="Enter your 5  digit PIN "
+                placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
               />
@@ -193,8 +194,7 @@ const SignUp = () => {
             </Link>
           </p>
           <Link to="/">
-            {" "}
-            <div className=" text-green-800 text-center font-semibold flex justify-center mt-4 items-center gap-2">
+            <div className="text-green-800 text-center font-semibold flex justify-center mt-4 items-center gap-2">
               <span>
                 <FaArrowLeft />
               </span>

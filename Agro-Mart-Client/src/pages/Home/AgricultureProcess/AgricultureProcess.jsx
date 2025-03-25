@@ -7,7 +7,7 @@ const AgricultureProcess = () => {
       title: "Schedule Your Experience",
       description:
         "When you work with us, you’ll see that absolute conditions is our priority.",
-      icon: "📅", // You can replace with an actual icon
+      icon: "📅",
     },
     {
       id: "02",
@@ -49,10 +49,10 @@ const AgricultureProcess = () => {
           <h3 className="text-green-600 font-bold uppercase text-sm">
             Work Process
           </h3>
-          <h2 className="text-4xl font-bold text-gray-800 mt-2">
+          <h2 className="text-4xl font-bold text-base-content mt-2">
             The Agriculture Process
           </h2>
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-base-content">
             We take part in many key international agricultural exhibitions,
             which gives us the opportunity to find new partners, learn new
             trends in the development of the agricultural sector, share
@@ -70,7 +70,7 @@ const AgricultureProcess = () => {
             </div>
             <div>
               <h3 className="text-3xl font-bold text-green-700">250+</h3>
-              <p className="text-gray-600">Years of experience</p>
+              <p className="text-base-content">Years of experience</p>
             </div>
           </div>
 
@@ -87,15 +87,17 @@ const AgricultureProcess = () => {
             {steps.map((step) => (
               <div
                 key={step.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                className="bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-green-500 "
               >
-                <span className="text-gray-300 text-5xl font-bold">
+                <span className="text-base-content text-5xl text-green-600  font-bold">
                   {step.id}
                 </span>
-                <h4 className="text-lg font-bold text-gray-800 mt-2 flex items-center">
+                <h4 className="text-lg font-bold text-base-content mt-2 flex items-center">
                   {step.icon} <span className="ml-2">{step.title}</span>
                 </h4>
-                <p className="text-sm text-gray-600 mt-1">{step.description}</p>
+                <p className="text-sm text-base-content mt-1">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>

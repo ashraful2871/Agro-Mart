@@ -67,7 +67,10 @@ const AddProduct = () => {
     };
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/products`,productData);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/products`,
+        productData
+      );
 
       console.log("Product Added:", data);
       toast.success("Product successfully added!");
@@ -82,7 +85,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-20">
+    <div className="">
       <h3 className="text-4xl mb-10 text-center">Add Product</h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
