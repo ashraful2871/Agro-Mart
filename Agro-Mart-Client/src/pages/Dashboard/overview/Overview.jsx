@@ -19,7 +19,7 @@ const Overview = () => {
       <div>
         <OrderCards></OrderCards>
       </div>
-      <div className="grid grid-cols-2 gap-3  items-stretch">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3  items-stretch">
         <div className="  ">
           <WeeklySalesChart />
         </div>

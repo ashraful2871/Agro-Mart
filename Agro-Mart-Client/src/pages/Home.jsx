@@ -9,35 +9,37 @@ import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 
 const Home = () => {
   return (
-    <div className="space-y-7">
+    <div className="space-y-7 ">
       <Slider></Slider>
 
-      {/* Agriculture Progress */}
-      <div className="">
-        <AgricultureProcess></AgricultureProcess>
-      </div>
+      <div className="p-1">
+        {/* Agriculture Progress */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <AgricultureProcess></AgricultureProcess>
+        </div>
 
-      {/* FAQ Section */}
-      <div className="max-w-screen-xl mx-auto p-2">
-        <FaqSection></FaqSection>
-      </div>
+        {/* FAQ Section */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <FaqSection></FaqSection>
+        </div>
 
-      {/* Review Posting Section */}
-      {/* <section>
+        {/* Review Posting Section */}
+        {/* <section>
         <ReviewPosting></ReviewPosting>
       </section> */}
 
-      {/* Why Choose Us */}
-      <div>
-        <WhyChooseUs></WhyChooseUs>
-      </div>
+        {/* Why Choose Us */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <WhyChooseUs></WhyChooseUs>
+        </div>
 
-      {/* Parallax Section */}
-      <ParallaxSection></ParallaxSection>
+        {/* Parallax Section */}
+        <ParallaxSection></ParallaxSection>
 
-      {/* Review Display */}
-      <div>
-        <ReviewDisplay></ReviewDisplay>
+        {/* Review Display */}
+        <div>
+          <ReviewDisplay></ReviewDisplay>
+        </div>
       </div>
     </div>
   );

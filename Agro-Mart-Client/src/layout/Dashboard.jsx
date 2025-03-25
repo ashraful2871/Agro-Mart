@@ -56,7 +56,7 @@ const Dashboard = () => {
           <div className="">
             <DashNav></DashNav>
           </div>
-          <div className="px-8 mx-auto ">
+          <div className="p-2 md:p-3 lg:5 xl:px-8 mx-auto ">
             <Outlet />
           </div>
         </div>
