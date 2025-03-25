@@ -36,7 +36,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-green-400"
+                ? "text-yellow-400"
                 : ""
               : isHomePage
               ? "text-white"
@@ -53,7 +53,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-green-400"
+                ? "text-yellow-400"
                 : ""
               : isHomePage
               ? "text-white"
@@ -70,7 +70,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-green-400"
+                ? "text-yellow-400"
                 : ""
               : isHomePage
               ? "text-white"
@@ -104,7 +104,7 @@ const Navbar = () => {
     <div
       className={`navbar fixed bg-opacity-30 bg-black px-4 lg:px-8 transition-all duration-300 z-50 ${
         isHomePage
-          ? "bg-transparent  top-0 left-0 w-full"
+          ? " top-0 left-0 w-full"
           : "bg-base-100 shadow-md"
       }`}
     >
