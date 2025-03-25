@@ -6,6 +6,7 @@ import ReviewDisplay from "../components/ReviewDisplay/ReviewDisplay";
 import WhyChooseUs from "./Home/WhyChooseUs/WhyChooseUs";
 import ParallaxSection from "./Home/ParallaxSection/ParallaxSection";
 import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
+import Service from "./Home/Service/Service";
 
 const Home = () => {
   return (
@@ -15,6 +16,11 @@ const Home = () => {
       {/* Agriculture Progress */}
       <div className="">
         <AgricultureProcess></AgricultureProcess>
+      </div>
+
+      {/* Our Services */}
+      <div>
+        <Service></Service>
       </div>
 
       {/* FAQ Section */}
