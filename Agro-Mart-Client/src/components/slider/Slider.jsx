@@ -55,7 +55,7 @@ const Slider = () => {
       autoplay={{ delay: 5000, disableOnInteraction: false }}
       speed={1000}
       modules={[EffectFade, Autoplay]}
-      className="h-[550px] md:h-96 lg:h-[900px] -mt-3"
+      className="h-[550px] md:h-96 lg:h-[770px] -mt-3"
       onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
     >
       {slides.map((slide, index) => (

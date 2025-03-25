@@ -14,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const user = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(user);
+  console.log(user?.displayName);
   const isHomePage = location.pathname === "/";
 
   const links = (

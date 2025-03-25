@@ -41,7 +41,6 @@ const Shop = () => {
 
     fetchProducts();
   }, [sortBy, searchQuery, selectedCategory]);
-  console.log(selectedCategory);
 
   // Handle sorting
   const handleSortChange = (e) => {
