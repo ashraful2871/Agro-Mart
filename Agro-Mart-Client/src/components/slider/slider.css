@@ -40,6 +40,11 @@
   clip-path: ellipse(150% 100% at center top);
 }
 
+.slider-image:not(.zoom-effect) {
+  width: 100%;
+  height: 100%;
+}
+
 @media (max-width: 768px) {
   .slider-image {
     clip-path: ellipse(110% 90% at center top);
