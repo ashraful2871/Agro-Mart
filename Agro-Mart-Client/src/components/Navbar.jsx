@@ -34,8 +34,15 @@ const Navbar = () => {
         <NavLink
           to="/shop"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           Shop
         </NavLink>
@@ -44,8 +51,15 @@ const Navbar = () => {
         <NavLink
           to="/about"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           About
         </NavLink>
@@ -54,8 +68,15 @@ const Navbar = () => {
         <NavLink
           to="/contact"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? !isHomePage
+                ? "text-green-400"
+                : ""
+              : isHomePage
+              ? "text-white"
+              : ""
           }
+          style={{ color: "", backgroundColor: "transparent" }}
         >
           Contact
         </NavLink>
@@ -81,10 +102,10 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50 ${
+      className={`navbar px-4 lg:px-8 transition-all duration-300 z-50  ${
         isHomePage
           ? "bg-transparent absolute top-0 left-0 w-full"
-          : "bg-base-100 shadow-md"
+          : "bg-base-100 shadow-md "
       }`}
     >
       {/* Left Section */}
