@@ -17,7 +17,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 // Configuration
 const MAX_ATTEMPTS = 3;
-const LOCK_DURATION = 5 * 60 * 1000; // 5 minutes
+const LOCK_DURATION = 1 * 60 * 1000; // 5 minutes
 
 // Token management
 const storeToken = (token) => localStorage.setItem("accessToken", token);
@@ -64,28 +64,52 @@ export const signInUser = createAsyncThunk(
     const normalizedEmail = email.toLowerCase();
 
     try {
-      // Always try to login first (main auth flow)
+      // First check if account is locked and if the lock has expired
+      const userRef = doc(db, "failedLogins", normalizedEmail);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        const { lockedUntil } = userDoc.data();
+        // If account is currently locked
+        if (lockedUntil && Date.now() < lockedUntil) {
+          const remainingTime = Math.ceil(
+            (lockedUntil - Date.now()) / (60 * 1000)
+          );
+          return rejectWithValue(
+            `Account locked. Try again in ${remainingTime} minute(s).`
+          );
+        }
+        // If lock has expired, reset the attempts
+        else if (lockedUntil) {
+          await setDoc(
+            userRef,
+            {
+              attempts: 0,
+              lockedUntil: null,
+              lastAttempt: null,
+            },
+            { merge: true }
+          );
+        }
+      }
+
+      // Proceed with normal login
       const userCredential = await signInWithEmailAndPassword(
         auth,
         normalizedEmail,
         password
       );
 
-      // If login succeeds, try to reset attempts (optional)
-      try {
-        const userRef = doc(db, "failedLogins", normalizedEmail);
-        await setDoc(
-          userRef,
-          {
-            attempts: 0,
-            lockedUntil: null,
-            lastAttempt: null,
-          },
-          { merge: true }
-        );
-      } catch (firestoreError) {
-        console.log("Failed to reset attempts (non-critical):", firestoreError);
-      }
+      // Reset attempts on successful login
+      await setDoc(
+        userRef,
+        {
+          attempts: 0,
+          lockedUntil: null,
+          lastAttempt: null,
+        },
+        { merge: true }
+      );
 
       return { user: userCredential.user };
     } catch (authError) {
@@ -95,7 +119,8 @@ export const signInUser = createAsyncThunk(
       try {
         const userRef = doc(db, "failedLogins", normalizedEmail);
         const userDoc = await getDoc(userRef);
-        const attempts = userDoc.exists() ? userDoc.data().attempts + 1 : 1;
+        const userData = userDoc.exists() ? userDoc.data() : {};
+        const attempts = userData.attempts ? userData.attempts + 1 : 1;
 
         if (attempts >= MAX_ATTEMPTS) {
           await setDoc(
@@ -131,6 +156,8 @@ export const signInUser = createAsyncThunk(
     }
   }
 );
+
+//google login
 export const googleLogin = createAsyncThunk(
   "auth/googleLogin",
   async (_, { rejectWithValue }) => {

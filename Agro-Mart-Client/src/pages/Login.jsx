@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { googleLogin, signInUser, clearError } from "../store/authSlice";
@@ -6,14 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
-
+import loginAni from "../../public/login.json";
+import Lottie from "lottie-react";
+import { ThemeContext } from "../provider/ThemeProvider";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { error } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { theme } = useContext(ThemeContext);
   useEffect(() => {
     return () => dispatch(clearError());
   }, [dispatch]);
@@ -75,11 +77,15 @@ const Login = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">
+      <div
+        className={`hidden md:flex md:w-1/2 ${
+          theme === "dark" ? "" : "bg-green-50"
+        } items-center justify-center p-6`}
+      >
         <div className="w-full max-w-sm">
-          {/* <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm">
             <Lottie animationData={loginAni} loop={true} />
-          </div> */}
+          </div>
         </div>
       </div>
 
@@ -129,7 +135,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
             >
-              Sign in
+              {isLoading ? "Loading..." : "Sign in"}
             </button>
           </form>
           <div className="flex items-center my-4">
