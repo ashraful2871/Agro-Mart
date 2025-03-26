@@ -8,29 +8,32 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../firebase/firebase.init";
+import { auth, db } from "../firebase/firebase.init";
 import axios from "axios";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 const API_URL = import.meta.env.VITE_API_URL;
+
+// Configuration
+const MAX_ATTEMPTS = 3;
+const LOCK_DURATION = 1 * 60 * 1000; // 5 minutes
 
 // Token management
 const storeToken = (token) => localStorage.setItem("accessToken", token);
 const removeToken = () => localStorage.removeItem("accessToken");
 
-// Fetch JWT token from backend
 const fetchToken = async (email) => {
   try {
     const { data } = await axios.post(`${API_URL}/jwt`, { email });
     storeToken(data.token);
     return data.token;
   } catch (error) {
-    console.log("error fetching token", error);
+    console.error("Error fetching token:", error);
     throw error;
   }
 };
 
-// Sign up user with profile data
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
   async ({ email, password, name, photo }, { rejectWithValue }) => {
@@ -46,49 +49,122 @@ export const signUpUser = createAsyncThunk(
         displayName: name,
         photoURL: photo,
       });
-      const token = await fetchToken(email);
 
-      return {
-        user: {
-          ...user,
-          displayName: name,
-          photoURL: photo,
-        },
-      };
+      const token = await fetchToken(email);
+      return { user: { ...user, displayName: name, photoURL: photo } };
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.message);
     }
   }
 );
 
-// Sign in user
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
   async ({ email, password }, { rejectWithValue }) => {
+    const normalizedEmail = email.toLowerCase();
+
     try {
+      // First check if account is locked and if the lock has expired
+      const userRef = doc(db, "failedLogins", normalizedEmail);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        const { lockedUntil } = userDoc.data();
+        // If account is currently locked
+        if (lockedUntil && Date.now() < lockedUntil) {
+          const remainingTime = Math.ceil(
+            (lockedUntil - Date.now()) / (60 * 1000)
+          );
+          return rejectWithValue(
+            `Account locked. Try again in ${remainingTime} minute(s).`
+          );
+        }
+        // If lock has expired, reset the attempts
+        else if (lockedUntil) {
+          await setDoc(
+            userRef,
+            {
+              attempts: 0,
+              lockedUntil: null,
+              lastAttempt: null,
+            },
+            { merge: true }
+          );
+        }
+      }
+
+      // Proceed with normal login
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        email,
+        normalizedEmail,
         password
       );
-      const user = userCredential.user;
-      const token = await fetchToken(email);
-      return { user };
-    } catch (error) {
-      return rejectWithValue(error.message);
+
+      // Reset attempts on successful login
+      await setDoc(
+        userRef,
+        {
+          attempts: 0,
+          lockedUntil: null,
+          lastAttempt: null,
+        },
+        { merge: true }
+      );
+
+      return { user: userCredential.user };
+    } catch (authError) {
+      // Handle failed login attempt
+      let errorMessage = "Login failed";
+
+      try {
+        const userRef = doc(db, "failedLogins", normalizedEmail);
+        const userDoc = await getDoc(userRef);
+        const userData = userDoc.exists() ? userDoc.data() : {};
+        const attempts = userData.attempts ? userData.attempts + 1 : 1;
+
+        if (attempts >= MAX_ATTEMPTS) {
+          await setDoc(
+            userRef,
+            {
+              attempts,
+              lockedUntil: Date.now() + LOCK_DURATION,
+              lastAttempt: new Date().toISOString(),
+            },
+            { merge: true }
+          );
+          errorMessage = `Too many failed attempts. Account locked for ${
+            LOCK_DURATION / (60 * 1000)
+          } minutes.`;
+        } else {
+          await setDoc(
+            userRef,
+            {
+              attempts,
+              lockedUntil: null,
+              lastAttempt: new Date().toISOString(),
+            },
+            { merge: true }
+          );
+          errorMessage = `Invalid email or password. Attempt ${attempts} of ${MAX_ATTEMPTS}.`;
+        }
+      } catch (firestoreError) {
+        console.log("Account lockout service unavailable:", firestoreError);
+        errorMessage = "Invalid email or password. System features limited.";
+      }
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
-// Google login
+//google login
 export const googleLogin = createAsyncThunk(
   "auth/googleLogin",
   async (_, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
-      const token = await fetchToken(user.email);
+      await fetchToken(user.email);
       return { user };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -96,7 +172,6 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
-// Logout
 export const logOut = createAsyncThunk(
   "auth/logOut",
   async (_, { rejectWithValue }) => {
@@ -110,7 +185,6 @@ export const logOut = createAsyncThunk(
   }
 );
 
-// Update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
   async ({ name, photo }, { rejectWithValue }) => {
@@ -119,17 +193,13 @@ export const updateUserProfile = createAsyncThunk(
         displayName: name,
         photoURL: photo,
       });
-      return {
-        displayName: name,
-        photoURL: photo,
-      };
+      return { displayName: name, photoURL: photo };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-// Auth state observer
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
@@ -137,14 +207,9 @@ export const InitializeAuthListener = createAsyncThunk(
       const unSub = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
           await currentUser.reload();
-          const updatedUser = auth.currentUser;
-
           const token = localStorage.getItem("accessToken");
-          if (!token) {
-            const newToken = await fetchToken(updatedUser.email);
-            storeToken(newToken);
-          }
-          dispatch(setUser({ user: updatedUser }));
+          if (!token) await fetchToken(currentUser.email);
+          dispatch(setUser({ user: currentUser }));
         } else {
           dispatch(setUser(null));
         }
@@ -170,11 +235,15 @@ const authSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(signUpUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -186,6 +255,7 @@ const authSlice = createSlice({
       })
       .addCase(signInUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(signInUser.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -197,6 +267,7 @@ const authSlice = createSlice({
       })
       .addCase(googleLogin.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -208,13 +279,10 @@ const authSlice = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         if (state.user) {
-          state.user = {
-            ...state.user,
-            user: {
-              ...state.user.user,
-              displayName: action.payload.displayName,
-              photoURL: action.payload.photoURL,
-            },
+          state.user.user = {
+            ...state.user.user,
+            displayName: action.payload.displayName,
+            photoURL: action.payload.photoURL,
           };
         }
       })
@@ -227,5 +295,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setLoading } = authSlice.actions;
+export const { setUser, setLoading, clearError } = authSlice.actions;
 export default authSlice.reducer;

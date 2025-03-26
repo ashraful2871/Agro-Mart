@@ -1,66 +1,91 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { googleLogin, signInUser } from "../store/authSlice";
-import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { googleLogin, signInUser, clearError } from "../store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
+import loginAni from "../../public/login.json";
+import Lottie from "lottie-react";
+import { ThemeContext } from "../provider/ThemeProvider";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const handleSubmit = (e) => {
+  const { error } = useSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useContext(ThemeContext);
+  useEffect(() => {
+    return () => dispatch(clearError());
+  }, [dispatch]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
 
-    //sign  in user
-    dispatch(signInUser({ email, password }))
-      .unwrap()
-      .then(() => {
-        toast.success("Account Login successfully!");
+    try {
+      const result = await dispatch(signInUser({ email, password })).unwrap();
+      if (result.user) {
+        toast.success("Logged in successfully!");
         navigate(location?.state?.from || "/");
-      })
-      .catch((error) => {
-        toast.error(error.message || "Login failed!");
+      }
+    } catch (error) {
+      let errorMessage =
+        typeof error === "string" ? error : error.message || "Login failed";
+
+      // Special handling for permission errors
+      if (error.code === "permission-denied") {
+        errorMessage =
+          "Login service temporarily unavailable. Please try again later.";
+        console.error("Firestore permission error:", error);
+      }
+
+      toast.error(errorMessage, {
+        duration: errorMessage.includes("locked") ? 8000 : 4000,
       });
+    } finally {
+      setIsLoading(false);
+    }
   };
-  // google login
+
   const handleContinueGoogle = async () => {
     try {
+      setIsLoading(true);
       const result = await dispatch(googleLogin()).unwrap();
       const user = result?.user;
 
       if (user) {
-        navigate(location?.state?.from || "/"); // Navigate immediately
-
-        // Send user info to the backend (without delaying navigation)
-        const userInfo = {
-          name: user?.displayName,
-          email: user?.email,
-          photo: user?.photoURL,
-          uid: user?.uid,
+        navigate(location?.state?.from || "/");
+        await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
           role: "user",
-        };
-        axios
-          .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
-          .catch(console.log);
+        });
       }
     } catch (error) {
-      console.log(error);
       toast.error("Google login failed!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">
+      <div
+        className={`hidden md:flex md:w-1/2 ${
+          theme === "dark" ? "" : "bg-green-50"
+        } items-center justify-center p-6`}
+      >
         <div className="w-full max-w-sm">
-          {/* <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm">
             <Lottie animationData={loginAni} loop={true} />
-          </div> */}
+          </div>
         </div>
       </div>
 
@@ -110,7 +135,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
             >
-              Sign in
+              {isLoading ? "Loading..." : "Sign in"}
             </button>
           </form>
           <div className="flex items-center my-4">
