@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { IoCart } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import ProductsCard from "./ProductsCard";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -15,6 +16,7 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,7 +93,11 @@ const Shop = () => {
         {/* Left Sidebar for large screens */}
         <div className="w-1/4 p-5 rounded-lg shadow-sm hidden lg:block">
           {/* Search Box */}
-          <div className="bg-white p-4 rounded-lg mb-5">
+          <div
+            className={`${
+              theme === "dark" ? "bg-black" : "bg-base-100"
+            }  p-4 rounded-xl mb-5`}
+          >
             <h3 className="text-xl font-bold mb-4">Search</h3>
             <input
               type="text"
@@ -103,11 +109,15 @@ const Shop = () => {
           </div>
 
           {/* Categories */}
-          <div className="bg-white p-4 rounded-lg mb-5">
+          <div
+            className={`${
+              theme === "dark" ? "bg-black" : "bg-base-100"
+            }  p-4 rounded-xl mb-5`}
+          >
             <h3 className="text-xl font-semibold mb-3">Categories</h3>
             <ul className="space-y-2">
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("")}
               >
                 <div>All Categories</div>
@@ -115,7 +125,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Seeds & Plants")}
               >
                 <div>Seeds & Plants</div>
@@ -130,7 +140,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Farming Equipment")}
               >
                 <div>Farming Equipment</div>
@@ -145,7 +155,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fertilizers & Pesticides")}
               >
                 <div>Fertilizers & Pesticides</div>
@@ -161,7 +171,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Agricultural Tools")}
               >
                 <div>Agricultural Tools</div>
@@ -176,7 +186,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Vegetables")}
               >
                 <div>Vegetables</div>
@@ -186,7 +196,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fruits")}
               >
                 <div>Fruits</div>
@@ -196,7 +206,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fresh Fish & Seafood")}
               >
                 <div>Fresh Fish & Seafood</div>
@@ -212,7 +222,7 @@ const Shop = () => {
               </li>
               <div className="divider"></div>
               <li
-                className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Dairy & Milk Products")}
               >
                 <div>Dairy & Milk Products</div>
@@ -230,31 +240,83 @@ const Shop = () => {
           </div>
 
           {/* Tags */}
-          <div className="bg-white p-4 rounded-lg mb-5">
+          <div
+            className={`${
+              theme === "dark" ? "bg-black" : "bg-base-100"
+            } p-4 rounded-xl mb-5`}
+          >
             <h3 className="text-xl font-semibold mb-3">Tags</h3>
             <div className="flex flex-wrap gap-2">
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Agriculture
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Dairy
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Design
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Garden
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Healthy
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Landscaping
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Nature
               </span>
-              <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+              <span
+                className={`${
+                  theme === "dark"
+                    ? "bg-black border border-green-700"
+                    : "bg-gray-200"
+                } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
+              >
                 Organic
               </span>
             </div>
@@ -313,7 +375,7 @@ const Shop = () => {
                     <h3 className="text-xl font-semibold mb-3">Categories</h3>
                     <ul className="space-y-2">
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("")}
                       >
                         <div>All Categories</div>
@@ -321,7 +383,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Seeds & Plants")}
                       >
                         <div>Seeds & Plants</div>
@@ -337,7 +399,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Farming Equipment")}
                       >
                         <div>Farming Equipment</div>
@@ -353,7 +415,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() =>
                           handleCategoryClick("Fertilizers & Pesticides")
                         }
@@ -371,7 +433,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() =>
                           handleCategoryClick("Agricultural Tools")
                         }
@@ -389,7 +451,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Vegetables")}
                       >
                         <div>Vegetables</div>
@@ -404,7 +466,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Fruits")}
                       >
                         <div>Fruits</div>
@@ -419,7 +481,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() =>
                           handleCategoryClick("Fresh Fish & Seafood")
                         }
@@ -437,7 +499,7 @@ const Shop = () => {
                       </li>
                       <div className="divider"></div>
                       <li
-                        className="text-gray-600 flex justify-between cursor-pointer hover:text-green-700"
+                        className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() =>
                           handleCategoryClick("Dairy & Milk Products")
                         }
@@ -460,28 +522,76 @@ const Shop = () => {
                   <div className="bg-white p-4 rounded-lg mb-5">
                     <h3 className="text-xl font-semibold mb-3">Tags</h3>
                     <div className="flex flex-wrap gap-2">
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Agriculture
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Dairy
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Design
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Garden
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Healthy
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Landscaping
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Nature
                       </span>
-                      <span className="bg-gray-200 hover:bg-green-700 text-gray-600 hover:text-white px-3 py-1 rounded-full">
+                      <span
+                        className={`${
+                          theme === "dark"
+                            ? "bg-black border border-green-700"
+                            : "bg-gray-200"
+                        } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
+                      >
                         Organic
                       </span>
                     </div>
@@ -527,7 +637,7 @@ const Shop = () => {
                   className={`px-4 py-2 mx-1 rounded-full ${
                     currentPage === i + 1
                       ? "bg-green-700 text-white"
-                      : "bg-gray-200 text-gray-700"
+                      : "bg-gray-200 text-base-content"
                   }`}
                 >
                   {i + 1}
