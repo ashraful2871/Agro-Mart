@@ -3,6 +3,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { IoCart } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
+import ProductsCard from "./ProductsCard";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -502,32 +503,9 @@ const Shop = () => {
           </div>
 
           {/* Products */}
-          <div className="flex flex-wrap gap-5 rounded-br-3xl">
+          <div className="grid grid-cols-4 gap-5 rounded-br-3xl">
             {products.map((product) => (
-              <div
-                key={product._id}
-                className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm w-full md:w-[calc(33.333%-20px)] relative cursor-pointer" // Add cursor-pointer for better UX
-              >
-                <img
-                  src={product.image}
-                  alt=""
-                  className="h-60 w-full bg-cover"
-                  key={product._id}
-                  onClick={() => handleDetails(product._id)}
-                />
-                <h3 className="text-xl font-semibold my-2">{product.name}</h3>
-                <p className="text-gray-500 text-xl font-bold">
-                  {product.category}
-                </p>
-                <p className="text-green-700 font-bold mt-2">
-                  ${product.price.toFixed(2)}
-                </p>
-                <div className="absolute bottom-0 right-0 z-10">
-                  <button className="bg-green-700 text-white text-3xl p-4 rounded-tl-3xl rounded-br-3xl">
-                    <IoCart />
-                  </button>
-                </div>
-              </div>
+              <ProductsCard product={product} key={product._id}></ProductsCard>
             ))}
           </div>
 

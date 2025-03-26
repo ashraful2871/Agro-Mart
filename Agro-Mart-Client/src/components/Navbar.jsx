@@ -103,9 +103,7 @@ const Navbar = () => {
   return (
     <div
       className={`navbar fixed bg-opacity-30 bg-black px-4 lg:px-8 transition-all duration-300 z-50 ${
-        isHomePage
-          ? " top-0 left-0 w-full"
-          : "bg-base-100 shadow-md"
+        isHomePage ? " top-0 left-0 w-full" : "bg-base-100 shadow-md"
       }`}
     >
       {/* Left Section */}
@@ -163,11 +161,9 @@ const Navbar = () => {
                 </div>
                 <div>
                   <span
-                    className={`${
-                      !isHomePage ? "text-black" : "text-white"
-                    }${
-                       theme === "dark" ? "text-white" : ""
-                     } font-syne`}
+                    className={`${!isHomePage ? "text-black" : "text-white"}${
+                      theme === "dark" ? "text-white" : ""
+                    } font-syne`}
                   >
                     {user?.displayName}
                   </span>
