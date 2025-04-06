@@ -14,7 +14,11 @@ const MainLayout = () => {
   const isSignUpPage = location.pathname === "/register";
   return (
     <div className={`${theme === "dark" ? "" : "bg-gray-100"}`}>
-      <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
+      <div
+        className={`${!isHomePage ? "h-16" : ""} ${
+          isLoginPage || isSignUpPage ? "hidden" : ""
+        }`}
+      >
         <Navbar></Navbar>
       </div>
       <div
@@ -25,8 +29,8 @@ const MainLayout = () => {
         }`}
       >
         <div
-          className={`min-h-[814px]  md:px-2 lg:px-0 ${
-            !isHomePage && !isLoginPage && !isSignUpPage ? "pt-10" : ""
+          className={`min-h-[814px]   md:px-2 lg:px-0 ${
+            !isHomePage && !isLoginPage && !isSignUpPage ? "mt-3" : ""
           }`}
         >
           <Outlet></Outlet>
