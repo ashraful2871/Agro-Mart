@@ -359,8 +359,10 @@ const Shop = () => {
                 ></label>
                 <div className="w-64 p-5 bg-white rounded-lg shadow-sm">
                   {/* Search Box */}
-                  <div className="bg-white p-4 rounded-lg mb-5">
-                    <h3 className="text-xl font-bold mb-4">Search</h3>
+                  <div  className={`${
+                    theme === "dark" ? "bg-black" : "bg-base-100"
+                  }  p-4 rounded-xl mb-5`} >
+                    <h3 className=" text-xl font-bold mb-4">Search</h3>
                     <input
                       type="text"
                       placeholder="Search products by name..."
@@ -371,7 +373,12 @@ const Shop = () => {
                   </div>
 
                   {/* Categories */}
-                  <div className="bg-white p-4 rounded-lg mb-5">
+                  <div
+                  className={`${
+                    theme === "dark"
+                      ? "bg-black border"
+                      : "bg-white"
+                  } p-4 rounded-lg mb-5`}>
                     <h3 className="text-xl font-semibold mb-3">Categories</h3>
                     <ul className="space-y-2">
                       <li
@@ -519,8 +526,10 @@ const Shop = () => {
                   </div>
 
                   {/* Tags */}
-                  <div className="bg-white p-4 rounded-lg mb-5">
-                    <h3 className="text-xl font-semibold mb-3">Tags</h3>
+                  <div  className={`${
+              theme === "dark" ? "bg-black" : "bg-base-100"
+            } p-4 rounded-xl mb-5`}>
+                    <h3 className="text-black text-xl font-semibold mb-3">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       <span
                         className={`${
@@ -613,7 +622,7 @@ const Shop = () => {
           </div>
 
           {/* Products */}
-          <div className="grid grid-cols-4 gap-5 rounded-br-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 rounded-br-3xl">
             {products.map((product) => (
               <ProductsCard product={product} key={product._id}></ProductsCard>
             ))}
