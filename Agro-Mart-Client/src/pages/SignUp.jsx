@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { googleLogin, signUpUser } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FaArrowLeft } from "react-icons/fa";
+import { ThemeContext } from "../provider/ThemeProvider";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -13,6 +14,7 @@ const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,24 +102,29 @@ const SignUp = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Side - Animation (Hidden on Small Screens) */}
-      <div className="hidden md:flex md:w-1/2 bg-green-50 items-center justify-center p-6">
-        {/* Animation can be added here */}
+      <div className={`hidden md:flex `}>
+        {/* <Lottie animationData={loginAni} loop={true} /> */}
+        <img src="https://i.ibb.co.com/XrqVDTBr/loginpage.jpg" alt="" />
       </div>
 
       {/* Right Side - Sign Up Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6">
-        <div className="max-w-sm w-full">
-          <h1 className="text-3xl font-bold text-green-700 text-center uppercase">
+      <div className="w-full md:w-[60%]  flex items-center justify-center p-6">
+        <div className="max-w-lg w-full">
+          <h1
+            className={`text-3xl font-bold ${
+              theme === "dark" ? "text-green-500" : "text-green-700"
+            }  text-center uppercase`}
+          >
             Create an account
           </h1>
-          <p className="text-gray-500 mb-6 text-center">
+          <p className="text-base-content mb-6 text-center">
             Please enter your details
           </p>
 
           <form onSubmit={handleSubmit}>
             {/* name */}
             <div className="mb-4">
-              <label className="block text-gray-700">Name</label>
+              <label className="block text-base-content">Name</label>
               <input
                 type="text"
                 name="name"
@@ -129,7 +136,7 @@ const SignUp = () => {
 
             {/* email address */}
             <div className="mb-4">
-              <label className="block text-gray-700">Email address</label>
+              <label className="block text-base-content">Email address</label>
               <input
                 type="email"
                 name="email"
@@ -141,7 +148,7 @@ const SignUp = () => {
 
             {/* Photo */}
             <div className="mb-4">
-              <label className="block text-gray-700">Photo</label>
+              <label className="block text-base-content">Photo</label>
               <input
                 type="file"
                 name="image"
@@ -152,7 +159,7 @@ const SignUp = () => {
 
             {/* Password */}
             <div className="mb-4">
-              <label className="block text-gray-700">Password</label>
+              <label className="block text-base-content">Password</label>
               <input
                 type="password"
                 name="password"
@@ -165,7 +172,7 @@ const SignUp = () => {
             {/* Sign Up Button */}
             <button
               type="submit"
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+              className="w-full bg-green-600 text-white py-3 text-lg rounded-lg hover:bg-green-700 transition"
             >
               Sign Up
             </button>
@@ -173,32 +180,44 @@ const SignUp = () => {
 
           <div className="flex items-center my-4">
             <div className="border-b w-full"></div>
-            <span className="mx-3 text-gray-400">or</span>
+            <span className="mx-3 text-base-content">or</span>
             <div className="border-b w-full"></div>
           </div>
 
           <button
             onClick={handleContinueGoogle}
-            className="w-full flex items-center justify-center border py-3 rounded-lg hover:bg-gray-100 transition"
+            className="w-full flex items-center justify-center border py-3 rounded-lg  transition"
           >
             <FcGoogle className="mr-2 text-2xl" /> Continue With Google
           </button>
 
-          <p className="mt-4 text-gray-600 text-center">
+          <p className="mt-4 text-base-content text-center">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-green-700 hover:underline font-semibold"
+              className={`${
+                theme === "dark" ? "text-green-500" : "text-green-700"
+              }  hover:underline font-semibold`}
             >
               Login
             </Link>
           </p>
           <Link to="/">
             <div className="text-green-800 text-center font-semibold flex justify-center mt-4 items-center gap-2">
-              <span>
+              <span
+                className={`${
+                  theme === "dark" ? "text-green-500" : "text-green-700"
+                }  hover:underline font-semibold`}
+              >
                 <FaArrowLeft />
               </span>
-              <span>Back to home</span>
+              <span
+                className={`${
+                  theme === "dark" ? "text-green-500" : "text-green-700"
+                }  hover:underline font-semibold`}
+              >
+                Back to home
+              </span>
             </div>
           </Link>
         </div>

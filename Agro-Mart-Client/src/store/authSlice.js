@@ -10,14 +10,14 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../firebase/firebase.init";
 import axios from "axios";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Configuration
 const MAX_ATTEMPTS = 3;
-const LOCK_DURATION = 1 * 60 * 1000; // 5 minutes
+const LOCK_DURATION = 1 * 60 * 1000;
 
 // Token management
 const storeToken = (token) => localStorage.setItem("accessToken", token);
@@ -34,6 +34,7 @@ const fetchToken = async (email) => {
   }
 };
 
+//sign up user
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
   async ({ email, password, name, photo }, { rejectWithValue }) => {
@@ -58,6 +59,7 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
+//sign in user
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
   async ({ email, password }, { rejectWithValue }) => {
@@ -70,6 +72,7 @@ export const signInUser = createAsyncThunk(
 
       if (userDoc.exists()) {
         const { lockedUntil } = userDoc.data();
+
         // If account is currently locked
         if (lockedUntil && Date.now() < lockedUntil) {
           const remainingTime = Math.ceil(
@@ -100,7 +103,7 @@ export const signInUser = createAsyncThunk(
         password
       );
 
-      // Reset attempts on successful login
+      //  on successful login reset attempts
       await setDoc(
         userRef,
         {
@@ -172,6 +175,7 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
+//user logout
 export const logOut = createAsyncThunk(
   "auth/logOut",
   async (_, { rejectWithValue }) => {
@@ -185,6 +189,7 @@ export const logOut = createAsyncThunk(
   }
 );
 
+//update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
   async ({ name, photo }, { rejectWithValue }) => {
@@ -200,6 +205,7 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+//observer
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
