@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -205,6 +206,33 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+//reset password
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (email, { rejectWithValue }) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return { message: "password reset email sent successfully" };
+    } catch (error) {
+      let errorMessage = "Failed to sent reset email";
+      switch (error.code) {
+        case "auth/user-not-found":
+          errorMessage = "No user found with this email address";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "The email address is invalid";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Too many requests. Please try again later";
+          break;
+        default:
+          errorMessage = error.message;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 //observer
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
@@ -297,6 +325,19 @@ const authSlice = createSlice({
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.resetPasswordMessage = action.payload.message;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
