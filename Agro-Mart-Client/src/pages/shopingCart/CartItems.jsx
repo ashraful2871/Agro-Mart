@@ -3,6 +3,7 @@ import { FiMinus, FiPlus, FiX } from "react-icons/fi";
 
 const CartItems = ({ cart }) => {
   const { name, image, price } = cart;
+  //   const { name, image, price } = cart;
   return (
     <div className="flex items-center justify-between border-b py-4">
       <div className="w-2/5 flex items-center gap-4">
