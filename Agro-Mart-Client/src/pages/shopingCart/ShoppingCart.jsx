@@ -2,10 +2,11 @@ import React from "react";
 import CartItems from "./CartItems";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Loading from "../../components/loading/Loading";
 
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: cartData } = useQuery({
+  const { data: cartData, isLoading } = useQuery({
     queryKey: ["all-cart"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/all-cart-items");
@@ -13,6 +14,9 @@ const ShoppingCart = () => {
     },
   });
   console.log(cartData);
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <div className="px-10 py-10  min-h-screen">
       <h1 className="text-center text-3xl font-bold mb-10">My Shopping Cart</h1>
@@ -27,7 +31,7 @@ const ShoppingCart = () => {
           </div>
 
           {/* cart items */}
-          {cartData.map((cart) => (
+          {cartData?.map((cart) => (
             <CartItems cart={cart}></CartItems>
           ))}
 
