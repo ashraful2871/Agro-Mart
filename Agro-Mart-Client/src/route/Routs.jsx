@@ -16,6 +16,7 @@ import Contact from "../pages/Contact/MainContactFile/Contact";
 import Overview from "../pages/Dashboard/overview/Overview";
 import Orders from "../pages/Dashboard/Orders/Orders";
 import Customers from "../pages/Dashboard/Customers/Customers";
+import PasswordReset from "../pages/password-reset/PasswordReset";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <SignUp></SignUp>,
+      },
+      {
+        path: "/password/reset",
+        element: <PasswordReset></PasswordReset>,
       },
     ],
   },
