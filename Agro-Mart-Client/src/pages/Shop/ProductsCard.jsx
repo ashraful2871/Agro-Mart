@@ -9,9 +9,10 @@ import useAuth from "../../hooks/useAuth";
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
-  const { image, _id, name, category, price } = product;
+  const { image, name, category, price } = product;
 
-  const addCard = async (product) => {
+  const addCard = async (cartProduct) => {
+    const { image, _id, name, category, price } = cartProduct;
     const cardData = {
       image,
       productId: _id,
