@@ -77,7 +77,6 @@ const Login = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className={`hidden md:flex `}>
-        {/* <Lottie animationData={loginAni} loop={true} /> */}
         <img src="https://i.ibb.co.com/XrqVDTBr/loginpage.jpg" alt="" />
       </div>
 
