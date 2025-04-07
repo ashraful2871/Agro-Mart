@@ -17,6 +17,7 @@ import Overview from "../pages/Dashboard/overview/Overview";
 import Orders from "../pages/Dashboard/Orders/Orders";
 import Customers from "../pages/Dashboard/Customers/Customers";
 import PasswordReset from "../pages/password-reset/PasswordReset";
+import ShoppingCart from "../pages/shopingCart/ShoppingCart";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
             <Shop></Shop>
           </Privet>
         ),
+      },
+      {
+        path: "/shopping-cart",
+        element: <ShoppingCart></ShoppingCart>,
       },
       {
         path: "/about",
