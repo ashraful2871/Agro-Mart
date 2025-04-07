@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
-import loginAni from "../../public/login.json";
-import Lottie from "lottie-react";
 import { ThemeContext } from "../provider/ThemeProvider";
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,6 +14,7 @@ const Login = () => {
   const { error } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
+
   useEffect(() => {
     return () => dispatch(clearError());
   }, [dispatch]);
@@ -84,16 +83,16 @@ const Login = () => {
 
       <div className="w-full md:w-[60%]  flex items-center justify-center p-6 ">
         <div className="max-w-lg w-full">
-          <h1
-            className={`text-3xl font-bold ${
-              theme === "dark" ? "text-green-500" : "text-green-700"
-            }  text-center uppercase`}
-          >
-            Welcome back !
-          </h1>
-          <p className="text-base-content mb-6 text-center">
-            Login to your account.
-          </p>
+          <div className="mb-6 space-y-2">
+            <h1
+              className={`text-3xl font-bold ${
+                theme === "dark" ? "text-green-500" : "text-green-700"
+              }   uppercase`}
+            >
+              Welcome back !
+            </h1>
+            <p className="text-base-content  ">Login to your account.</p>
+          </div>
 
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -123,7 +122,7 @@ const Login = () => {
                   <input
                     type="checkbox"
                     required
-                    className="checkbox  checked:bg-green-600 checked:text-white text-base-content "
+                    className="checkbox checkbox-success  checked:bg-green-600 checked:text-white text-base-content "
                   />
                   Remember me
                 </label>
