@@ -14,7 +14,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   console.log(user?.displayName);
   const isHomePage = location.pathname === "/";
 
@@ -24,7 +24,11 @@ const Navbar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
+              : isHomePage
+              ? "text-white"
+              : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
         >
@@ -37,10 +41,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -54,10 +58,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -71,10 +75,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -103,7 +107,9 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar fixed bg-opacity-30 bg-black px-4 lg:px-8 transition-all duration-300 z-50 ${
+      className={`navbar fixed ${
+        theme === "dark" ? "bg-black" : "bg-gray-300"
+      } px-4 lg:px-8 transition-all duration-300 z-50 ${
         isHomePage ? " top-0 left-0 w-full" : "bg-base-100 shadow-md"
       }`}
     >
@@ -117,7 +123,9 @@ const Navbar = () => {
           />
           <span
             className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
-              isHomePage ? "text-white" : ""
+              isHomePage
+                ? `${theme === "dark" ? "text-white" : "text-black"}`
+                : ""
             }`}
           >
             AgroMart
@@ -138,7 +146,11 @@ const Navbar = () => {
           <div>
             <NavLink
               className={({ isActive }) =>
-                isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+                isActive
+                  ? "text-green-700"
+                  : isHomePage
+                  ? `${theme === "dark" ? "text-white" : "text-black"}`
+                  : ""
               }
               style={{ color: "", backgroundColor: "transparent" }}
               to="/shopping-cart"
@@ -176,7 +188,7 @@ const Navbar = () => {
                 <div>
                   <span
                     className={`${!isHomePage ? "text-black" : "text-white"}${
-                      theme === "dark" ? "text-white" : ""
+                      theme === "dark" ? "text-white" : "text-black"
                     } font-syne`}
                   >
                     {user?.displayName}
@@ -193,8 +205,8 @@ const Navbar = () => {
                 <Link
                   to="/profile"
                   className={`block px-4 py-2 text-base-content ${
-                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                  } hover:bg-gray-700`}
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  } `}
                 >
                   Profile
                 </Link>
@@ -203,7 +215,7 @@ const Navbar = () => {
                   c
                   className={`block px-4 py-2 text-base-content ${
                     theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                  } hover:bg-gray-700`}
+                  }`}
                 >
                   Dashboard
                 </Link>
