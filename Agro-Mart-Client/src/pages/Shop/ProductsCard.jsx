@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoCart } from "react-icons/io5";
 import { AiOutlineHeart, AiOutlineEye, AiOutlineSync } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import CartModal from "./CartModal";
 const ProductsCard = ({ product }) => {
-  const { image, _id, name, category, price } = product;
+  const { image, _id, name, category, price, stockQuantity } = product;
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
   return (
     <div>
       <div className="bg-base-100 border shadow-lg rounded-2xl relative z-10 overflow-hidden">
@@ -42,9 +47,15 @@ const ProductsCard = ({ product }) => {
         </div>
 
         {/* Cart Button */}
-        <button className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300">
+        <button onClick={openModal} className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300">
           <ShoppingCartOutlinedIcon className=" text-3xl " />
         </button>
+        {/* Cart Modal */}
+        <CartModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          product={product}
+        />
       </div>
     </div>
   );
