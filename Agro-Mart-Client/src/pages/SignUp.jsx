@@ -80,6 +80,7 @@ const SignUp = () => {
       const user = result?.user;
 
       if (user) {
+        toast.success("Logged in successfully!");
         navigate("/");
 
         // Send user info to the backend

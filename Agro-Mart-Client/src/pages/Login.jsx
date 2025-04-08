@@ -58,6 +58,7 @@ const Login = () => {
       const user = result?.user;
 
       if (user) {
+        toast.success("Logged in successfully!");
         navigate(location?.state?.from || "/");
         await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
           name: user.displayName,
