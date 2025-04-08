@@ -136,9 +136,15 @@ const Navbar = () => {
       <div className="navbar-end flex gap-4">
         <div className="flex items-center gap-3">
           <div>
-            <Link to="/shopping-cart">
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+              }
+              style={{ color: "", backgroundColor: "transparent" }}
+              to="/shopping-cart"
+            >
               <FaShoppingCart className="text-xl"></FaShoppingCart>
-            </Link>
+            </NavLink>
           </div>
           {/* toggle theme */}
           <div>
@@ -179,22 +185,33 @@ const Navbar = () => {
               </div>
 
               {/* Dropdown */}
-              <div className="absolute right-16 mt-2 w-48 bg-white shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              <div
+                className={`absolute right-6 mt-4 w-48 ${
+                  theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"
+                }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
+              >
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                  } hover:bg-gray-700`}
                 >
                   Profile
                 </Link>
                 <Link
                   to="/dashboard/overview"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  c
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                  } hover:bg-gray-700`}
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={signOutUser}
-                  className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200"
+                  className={`block w-full text-left px-4 py-2 text-red-600 ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                  }`}
                 >
                   Logout
                 </button>
