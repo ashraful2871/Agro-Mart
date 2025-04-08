@@ -6,6 +6,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
@@ -26,6 +27,9 @@ const ProductsCard = ({ product }) => {
     };
     const { data } = await axiosSecure.post("/add-cart", { cardData });
     console.log(data);
+    if (data.insertedId) {
+      toast.success("item added successfully in cart");
+    }
   };
   return (
     <div>
