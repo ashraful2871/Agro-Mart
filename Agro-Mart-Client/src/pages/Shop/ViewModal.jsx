@@ -2,10 +2,12 @@ import {
     Dialog,
     Transition,
   } from '@headlessui/react';
-  import { Fragment, useState } from 'react';
-  import toast from 'react-hot-toast';
+import { Fragment, useState } from 'react';
+import toast from 'react-hot-toast';
 import { AiOutlineHeart } from 'react-icons/ai';
-  import { FaFacebookF, FaTwitter, FaPinterestP, FaStar } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaPinterestP, FaStar } from 'react-icons/fa';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
   
   const ViewModal = ({ isOpen, closeModal, product }) => {
     const {
@@ -13,6 +15,7 @@ import { AiOutlineHeart } from 'react-icons/ai';
       price,
       image,
       category,
+      description,
       stockQuantity,
       discount = 64,
       oldPrice = 48,
@@ -38,6 +41,29 @@ import { AiOutlineHeart } from 'react-icons/ai';
     const handleAddToCart = () => {
       toast.success(`${name} added to cart`);
       closeModal();
+    };
+
+    const user = useAuth();
+    const axiosSecure = useAxiosSecure();
+
+    const addWish = async (wishProduct) => {
+      const { image, _id, name, category, price } = wishProduct;
+      const wishData = {
+        image,
+        productId: _id,
+        name,
+        category,
+        price,
+        userInfo: {
+          name: user?.displayName,
+          email: user?.email,
+        },
+      };
+      const { data } = await axiosSecure.post("/add-wish", { wishData });
+      console.log(data);
+      if (data.insertedId) {
+        toast.success("item added successfully in wish");
+      }
     };
   
     return (
@@ -94,9 +120,8 @@ import { AiOutlineHeart } from 'react-icons/ai';
                       </div>
                       </div>
   
-                      <p className="text-sm text-gray-600">
-                        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-                        himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum.
+                      <p className="text-sm py-2 text-gray-600">
+                        {description}
                       </p>
   
                       {/* Quantity selector */}
@@ -128,7 +153,7 @@ import { AiOutlineHeart } from 'react-icons/ai';
                         </button>
                         </div>
 
-                        <div>
+                        <div onClick={() => addWish(product)}>
                         <button className="p-2 bg-green-100 rounded-full">
                           <AiOutlineHeart className="text-green-600 text-lg" />
                         </button>

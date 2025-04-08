@@ -16,6 +16,7 @@ const ProductsCard = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
   const addCard = async (cartProduct) => {
     const { image, _id, name, category, price } = cartProduct;
     const cardData = {
@@ -35,6 +36,27 @@ const ProductsCard = ({ product }) => {
       toast.success("item added successfully in cart");
     }
   };
+
+  const addWish = async (wishProduct) => {
+    const { image, _id, name, category, price } = wishProduct;
+    const wishData = {
+      image,
+      productId: _id,
+      name,
+      category,
+      price,
+      userInfo: {
+        name: user?.displayName,
+        email: user?.email,
+      },
+    };
+    const { data } = await axiosSecure.post("/add-wish", { wishData });
+    console.log(data);
+    if (data.insertedId) {
+      toast.success("item added successfully in wish");
+    }
+  };
+  
   return (
     <div>
       <div className="bg-base-100 border shadow-lg rounded-2xl relative z-10 overflow-hidden">
@@ -49,7 +71,7 @@ const ProductsCard = ({ product }) => {
 
         {/* Floating Icons */}
         <div className="absolute top-4 right-4 flex flex-col gap-2 z-30">
-          <button className="p-2 bg-white shadow-md rounded-full">
+          <button onClick={() => addWish(product)} className="p-2 bg-white shadow-md rounded-full">
             <AiOutlineHeart className="text-green-600 text-lg" />
           </button>
           <button onClick={openModal} className="p-2 bg-white shadow-md rounded-full">
