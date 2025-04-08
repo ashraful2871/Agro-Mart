@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Sidebar from "./nav-sidebar/Sidebar";
 import { ThemeContext } from "../provider/ThemeProvider";
 import Theme from "./theme/Theme";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -133,9 +134,16 @@ const Navbar = () => {
 
       {/* Right Section (Cart & Profile) */}
       <div className="navbar-end flex gap-4">
-        {/* toggle theme */}
-        <div>
-          <Theme></Theme>
+        <div className="flex items-center gap-3">
+          <div>
+            <Link to="/shopping-cart">
+              <FaShoppingCart className="text-xl"></FaShoppingCart>
+            </Link>
+          </div>
+          {/* toggle theme */}
+          <div>
+            <Theme></Theme>
+          </div>
         </div>
         {/* Profile Dropdown */}
         {user ? (
