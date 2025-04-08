@@ -93,7 +93,7 @@ const Loading = () => {
         <img
           src="https://i.ibb.co.com/VcDYjKXm/agriMart.png"
           alt="Loading Logo"
-          className=" w-20"
+          className="w-20"
         />
       </div>
     </div>
