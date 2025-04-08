@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoCart } from "react-icons/io5";
 import { AiOutlineHeart, AiOutlineEye, AiOutlineSync } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import CartModal from "./CartModal";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+
+
+
+
 const ProductsCard = ({ product }) => {
+  const { image, _id, name, category, price, stockQuantity } = product;
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
-  const { image, name, category, price } = product;
 
   const addCard = async (cartProduct) => {
     const { image, _id, name, category, price } = cartProduct;
@@ -27,6 +35,7 @@ const ProductsCard = ({ product }) => {
     const { data } = await axiosSecure.post("/add-cart", { cardData });
     console.log(data);
   };
+
   return (
     <div>
       <div className="bg-base-100 border shadow-lg rounded-2xl relative z-10 overflow-hidden">
@@ -67,13 +76,21 @@ const ProductsCard = ({ product }) => {
         </div>
 
         {/* Cart Button */}
-
+        <button onClick={openModal} className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300">
+          <ShoppingCartOutlinedIcon className=" text-3xl " />
+         </button>
         <button
           onClick={() => addCard(product)}
           className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300"
         >
           <ShoppingCartOutlinedIcon className="text-3xl " />
         </button>
+        {/* Cart Modal */}
+        <CartModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          product={product}
+        />
       </div>
     </div>
   );
