@@ -4,11 +4,37 @@ import { AiOutlineHeart, AiOutlineEye, AiOutlineSync } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import CartModal from "./CartModal";
+import { Link } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
+
+
+
+
 const ProductsCard = ({ product }) => {
   const { image, _id, name, category, price, stockQuantity } = product;
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  const axiosSecure = useAxiosSecure();
+  const user = useAuth();
+
+  const addCard = async (cartProduct) => {
+    const { image, _id, name, category, price } = cartProduct;
+    const cardData = {
+      image,
+      productId: _id,
+      name,
+      category,
+      price,
+      userInfo: {
+        name: user?.displayName,
+        email: user?.email,
+      },
+    };
+    const { data } = await axiosSecure.post("/add-cart", { cardData });
+    console.log(data);
+  };
 
   return (
     <div>
@@ -39,9 +65,12 @@ const ProductsCard = ({ product }) => {
         <div className="mt-4 p-6 py-8 space-y-2 z-20 relative">
           <p className="text-gray-400 text-sm">{category}</p>
           <h2 className="font-semibold text-xl ">
-            <span className="hover:text-green-600 inline-block transition-colors duration-300">
-              {name}
-            </span>
+            <Link>
+              {" "}
+              <span className="hover:text-green-600 inline-block transition-colors duration-300">
+                {name}
+              </span>
+            </Link>
           </h2>
           <p className="text-green-600 text-lg font-semibold">${price}</p>
         </div>
@@ -49,6 +78,12 @@ const ProductsCard = ({ product }) => {
         {/* Cart Button */}
         <button onClick={openModal} className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300">
           <ShoppingCartOutlinedIcon className=" text-3xl " />
+         </button>
+        <button
+          onClick={() => addCard(product)}
+          className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300"
+        >
+          <ShoppingCartOutlinedIcon className="text-3xl " />
         </button>
         {/* Cart Modal */}
         <CartModal

@@ -27,6 +27,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
+    const cartCollection = client.db("AgroMart").collection("carts");
 
     //generate jwt token
     app.post("/jwt", async (req, res) => {
@@ -39,6 +40,22 @@ async function run() {
       });
       res.send({ token });
     });
+
+    // verifyToken
+    const verifyToken = (req, res, next) => {
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) {
+        return res.status(401).send({ message: "Unauthorized access" });
+      }
+
+      jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decoded) => {
+        if (err) {
+          return res.status(403).send({ message: "Forbidden access" });
+        }
+        req.user = decoded;
+        next();
+      });
+    };
 
     //users related apis
     ///save user inn db
@@ -70,7 +87,6 @@ async function run() {
     });
 
     // products related apis crud
-
     // products create
     app.post("/products", async (req, res) => {
       const {
@@ -103,25 +119,28 @@ async function run() {
 
     // products get
     app.get("/products", async (req, res) => {
-      let filter = {}
-      let sortByPrice = {}
+      let filter = {};
+      let sortByPrice = {};
       if (req.query.sort && req.query.sort !== "default") {
-        sortByPrice = { price: parseInt(req.query.sort) }
-        console.log(sortByPrice)
+        sortByPrice = { price: parseInt(req.query.sort) };
+        console.log(sortByPrice);
       }
       if (req.query.searchQuery) {
         filter.name = {
           $regex: req.query.searchQuery,
-          $options: "i"  // Case-insensitive search
-        }
+          $options: "i", // Case-insensitive search
+        };
       }
       if (req.query.selectedCategory) {
         filter.category = {
           $regex: req.query.selectedCategory,
-         $options: "i"
-        }
+          $options: "i",
+        };
       }
-      const result = await productCollection.find(filter).sort(sortByPrice).toArray();
+      const result = await productCollection
+        .find(filter)
+        .sort(sortByPrice)
+        .toArray();
       res.send(result);
     });
 
@@ -150,6 +169,18 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    //add cart products
+    app.post("/add-cart", verifyToken, async (req, res) => {
+      const { cardData } = req.body;
+      const result = await cartCollection.insertOne(cardData);
+      res.send(result);
+    });
+
+    app.get("/all-cart-items", verifyToken, async (req, res) => {
+      const result = await cartCollection.find().toArray();
       res.send(result);
     });
 

@@ -12,21 +12,32 @@ const MainLayout = () => {
   const isHomePage = location.pathname === "/";
   const isShopPage = location.pathname === "/shop";
   const isSignUpPage = location.pathname === "/register";
+  const isResetPasswordPage = location.pathname === "/password/reset";
   return (
     <div className={`${theme === "dark" ? "" : "bg-gray-100"}`}>
-      <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
+      <div
+        className={`${!isHomePage ? "h-16" : ""} ${
+          isLoginPage || isSignUpPage || isResetPasswordPage ? "hidden" : ""
+        }`}
+      >
         <Navbar></Navbar>
       </div>
       <div
         className={`${
-          !isHomePage && !isShopPage
+          !isHomePage &&
+          !isShopPage &&
+          !isLoginPage &&
+          !isSignUpPage &&
+          !isResetPasswordPage
             ? "max-w-7xl mx-auto md:space-y-5 md:p-5 xl:p-0"
             : ""
         }`}
       >
         <div
-          className={`min-h-[814px]  md:px-2 lg:px-0 ${
-            !isHomePage ? "pt-10" : ""
+          className={`min-h-[814px]   md:px-2 lg:px-0 ${
+            !isHomePage && !isLoginPage && !isSignUpPage && !isResetPasswordPage
+              ? "mt-3"
+              : ""
           }`}
         >
           <Outlet></Outlet>
@@ -35,7 +46,11 @@ const MainLayout = () => {
           <LabelBottomNavigation></LabelBottomNavigation>
         </div>
       </div>
-      <div className={`${isLoginPage || isSignUpPage ? "hidden" : ""}`}>
+      <div
+        className={`${
+          isLoginPage || isSignUpPage || isResetPasswordPage ? "hidden" : ""
+        }`}
+      >
         <Footer></Footer>
       </div>
     </div>

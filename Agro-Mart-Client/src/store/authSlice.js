@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -10,14 +11,14 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../firebase/firebase.init";
 import axios from "axios";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Configuration
 const MAX_ATTEMPTS = 3;
-const LOCK_DURATION = 1 * 60 * 1000; // 5 minutes
+const LOCK_DURATION = 1 * 60 * 1000;
 
 // Token management
 const storeToken = (token) => localStorage.setItem("accessToken", token);
@@ -34,6 +35,7 @@ const fetchToken = async (email) => {
   }
 };
 
+//sign up user
 export const signUpUser = createAsyncThunk(
   "auth/signUpUser",
   async ({ email, password, name, photo }, { rejectWithValue }) => {
@@ -58,6 +60,7 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
+//sign in user
 export const signInUser = createAsyncThunk(
   "auth/signInUser",
   async ({ email, password }, { rejectWithValue }) => {
@@ -70,6 +73,7 @@ export const signInUser = createAsyncThunk(
 
       if (userDoc.exists()) {
         const { lockedUntil } = userDoc.data();
+
         // If account is currently locked
         if (lockedUntil && Date.now() < lockedUntil) {
           const remainingTime = Math.ceil(
@@ -100,7 +104,7 @@ export const signInUser = createAsyncThunk(
         password
       );
 
-      // Reset attempts on successful login
+      //  on successful login reset attempts
       await setDoc(
         userRef,
         {
@@ -172,6 +176,7 @@ export const googleLogin = createAsyncThunk(
   }
 );
 
+//user logout
 export const logOut = createAsyncThunk(
   "auth/logOut",
   async (_, { rejectWithValue }) => {
@@ -185,6 +190,7 @@ export const logOut = createAsyncThunk(
   }
 );
 
+//update profile
 export const updateUserProfile = createAsyncThunk(
   "auth/updateUserProfile",
   async ({ name, photo }, { rejectWithValue }) => {
@@ -200,6 +206,34 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+//reset password
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (email, { rejectWithValue }) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return { message: "password reset email sent successfully" };
+    } catch (error) {
+      let errorMessage = "Failed to sent reset email";
+      switch (error.code) {
+        case "auth/user-not-found":
+          errorMessage = "No user found with this email address";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "The email address is invalid";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Too many requests. Please try again later";
+          break;
+        default:
+          errorMessage = error.message;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+//observer
 export const InitializeAuthListener = createAsyncThunk(
   "auth/InitializeAuthListener",
   async (_, { dispatch }) => {
@@ -291,6 +325,19 @@ const authSlice = createSlice({
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.resetPasswordMessage = action.payload.message;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
