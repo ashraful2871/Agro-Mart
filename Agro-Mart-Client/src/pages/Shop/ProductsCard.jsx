@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoCart } from "react-icons/io5";
 import { AiOutlineHeart, AiOutlineEye, AiOutlineSync } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
@@ -7,11 +7,15 @@ import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import ViewModal from "./ViewModal";
+
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
   const { image, name, category, price } = product;
-
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
   const addCard = async (cartProduct) => {
     const { image, _id, name, category, price } = cartProduct;
     const cardData = {
@@ -48,7 +52,7 @@ const ProductsCard = ({ product }) => {
           <button className="p-2 bg-white shadow-md rounded-full">
             <AiOutlineHeart className="text-green-600 text-lg" />
           </button>
-          <button className="p-2 bg-white shadow-md rounded-full">
+          <button onClick={openModal} className="p-2 bg-white shadow-md rounded-full">
             <AiOutlineEye className="text-green-600 text-lg" />
           </button>
           <button className="p-2 bg-white shadow-md rounded-full">
@@ -78,6 +82,13 @@ const ProductsCard = ({ product }) => {
         >
           <ShoppingCartOutlinedIcon className="text-3xl " />
         </button>
+
+        {/* Cart Modal */}
+        <ViewModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          product={product}
+        />
       </div>
     </div>
   );
