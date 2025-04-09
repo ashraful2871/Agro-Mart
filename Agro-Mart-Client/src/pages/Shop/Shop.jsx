@@ -339,7 +339,7 @@ const Shop = () => {
                 {/* Button to open the drawer for small and medium screens */}
                 <label
                   htmlFor="my-drawer-4"
-                  className="btn bg-[#c3e858] drawer-button"
+                  className="btn bg-green-600 drawer-button"
                 >
                   Filter
                 </label>
@@ -352,7 +352,7 @@ const Shop = () => {
                   aria-label="close sidebar"
                   className="drawer-overlay"
                 ></label>
-                <div className="w-64 p-5 bg-white rounded-lg shadow-sm">
+                <div className="w-64 p-5 bg-base-100 rounded-lg shadow-sm">
                   {/* Search Box */}
                   <div
                     className={`${
@@ -372,7 +372,7 @@ const Shop = () => {
                   {/* Categories */}
                   <div
                     className={`${
-                      theme === "dark" ? "bg-black border" : "bg-white"
+                      theme === "dark" ? "bg-black " : "bg-white"
                     } p-4 rounded-lg mb-5`}
                   >
                     <h3 className="text-xl font-semibold mb-3">Categories</h3>

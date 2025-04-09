@@ -14,7 +14,11 @@ const Sidebar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "text-green-700 bg-none" : ""
+            isActive
+              ? theme === "dark"
+                ? "text-green-500 bg-none"
+                : "text-green-700 bg-none"
+              : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
         >
@@ -24,7 +28,13 @@ const Sidebar = () => {
       <li>
         <NavLink
           to="/shop"
-          className={({ isActive }) => (isActive ? "text-green-700" : "")}
+          className={({ isActive }) =>
+            isActive
+              ? theme === "dark"
+                ? "text-green-500 bg-none"
+                : "text-green-700 bg-none"
+              : ""
+          }
           style={{ color: "", backgroundColor: "transparent" }}
         >
           Shop
@@ -43,7 +53,11 @@ const Sidebar = () => {
         <NavLink
           to="/contact"
           className={({ isActive }) =>
-            isActive ? "text-green-700 bg-white" : ""
+            isActive
+              ? theme === "dark"
+                ? "text-green-500 bg-none"
+                : "text-green-700 bg-none"
+              : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
         >
@@ -52,8 +66,14 @@ const Sidebar = () => {
       </li>
       <li>
         <NavLink
-          to="/dashboard"
-          className={""}
+          to="/dashboard/overview"
+          className={({ isActive }) =>
+            isActive
+              ? theme === "dark"
+                ? "text-green-500 bg-none"
+                : "text-green-700 bg-none"
+              : ""
+          }
           style={{ color: "", backgroundColor: "transparent" }}
         >
           Dashboard
@@ -68,7 +88,7 @@ const Sidebar = () => {
         <label
           htmlFor="my-drawer"
           className={`${
-            theme === "dark" ? "text-white" : "text-black"
+            theme === "dark" ? "text-base-content" : "text-base-content"
           }  text-2xl cursor-pointer`}
         >
           <RiMenu2Fill />
@@ -76,16 +96,19 @@ const Sidebar = () => {
       </div>
       <div className="drawer-side z-50">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
-        <div className="bg-white w-80 min-h-full shadow-md">
+        <div className="bg-base-100 w-80 min-h-full shadow-md">
           <div className="flex justify-between items-center py-4 pl-6 pr-4 border-b bg-[#051815] ">
             <h2 className="text-sm font-bold text-white font-syne">
               MAIN MENU
             </h2>
-            <label htmlFor="my-drawer" className="cursor-pointer text-white">
+            <label
+              htmlFor="my-drawer"
+              className="cursor-pointer text-base-content"
+            >
               <IoClose size={24} />
             </label>
           </div>
-          <ul className="menu text-base-content text-black font-normal font-rethink-sans space-y-3 pl-3">
+          <ul className="menu text-base-content font-normal font-rethink-sans space-y-3 pl-3">
             {links}
           </ul>
         </div>
