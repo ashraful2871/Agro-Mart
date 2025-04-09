@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import OrderTable from "../overview/OrderTable";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const Orders = () => {
+  const { theme } = useContext(ThemeContext);
   const [filters, setFilters] = useState({
     customerName: "",
     status: "",
@@ -33,95 +35,111 @@ const Orders = () => {
 
   return (
     <div className="py-10">
-    {/* filter and action div */}
-     <div className="p-4 bg-[#1f29374b] rounded-xl">
-         {/* Filter Controls */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
-        <input
-          type="text"
-          name="customerName"
-          placeholder="Search by Customer Name"
-          value={filters.customerName}
-          onChange={handleFilterChange}
-          className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-        <select
-          name="status"
-          value={filters.status}
-          onChange={handleFilterChange}
-          className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Processing">Processing</option>
-        </select>
-        <select
-          name="orderLimit"
-          value={filters.orderLimit}
-          onChange={handleFilterChange}
-          className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">Order Limits</option>
-          <option value="10">Last 10 Orders</option>
-          <option value="50">Last 50 Orders</option>
-          <option value="100">Last 100 Orders</option>
-        </select>
-        <select
-          name="method"
-          value={filters.method}
-          onChange={handleFilterChange}
-          className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">Method</option>
-          <option value="Cash">Cash</option>
-          <option value="Card">Card</option>
-          <option value="Online">Online</option>
-        </select>
-      </div>
-
-      {/* Date Pickers & Buttons */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center mt-4">
-        <div className="col-span-2">
-          <span className="text-gray-700 text-sm">Start Date</span>
+      {/* filter and action div */}
+      <div
+        className={`p-4  ${
+          theme === "dark" ? "bg-[#1f29374b]" : "bg-white"
+        } rounded-xl`}
+      >
+        {/* Filter Controls */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
           <input
-            type="date"
-            name="startDate"
-            value={filters.startDate}
+            type="text"
+            name="customerName"
+            placeholder="Search by Customer Name"
+            value={filters.customerName}
             onChange={handleFilterChange}
-            className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full p-2 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
           />
-        </div>
-        <div className="col-span-2">
-          <span className="text-gray-700 text-sm">End Date</span>
-          <input
-            type="date"
-            name="endDate"
-            value={filters.endDate}
+          <select
+            name="status"
+            value={filters.status}
             onChange={handleFilterChange}
-            className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex flex-wrap justify-between items-center mt-4">
-        <button className="bg-green-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-green-700 transition">
-          <FaCloudDownloadAlt /> Download All Orders
-        </button>
-        <div className="flex gap-2">
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-            Filter
-          </button>
-          <button
-            onClick={resetFilters}
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 hover:bg-gray-700 transition"
+            className={`w-full p-2 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
           >
-            Reset
+            <option value="">Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Processing">Processing</option>
+          </select>
+          <select
+            name="orderLimit"
+            value={filters.orderLimit}
+            onChange={handleFilterChange}
+            className={`w-full p-2 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
+          >
+            <option value="">Order Limits</option>
+            <option value="10">Last 10 Orders</option>
+            <option value="50">Last 50 Orders</option>
+            <option value="100">Last 100 Orders</option>
+          </select>
+          <select
+            name="method"
+            value={filters.method}
+            onChange={handleFilterChange}
+            className={`w-full p-2 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
+          >
+            <option value="">Method</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="Online">Online</option>
+          </select>
+        </div>
+
+        {/* Date Pickers & Buttons */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center mt-4">
+          <div className="col-span-2">
+            <span className="text-gray-700 text-sm">Start Date</span>
+            <input
+              type="date"
+              name="startDate"
+              value={filters.startDate}
+              onChange={handleFilterChange}
+              className={`w-full p-2 ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
+            />
+          </div>
+          <div className="col-span-2">
+            <span className="text-gray-700 text-sm">End Date</span>
+            <input
+              type="date"
+              name="endDate"
+              value={filters.endDate}
+              onChange={handleFilterChange}
+              className={`w-full p-2 ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
+            />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap justify-between items-center mt-4">
+          <button className="bg-green-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-green-700 transition">
+            <FaCloudDownloadAlt /> Download All Orders
           </button>
+          <div className="flex gap-2">
+            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+              Filter
+            </button>
+            <button
+              onClick={resetFilters}
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 hover:bg-gray-700 transition"
+            >
+              Reset
+            </button>
+          </div>
         </div>
       </div>
-     </div>
 
       {/* Orders Table */}
       <div className="mt-6">
