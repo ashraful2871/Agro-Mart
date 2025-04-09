@@ -15,7 +15,6 @@ const ShoppingCart = () => {
       return data;
     },
   });
-  // console.log(cartData.length);
   if (isLoading) {
     return <Loading></Loading>;
   }
