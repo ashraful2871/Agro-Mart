@@ -175,8 +175,19 @@ async function run() {
 
     //add cart products
     app.post("/add-cart", verifyToken, async (req, res) => {
-      const { cardData } = req.body;
-      const result = await cartCollection.insertOne(cardData);
+      const { cartData } = req.body;
+      const { productId } = cartData;
+      const query = {
+        productId: productId,
+        "userInfo.email": cartData.userInfo.email,
+      };
+      const isExist = await cartCollection.findOne(query);
+      if (isExist) {
+        return res
+          .status(409)
+          .send({ message: "This Product Already in Cart" });
+      }
+      const result = await cartCollection.insertOne(cartData);
       res.send(result);
     });
 
@@ -191,10 +202,9 @@ async function run() {
     app.delete("/delete-cart-item/:id", verifyToken, async (req, res) => {
       const { id } = req.params;
       const query = { _id: new ObjectId(id) };
-      const result = await cartCollection.deleteOne(query); 
+      const result = await cartCollection.deleteOne(query);
       res.send(result);
     });
-
 
     //add wish products
     app.post("/add-wish", verifyToken, async (req, res) => {
@@ -202,7 +212,7 @@ async function run() {
       const { productId, userInfo } = wishData;
       const exists = await wishCollection.findOne({
         productId: productId,
-        "userInfo.email": userInfo.email
+        "userInfo.email": userInfo.email,
       });
       if (exists) {
         return res.status(409).send({ message: "Already in wishlist" });
@@ -212,23 +222,21 @@ async function run() {
     });
 
     // get wishlist item by email
-    app.get('/wishlist/:email', async (req, res) => {
+    app.get("/wishlist/:email", async (req, res) => {
       const email = req.params.email;
-      const query = { 'userInfo.email': email };
+      const query = { "userInfo.email": email };
       const result = await wishCollection.find(query).toArray();
       res.send(result);
     });
 
     // Delete Wishlist Item
-    app.delete('/wishlist/:id', async (req, res) => {
+    app.delete("/wishlist/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await wishCollection.deleteOne(query); 
+      const result = await wishCollection.deleteOne(query);
       res.send(result);
     });
 
-    
-  
     app.get("/", async (req, res) => {
       res.send("Agro is running");
     });
