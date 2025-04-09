@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
-import Swal from "sweetalert2";  // Import SweetAlert2
-import toast from "react-hot-toast"; // Import toast for notifications
+import Swal from "sweetalert2";  
+import toast from "react-hot-toast"; 
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);

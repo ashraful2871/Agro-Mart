@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartItems from "./CartItems";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -8,16 +8,31 @@ import useAuth from "../../hooks/useAuth";
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
-  const { data: cartData, isLoading } = useQuery({
+  const [subtotal, setSubtotal] = useState(0);
+  const shippingFee = 10;
+  const finalTotal = subtotal + shippingFee;
+
+  const { data: cartData, isLoading, refetch } = useQuery({
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
       return data;
     },
   });
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    const total = Object.values(storedCart).reduce(
+      (sum, item) => sum + item.total,
+      0
+    );
+    setSubtotal(total);
+  }, [cartData]);
+
   if (isLoading) {
-    return <Loading></Loading>;
+    return <Loading />;
   }
+
   return (
     <>
       {cartData?.length === 0 ? (
@@ -25,7 +40,7 @@ const ShoppingCart = () => {
           No shopping cart product added
         </p>
       ) : (
-        <div className="px-10 py-10  min-h-screen">
+        <div className="px-10 py-10 min-h-screen">
           <h1 className="text-center text-3xl font-bold mb-10">
             My Shopping Cart
           </h1>
@@ -35,13 +50,26 @@ const ShoppingCart = () => {
                 <span className="w-2/5">Product</span>
                 <span className="w-1/5 text-center">Price</span>
                 <span className="w-1/5 text-center">Quantity</span>
-                <span className="w-1/5 text-center">Subtotal</span>
+                <span className="w-1/5 text-center">Total</span>
                 <span className="w-1/12"></span>
               </div>
 
               {/* cart items */}
               {cartData?.map((cart) => (
-                <CartItems cart={cart}></CartItems>
+                <CartItems
+                key={cart._id}
+                cart={cart}
+                refetch={refetch}
+                onCartUpdate={() => {
+                  const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+                  const total = Object.values(storedCart).reduce(
+                    (sum, item) => sum + item.total,
+                    0
+                  );
+                  setSubtotal(total);
+                }}
+              />
+              
               ))}
 
               <div className="flex justify-between mt-6">
@@ -50,19 +78,20 @@ const ShoppingCart = () => {
               </div>
             </div>
 
+            {/* Cart summary */}
             <div className="w-full lg:w-1/3 border rounded-xl p-6 h-fit">
               <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
               <div className="flex justify-between mb-2">
                 <span>Subtotal:</span>
-                <span>$84.00</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>Shipping:</span>
-                <span>Free</span>
+                <span>${shippingFee.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
                 <span>Total:</span>
-                <span>$84.00</span>
+                <span>${finalTotal.toFixed(2)}</span>
               </div>
               <button className="btn bg-green-600 w-full mt-4 rounded-full text-white font-bold text-base">
                 Proceed to checkout
@@ -70,6 +99,7 @@ const ShoppingCart = () => {
             </div>
           </div>
 
+          {/* Coupon section */}
           <div className="mt-10 border rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
             <div className="flex gap-4">
