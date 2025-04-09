@@ -28,7 +28,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
 
     if (onCartUpdate) {
       onCartUpdate();
-      toast.success("Cart updated!");
+      // toast.success("Cart updated!");
     }
   };
 
