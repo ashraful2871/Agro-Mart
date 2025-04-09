@@ -38,9 +38,24 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
       }
     };
   
-    const handleAddToCart = () => {
-      toast.success(`${name} added to cart`);
-      closeModal();
+    const addCard = async (cartProduct) => {
+      const { image, _id, name, category, price } = cartProduct;
+      const cardData = {
+        image,
+        productId: _id,
+        name,
+        category,
+        price,
+        userInfo: {
+          name: user?.displayName,
+          email: user?.email,
+        },
+      };
+      const { data } = await axiosSecure.post("/add-cart", { cardData });
+      console.log(data);
+      if (data.insertedId) {
+        toast.success("item added successfully in cart");
+      }
     };
 
     const user = useAuth();
@@ -146,7 +161,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 
                         <div>
                         <button
-                          onClick={handleAddToCart}
+                          onClick={() => addCard(product)}
                           className="ml-4 px-6 py-2 w-full bg-green-600 text-white rounded-full hover:bg-green-700"
                         >
                           Add to Cart
