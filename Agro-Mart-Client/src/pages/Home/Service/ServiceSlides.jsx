@@ -92,13 +92,19 @@ const ServiceSlides = () => {
   const [sliderRef] = useKeenSlider({
     breakpoints: {
       "(min-width: 400px)": {
+        slides: { perView: 1, spacing: 20 },
+      },
+      "(min-width: 700px)": {
         slides: { perView: 2, spacing: 20 },
       },
       "(min-width: 1000px)": {
-        slides: { perView: 3, spacing: 30 },
+        slides: { perView: 2, spacing: 30 },
+      },
+      "(min-width: 1440px)": {
+        slides: { perView: 3, spacing: 20 },
       },
     },
-    slides: { perView: 1, spacing: 20 },
+    slides: { perView: 2, spacing: 20 },
   });
 
   return (

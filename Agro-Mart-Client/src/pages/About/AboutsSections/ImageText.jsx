@@ -11,12 +11,13 @@ const ImageText = () => {
         WebkitBackgroundClip: "text",
         color: "transparent",
         textAlign: "center",
-        padding: "50px",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <p className="font-syne text-9xl">AGRO MART</p>
+      <p className="font-syne text-5xl md:text-7xl xl:text-9xl my-10">
+        AGRO MART
+      </p>
     </div>
   );
 };

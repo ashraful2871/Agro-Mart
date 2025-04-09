@@ -13,21 +13,21 @@ const Home = () => {
     <div className="space-y-7 ">
       <Slider></Slider>
 
-      <div className="p-1">
+      <div className="p-2">
         {/* Agriculture Progress */}
         <div className="">
           <AgricultureProcess></AgricultureProcess>
         </div>
 
-      {/* Our Services */}
-      <div>
-        <Service></Service>
-      </div>
+        {/* Our Services */}
+        <div>
+          <Service></Service>
+        </div>
 
-      {/* FAQ Section */}
-      <div className="max-w-screen-xl mx-auto p-2">
-        <FaqSection></FaqSection>
-      </div>
+        {/* FAQ Section */}
+        <div className="max-w-screen-xl mx-auto p-2">
+          <FaqSection></FaqSection>
+        </div>
 
         {/* Review Posting Section */}
         {/* <section>

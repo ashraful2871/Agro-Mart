@@ -33,7 +33,7 @@ const AgricultureProcess = () => {
   ];
 
   return (
-    <section className="relative">
+    <section className="lg:relative">
       <div className=" flex flex-col lg:flex-row ">
         {/* Left Side Image */}
         <div className="lg:w-1/2 rounded-tr-[300px]">
@@ -79,7 +79,7 @@ const AgricultureProcess = () => {
           {/* md:top-96 md:right-14 md:left-14 */}
           {/* lg:bottom-10 lg:right-28 */}
           <div
-            className="mt-8 gap-6 absolute z-10 max-w-6xl mx-auto h-fit
+            className="mt-8 gap-6 lg:absolute z-10 max-w-6xl mx-auto h-fit
           grid grid-cols-1 bottom-0 right-10 left-10 
           md:grid-cols-2 md:bottom-80
           lg:grid-cols-4  lg:bottom-14 xl:bottom-24 2xl:bottom-40"
