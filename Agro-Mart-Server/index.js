@@ -179,8 +179,10 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/all-cart-items", verifyToken, async (req, res) => {
-      const result = await cartCollection.find().toArray();
+    app.get("/all-cart-items/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const query = { "userInfo.email": email };
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
