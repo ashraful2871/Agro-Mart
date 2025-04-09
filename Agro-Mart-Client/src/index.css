@@ -25,9 +25,10 @@ body {
   color: green;
 }
 
-.css-1dj9ptb.Mui-selected {
-  color: green;
+.css-dqh183-MuiBottomNavigation-root .Mui-selected {
+  color: #4caf50;
 }
+
 a.active {
   color: "";
   background-color: transparent;
