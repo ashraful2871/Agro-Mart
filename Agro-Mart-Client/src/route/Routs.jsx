@@ -18,6 +18,7 @@ import Orders from "../pages/Dashboard/Orders/Orders";
 import Customers from "../pages/Dashboard/Customers/Customers";
 import PasswordReset from "../pages/password-reset/PasswordReset";
 import ShoppingCart from "../pages/shopingCart/ShoppingCart";
+import Wishlist from "../pages/Shop/Wishlist/Wishlist";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: "/shopping-cart",
         element: <ShoppingCart></ShoppingCart>,
+      },
+      {
+        path: "/wish-list",
+        element: <Wishlist></Wishlist>,
       },
       {
         path: "/about",
