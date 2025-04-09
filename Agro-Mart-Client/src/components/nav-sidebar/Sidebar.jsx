@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoClose, IoChevronForward } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const Sidebar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const { theme } = useContext(ThemeContext);
   const links = (
     <>
       <li>
@@ -66,7 +68,7 @@ const Sidebar = () => {
         <label
           htmlFor="my-drawer"
           className={`${
-            isHomePage ? "text-white" : "text-black"
+            theme === "dark" ? "text-white" : "text-black"
           }  text-2xl cursor-pointer`}
         >
           <RiMenu2Fill />

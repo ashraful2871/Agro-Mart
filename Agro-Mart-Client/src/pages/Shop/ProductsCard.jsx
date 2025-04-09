@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { IoCart } from "react-icons/io5";
-import { AiOutlineHeart, AiOutlineEye, AiOutlineSync, AiFillHeart } from "react-icons/ai";
+import {
+  AiOutlineHeart,
+  AiOutlineEye,
+  AiOutlineSync,
+  AiFillHeart,
+} from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link } from "react-router-dom";
@@ -20,10 +25,9 @@ const ProductsCard = ({ product }) => {
   const [isWishListOpen, setIsWishListOpen] = useState(false);
   const [isWished, setIsWished] = useState(false);
 
-
   const addCard = async (cartProduct) => {
     const { image, _id, name, category, price } = cartProduct;
-    const cardData = {
+    const cartData = {
       image,
       productId: _id,
       name,
@@ -34,10 +38,16 @@ const ProductsCard = ({ product }) => {
         email: user?.email,
       },
     };
-    const { data } = await axiosSecure.post("/add-cart", { cardData });
-    console.log(data);
-    if (data.insertedId) {
-      toast.success("item added successfully in cart");
+    try {
+      const { data } = await axiosSecure.post("/add-cart", {
+        cartData,
+      });
+      console.log(data);
+      if (data.insertedId) {
+        toast.success("item added successfully in cart");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -55,7 +65,7 @@ const ProductsCard = ({ product }) => {
       },
       addedAt: new Date(),
     };
-  
+
     try {
       const { data } = await axiosSecure.post("/add-wish", { wishData });
       if (data.insertedId) {
@@ -78,19 +88,19 @@ const ProductsCard = ({ product }) => {
       if (user?.email) {
         try {
           const res = await axiosSecure.get(`/wishlist/${user?.email}`);
-          const exists = res.data.find(item => item.productId === product._id);
+          const exists = res.data.find(
+            (item) => item.productId === product._id
+          );
           setIsWished(!!exists);
         } catch (err) {
           console.error("Error checking wishlist:", err);
         }
       }
     };
-  
+
     checkWishlist();
   }, [user?.email, product._id]);
-  
-  
-  
+
   return (
     <div>
       <div className="bg-base-100 border shadow-lg rounded-2xl relative z-10 overflow-hidden">
@@ -105,18 +115,21 @@ const ProductsCard = ({ product }) => {
 
         {/* Floating Icons */}
         <div className="absolute top-4 right-4 flex flex-col gap-2 z-30">
-        <button
-          onClick={() => addWish(product)}
-          className="p-2 bg-white shadow-md rounded-full"
-        >
-          {isWished ? (
-            <AiFillHeart className="text-red-500 text-lg" />
-          ) : (
-            <AiOutlineHeart className="text-green-600 text-lg" />
-          )}
-        </button>
+          <button
+            onClick={() => addWish(product)}
+            className="p-2 bg-white shadow-md rounded-full"
+          >
+            {isWished ? (
+              <AiFillHeart className="text-red-500 text-lg" />
+            ) : (
+              <AiOutlineHeart className="text-green-600 text-lg" />
+            )}
+          </button>
 
-          <button onClick={openModal} className="p-2 bg-white shadow-md rounded-full">
+          <button
+            onClick={openModal}
+            className="p-2 bg-white shadow-md rounded-full"
+          >
             <AiOutlineEye className="text-green-600 text-lg" />
           </button>
           <button className="p-2 bg-white shadow-md rounded-full">
@@ -148,16 +161,12 @@ const ProductsCard = ({ product }) => {
         </button>
 
         {/* Cart Modal */}
-        <ViewModal
-          isOpen={isOpen}
-          closeModal={closeModal}
-          product={product}
-        />
+        <ViewModal isOpen={isOpen} closeModal={closeModal} product={product} />
 
         {/* WishListModal (wishlist items) */}
         <WishListModal
           isOpen={isWishListOpen}
-          closeModal={() => setIsWishListOpen(false)} 
+          closeModal={() => setIsWishListOpen(false)}
         />
       </div>
     </div>
