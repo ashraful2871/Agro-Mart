@@ -28,6 +28,7 @@ async function run() {
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
     const cartCollection = client.db("AgroMart").collection("carts");
+    const wishCollection = client.db("AgroMart").collection("wishes");
 
     //generate jwt token
     app.post("/jwt", async (req, res) => {
@@ -184,6 +185,48 @@ async function run() {
       res.send(result);
     });
 
+    // Delete a cart item
+    app.delete("/delete-cart-item/:id", verifyToken, async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query); 
+      res.send(result);
+    });
+
+
+    //add wish products
+    app.post("/add-wish", verifyToken, async (req, res) => {
+      const { wishData } = req.body;
+      const { productId, userInfo } = wishData;
+      const exists = await wishCollection.findOne({
+        productId: productId,
+        "userInfo.email": userInfo.email
+      });
+      if (exists) {
+        return res.status(409).send({ message: "Already in wishlist" });
+      }
+      const result = await wishCollection.insertOne(wishData);
+      res.send(result);
+    });
+
+    // get wishlist item by email
+    app.get('/wishlist/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { 'userInfo.email': email };
+      const result = await wishCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // Delete Wishlist Item
+    app.delete('/wishlist/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await wishCollection.deleteOne(query); 
+      res.send(result);
+    });
+
+    
+  
     app.get("/", async (req, res) => {
       res.send("Agro is running");
     });
