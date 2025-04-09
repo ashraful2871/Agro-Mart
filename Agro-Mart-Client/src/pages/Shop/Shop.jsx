@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import ProductsCard from "./ProductsCard";
 import { ThemeContext } from "../../provider/ThemeProvider";
+import { useQuery } from "@tanstack/react-query";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
-  const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState("default");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const axiosPublic = useAxiosPublic();
@@ -23,27 +22,23 @@ const Shop = () => {
   const [itemsPerPage] = useState(6);
 
   // Fetch products from the database
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axiosPublic.get(
-          `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`
-        );
-        if (Array.isArray(response.data)) {
-          setProducts(response.data);
-        } else {
-          setError("Fetched data is not in the expected format.");
-        }
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to fetch products.");
-        setLoading(false);
-        console.error(err);
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products", { sortBy, searchQuery, selectedCategory }],
+    queryFn: async () => {
+      const response = await axiosPublic.get(
+        `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`
+      );
+      if (!Array.isArray(response.data)) {
+        throw new Error("Fetched data is not in the expected format.");
       }
-    };
+      return response.data;
+    },
+    // Optional: you can add additional options like:
+    // staleTime: 1000 * 60 * 5, // 5 minutes
+    // retry: 3,
+  });
 
-    fetchProducts();
-  }, [sortBy, searchQuery, selectedCategory]);
+  // You can then use products, isLoading, and error in your component
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -68,12 +63,12 @@ const Shop = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="text-center text-xl">
         <Loading></Loading>
@@ -359,9 +354,11 @@ const Shop = () => {
                 ></label>
                 <div className="w-64 p-5 bg-white rounded-lg shadow-sm">
                   {/* Search Box */}
-                  <div  className={`${
-                    theme === "dark" ? "bg-black" : "bg-base-100"
-                  }  p-4 rounded-xl mb-5`} >
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-black" : "bg-base-100"
+                    }  p-4 rounded-xl mb-5`}
+                  >
                     <h3 className=" text-xl font-bold mb-4">Search</h3>
                     <input
                       type="text"
@@ -374,11 +371,10 @@ const Shop = () => {
 
                   {/* Categories */}
                   <div
-                  className={`${
-                    theme === "dark"
-                      ? "bg-black border"
-                      : "bg-white"
-                  } p-4 rounded-lg mb-5`}>
+                    className={`${
+                      theme === "dark" ? "bg-black border" : "bg-white"
+                    } p-4 rounded-lg mb-5`}
+                  >
                     <h3 className="text-xl font-semibold mb-3">Categories</h3>
                     <ul className="space-y-2">
                       <li
@@ -526,10 +522,14 @@ const Shop = () => {
                   </div>
 
                   {/* Tags */}
-                  <div  className={`${
-              theme === "dark" ? "bg-black" : "bg-base-100"
-            } p-4 rounded-xl mb-5`}>
-                    <h3 className="text-black text-xl font-semibold mb-3">Tags</h3>
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-black" : "bg-base-100"
+                    } p-4 rounded-xl mb-5`}
+                  >
+                    <h3 className="text-black text-xl font-semibold mb-3">
+                      Tags
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       <span
                         className={`${
