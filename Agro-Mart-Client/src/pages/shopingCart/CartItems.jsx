@@ -8,6 +8,7 @@ const CartItems = ({ cart, fetchCartItems }) => {
 
   // Cart item delete handler with confirmation modal
   const handleDelete = async (id) => {
+    // Show confirmation modal
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
