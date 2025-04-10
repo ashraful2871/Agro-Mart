@@ -14,13 +14,13 @@ const ShoppingCart = () => {
   const shippingFee = 100;
   const finalTotal = subtotal + shippingFee;
 
-  const { data: cartData, isLoading, refetch } = useQuery({
+  const { data: cartData = [], isLoading, refetch } = useQuery({
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
       return data;
     },
-  });
+  });  
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
