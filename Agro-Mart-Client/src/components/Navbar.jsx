@@ -119,9 +119,9 @@ const Navbar = () => {
   return (
     <div
       className={`navbar fixed ${
-        theme === "dark" ? "bg-black" : "bg-gray-300"
+        theme === "dark" ? "bg-[#111827]" : "bg-gray-300"
       } px-4 lg:px-8 transition-all duration-300 z-50 ${
-        isHomePage ? " top-0 left-0 w-full" : "bg-base-100 shadow-md"
+        isHomePage ? " top-0 left-0 w-full" : " shadow-md"
       }`}
     >
       {/* Left Section */}
