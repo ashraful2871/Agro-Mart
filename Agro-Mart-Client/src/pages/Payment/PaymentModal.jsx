@@ -5,7 +5,7 @@ import { FaCcStripe } from "react-icons/fa";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-const PaymentModal = ({ isOpen, closeModal }) => {
+const PaymentModal = ({ isOpen, closeModal, totalAmount }) => {
   const [agree, setAgree] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const PaymentModal = ({ isOpen, closeModal }) => {
   const handleProceed = () => {
     if (!agree || !selectedPayment) return;
   
-    navigate(`/payment/${selectedPayment}`);
+    navigate(`/payment/${selectedPayment}`, { state: { totalAmount } });
     closeModal();
   };
 
@@ -26,6 +26,11 @@ const PaymentModal = ({ isOpen, closeModal }) => {
           <Dialog.Title className="text-2xl font-bold text-green-600 text-center mb-4">
             Select Payment Method
           </Dialog.Title>
+
+          <div className="flex justify-between mt-4">
+            <span>Total Amount:</span>
+            <span>${totalAmount.toFixed(2)}</span>
+          </div>
 
           <div className="grid grid-cols-3 gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
