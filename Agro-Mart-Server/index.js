@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const uri = process.env.MONGO_URI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -29,6 +30,7 @@ async function run() {
     const productCollection = client.db("AgroMart").collection("products");
     const cartCollection = client.db("AgroMart").collection("carts");
     const wishCollection = client.db("AgroMart").collection("wishes");
+    const paymentCollection = client.db("AgroMart").collection("payments");
 
     //generate jwt token
     app.post("/jwt", async (req, res) => {
@@ -236,6 +238,46 @@ async function run() {
       const result = await wishCollection.deleteOne(query);
       res.send(result);
     });
+
+    // Payment Intant
+    app.post("/create-payment-intent", async (req, res) => {
+      const { totalAmount } = req.body;
+    
+      if (!totalAmount || totalAmount <= 0) {
+        return res.status(400).send({ error: "Invalid amount provided." });
+      }
+    
+      try {
+        const amount = parseInt(totalAmount * 100); 
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency: "usd",
+          payment_method_types: ["card"],
+        });
+    
+        res.send({
+          clientSecret: paymentIntent.client_secret,
+        });
+      } catch (err) {
+        console.error("Error creating payment intent:", err);
+        res.status(500).send({ error: err.message });
+      }
+    });
+  
+
+  app.post("/payments", async (req, res) => {
+    try {
+      const paymentInfo = req.body;
+      const result = await paymentCollection.insertOne(paymentInfo);
+      res.send({
+        insertedId: result.insertedId,
+      });
+    } catch (err) {
+      console.error("Error saving payment:", err);
+      res.status(500).send({ error: "Failed to save payment" });
+    }
+  });
+
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
