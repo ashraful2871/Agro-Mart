@@ -4,12 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/loading/Loading";
 import useAuth from "../../hooks/useAuth";
+import PaymentModal from "../Payment/PaymentModal";
 
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
   const [subtotal, setSubtotal] = useState(0);
-  const shippingFee = 10;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const shippingFee = 100;
   const finalTotal = subtotal + shippingFee;
 
   const { data: cartData, isLoading, refetch } = useQuery({
@@ -93,7 +95,7 @@ const ShoppingCart = () => {
                 <span>Total:</span>
                 <span>${finalTotal.toFixed(2)}</span>
               </div>
-              <button className="btn bg-green-600 w-full mt-4 rounded-full text-white font-bold text-base">
+              <button onClick={() => setIsModalOpen(true)} className="btn bg-green-600 w-full mt-4 rounded-full text-white font-bold text-base">
                 Proceed to checkout
               </button>
             </div>
@@ -113,6 +115,12 @@ const ShoppingCart = () => {
               </button>
             </div>
           </div>
+
+          <PaymentModal
+            isOpen={isModalOpen}
+            closeModal={() => setIsModalOpen(false)}
+          />
+
         </div>
       )}
     </>
