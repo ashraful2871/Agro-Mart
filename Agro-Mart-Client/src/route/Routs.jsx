@@ -19,6 +19,10 @@ import Customers from "../pages/Dashboard/Customers/Customers";
 import PasswordReset from "../pages/password-reset/PasswordReset";
 import ShoppingCart from "../pages/shopingCart/ShoppingCart";
 import Wishlist from "../pages/Shop/Wishlist/Wishlist";
+import StripePayment from "../pages/Payment/StripePayment";
+import BKashPayment from "../pages/Payment/bKashPayment";
+import NagadPayment from "../pages/Payment/NagadPayment";
+import SslCommerzePayment from "../pages/Payment/SslCommerzePayment";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -40,6 +44,22 @@ export const router = createBrowserRouter([
       {
         path: "/shopping-cart",
         element: <ShoppingCart></ShoppingCart>,
+      },
+      {
+        path: "/payment/stripe",
+        element: <StripePayment></StripePayment>,
+      },
+      {
+        path: "payment/bKAsh",
+        element: <BKashPayment></BKashPayment>,
+      },
+      {
+        path: "/payment/nagad",
+        element: <NagadPayment></NagadPayment>
+      },
+      {
+        path: "payment/SSLCommerz",
+        element:<SslCommerzePayment></SslCommerzePayment>
       },
       {
         path: "/wish-list",
