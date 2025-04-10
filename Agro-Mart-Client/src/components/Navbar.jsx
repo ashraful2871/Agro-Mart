@@ -8,6 +8,9 @@ import Sidebar from "./nav-sidebar/Sidebar";
 import { ThemeContext } from "../provider/ThemeProvider";
 import Theme from "./theme/Theme";
 import { FaShoppingCart } from "react-icons/fa";
+import { LuShoppingBag } from "react-icons/lu";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,8 +18,16 @@ const Navbar = () => {
   const location = useLocation();
   const user = useAuth();
   const { theme } = useContext(ThemeContext);
-  console.log(user?.displayName);
+  console.log(user);
   const isHomePage = location.pathname === "/";
+  const axiosSecure = useAxiosSecure();
+  const { data: cartData = [], isLoading } = useQuery({
+    queryKey: ["all-cart", user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
+      return data;
+    },
+  });
 
   const links = (
     <>
@@ -142,21 +153,26 @@ const Navbar = () => {
 
       {/* Right Section (Cart & Profile) */}
       <div className="navbar-end flex gap-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <NavLink
-              className={({ isActive }) =>
-                isActive
-                  ? "text-green-700"
-                  : isHomePage
-                  ? `${theme === "dark" ? "text-white" : "text-black"}`
-                  : ""
-              }
-              style={{ color: "", backgroundColor: "transparent" }}
-              to="/shopping-cart"
-            >
-              <FaShoppingCart className="text-xl"></FaShoppingCart>
-            </NavLink>
+        <div className="flex items-center gap-5">
+          <div className="relative mt-2 ">
+            <div>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-green-700"
+                    : isHomePage
+                    ? `${theme === "dark" ? "text-white" : "text-black"}`
+                    : ""
+                }
+                style={{ color: "", backgroundColor: "transparent" }}
+                to="/shopping-cart"
+              >
+                <LuShoppingBag className="text-3xl"></LuShoppingBag>
+              </NavLink>
+            </div>
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cartData.length}
+            </div>
           </div>
           {/* toggle theme */}
           <div>

@@ -8,7 +8,7 @@ import useAuth from "../../hooks/useAuth";
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
-  const { data: cartData, isLoading } = useQuery({
+  const { data: cartData = [], isLoading } = useQuery({
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
