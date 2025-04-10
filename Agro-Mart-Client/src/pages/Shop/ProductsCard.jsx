@@ -25,8 +25,10 @@ const ProductsCard = ({ product }) => {
   const [isWishListOpen, setIsWishListOpen] = useState(false);
   const [isWished, setIsWished] = useState(false);
 
+  //add cart
   const addCard = async (cartProduct) => {
     const { image, _id, name, category, price } = cartProduct;
+
     const cartData = {
       image,
       productId: _id,
@@ -51,6 +53,7 @@ const ProductsCard = ({ product }) => {
     }
   };
 
+  //add wishlist
   const addWish = async (wishProduct) => {
     const { image, _id, name, category, price } = wishProduct;
     const wishData = {
