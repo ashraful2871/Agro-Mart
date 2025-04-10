@@ -48,7 +48,7 @@ const FaqSection = () => {
             <h3 className="text-xl text-green-700">
               Frequently Asked Questions
             </h3>
-            <h3 className="text-5xl font-bold my-2 font-syne">
+            <h3 className="text-xl md:text-5xl text-green-400 font-bold my-2 font-syne">
               Do You Have Any Questions ?
             </h3>
             <p>
