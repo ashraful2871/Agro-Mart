@@ -119,6 +119,7 @@ const ShoppingCart = () => {
           <PaymentModal
             isOpen={isModalOpen}
             closeModal={() => setIsModalOpen(false)}
+            totalAmount={finalTotal}
           />
 
         </div>
