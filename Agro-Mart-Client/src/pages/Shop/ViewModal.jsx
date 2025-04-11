@@ -1,14 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FaFacebookF, FaTwitter, FaPinterestP, FaStar } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const ViewModal = ({ isOpen, closeModal, product }) => {
   const user = useAuth();
   const axiosSecure = useAxiosSecure();
+  const { theme } = useContext(ThemeContext);
+  
   const {
     name,
     price,
@@ -78,7 +81,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={closeModal}>
-        <div className="fixed inset-0 bg-black/30" />
+        <div className="fixed inset-0 bg-black/30 " />
 
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full p-4">
@@ -95,7 +98,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
 
                 {/* Right side content */}
                 <div className="space-y-3">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                  <h2 className={` ${theme === "dark" ? "text-white" : "text-gray-800"} text-xl sm:text-2xl font-bold text-gray-800`}>
                     {name}
                   </h2>
 
@@ -103,7 +106,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                     {[...Array(4)].map((_, i) => (
                       <FaStar key={i} />
                     ))}
-                    <span className="text-sm text-gray-600 ml-2">
+                    <span className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-sm ml-2`}>
                       4 Review • SKU: 251,594
                     </span>
                   </div>
@@ -112,7 +115,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                     <span className="text-xl font-bold text-green-600">
                       ${price}
                     </span>
-                    <span className="line-through text-gray-500">
+                    <span className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} line-through`}>
                       ${oldPrice}
                     </span>
                     <span className="text-sm bg-red-100 text-red-600 px-2 py-1 rounded">
@@ -138,14 +141,14 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-600">{description}</p>
+                  <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-sm `}>{description}</p>
 
                   {/* Quantity selector and buttons */}
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
                     <div className="flex items-center gap-2 border rounded-full px-3 py-1">
                       <button
                         onClick={() => handleQuantity(quantity - 1)}
-                        className="w-8 h-8 rounded-full bg-green-100 text-lg"
+                        className="w-8 h-8 rounded-full bg-green-100 text-lg text-black"
                       >
                         -
                       </button>
@@ -155,11 +158,11 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                         onChange={(e) =>
                           handleQuantity(parseInt(e.target.value))
                         }
-                        className="w-12 text-center outline-none"
+                        className={`${theme === "dark" ? "bg-transparent text-white" : "text-black"} w-12 text-center outline-none`}
                       />
                       <button
                         onClick={() => handleQuantity(quantity + 1)}
-                        className="w-8 h-8 rounded-full bg-green-100 text-lg"
+                        className="w-8 h-8 rounded-full bg-green-100 text-lg text-black"
                       >
                         +
                       </button>
@@ -181,7 +184,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                   </div>
 
                   {/* Tags and category */}
-                  <div className="text-sm text-gray-700 space-y-1 mt-4">
+                  <div className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-sm space-y-1 mt-4`}>
                     <p>
                       <strong>Category:</strong> {category}
                     </p>
