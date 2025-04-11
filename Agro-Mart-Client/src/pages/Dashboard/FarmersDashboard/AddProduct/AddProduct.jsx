@@ -54,6 +54,7 @@ const AddProduct = () => {
       } catch (error) {
         console.log(error);
         toast.error("Image upload failed");
+        setLoading(false);
         return;
       }
     }
@@ -82,6 +83,7 @@ const AddProduct = () => {
     } catch (err) {
       setError("An error occurred while adding the product.");
       console.error("Product Upload Error:", err.response?.data || err.message);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
