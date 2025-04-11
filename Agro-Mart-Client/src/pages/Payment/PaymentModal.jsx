@@ -32,12 +32,12 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount }) => {
             <span>${totalAmount.toFixed(2)}</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="radio" name="payment"   value="bKash" onChange={(e) => setSelectedPayment(e.target.value)} />
               <span> bKash payment</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer col-span-2 justify-center">
+            <label className="flex items-center gap-2 cursor-pointer">
               <input type="radio" name="payment"   value="Nagad" onChange={(e) => setSelectedPayment(e.target.value)} />
               <img src="https://i.ibb.co.com/8gg1wdLT/nogod.webp" className="h-5 rounded-md" />
               <span>Nagad payment</span>
@@ -47,7 +47,7 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount }) => {
               <img src="https://i.ibb.co.com/ZRM8psgP/ssl.png" className="h-5 rounded-md" />
               <span>SSLCommerz</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer col-span-2 justify-center">
+            <label className="flex items-center gap-2 cursor-pointer">
               <input type="radio" name="payment" value="stripe" onChange={(e) => setSelectedPayment(e.target.value)} />
               <img src="https://i.ibb.co.com/239TRV1T/stripe.png" alt="" className="h-5 rounded-md"/>
               <span>Stripe payment</span>
