@@ -25,7 +25,15 @@ const Drawer = () => {
         ></label>
         <ul className="menu bg-base-200 text-base-content h-full w-72 p-4">
           <div className="mb-6 text-center">
-            <Link to="/" className="text-xl font-bold text-green-700">
+            <Link
+              to="/"
+              className="text-xl font-bold text-base-content flex items-center gap-2"
+            >
+              <img
+                className="h-9 md:h-9"
+                src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
+                alt="AgroMart"
+              />
               Agro MArt
             </Link>
           </div>

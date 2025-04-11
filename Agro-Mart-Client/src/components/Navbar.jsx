@@ -122,12 +122,12 @@ const Navbar = () => {
       <div className="navbar-start">
         <Link to="/" className="flex items-center">
           <img
-            className="h-9 md:h-14"
+            className="h-9 md:h-9"
             src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
+            className={`text-2xl md:text-2xl font-bold font-syne ml-2 ${
               isHomePage
                 ? `${theme === "dark" ? "text-white" : "text-black"}`
                 : ""

@@ -18,7 +18,15 @@ const Dashboard = () => {
         <div className={`lg:w-64  flex flex-col justify-between lg:h-full`}>
           <div className="hidden lg:block lg:h-full overflow-y-auto">
             <div className="mb-6 text-center p-4">
-              <Link to="/" className="text-xl font-bold text-green-700">
+              <Link
+                to="/"
+                className="text-xl font-bold text-base-content flex items-center gap-2"
+              >
+                <img
+                  className="h-9 md:h-9"
+                  src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
+                  alt="AgroMart"
+                />
                 Agro Mart
               </Link>
             </div>
