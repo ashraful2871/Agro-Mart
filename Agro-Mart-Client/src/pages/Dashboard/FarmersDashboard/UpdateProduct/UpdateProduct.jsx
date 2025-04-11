@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { ThemeContext } from "../../../../provider/ThemeProvider";
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const UpdateProduct = () => {
   const [updatedProduct, setUpdatedProduct] = useState({});
   const user = useAuth();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     // Fetching product details by id
@@ -53,6 +55,8 @@ const UpdateProduct = () => {
           title: "Updated!",
           text: "Your product has been updated.",
           icon: "success",
+          background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+          color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
         });
         navigate("/dashboard/manageProduct");
       }
