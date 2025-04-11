@@ -19,7 +19,7 @@ const Home = () => {
           <AgricultureProcess></AgricultureProcess>
         </div>
 
-        {/* Our Services */}
+        {/* Our Services section */}
         <div>
           <Service></Service>
         </div>
@@ -46,7 +46,7 @@ const Home = () => {
         <div>
           <ReviewDisplay></ReviewDisplay>
         </div>
-        
+
       </div>
     </div>
   );
