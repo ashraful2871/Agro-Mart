@@ -46,7 +46,7 @@ const ShoppingCart = () => {
           <h1 className="text-center text-3xl font-bold mb-10">
             My Shopping Cart
           </h1>
-          <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto w-full">
             <div className="flex-1 border rounded-xl p-6">
               <div className="flex justify-between border-b pb-4 font-semibold text-sm uppercase">
                 <span className="w-2/5">Product</span>
@@ -74,7 +74,7 @@ const ShoppingCart = () => {
               
               ))}
 
-              <div className="flex justify-between mt-6">
+              <div className="flex flex-col md:flex-row justify-between gap-4 mt-6">
                 <button className="btn rounded-full">Return to shop</button>
                 <button className="btn rounded-full">Update Cart</button>
               </div>
@@ -104,11 +104,11 @@ const ShoppingCart = () => {
           {/* Coupon section */}
           <div className="mt-10 border rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <input
                 type="text"
                 placeholder="Enter code"
-                className="input input-bordered rounded-full w-64"
+                className="input input-bordered rounded-full"
               />
               <button className="btn bg-black text-white rounded-full">
                 Apply Coupon

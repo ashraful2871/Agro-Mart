@@ -92,7 +92,7 @@ const WishListModal = ({ isOpen, closeModal }) => {
                   {wishlist?.map((item) => (
                     <tr
                       key={item._id}
-                      className="border-b last:border-b-0 hover:bg-gray-900 transition ease-in-out duration-200"
+                      className="border-b last:border-b-0 hover:bg-gray-100 transition ease-in-out duration-200"
                     >
                       <td className="p-4 w-28">
                         <img
