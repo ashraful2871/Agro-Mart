@@ -5,8 +5,10 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import useCart from "../../hooks/useCart";
 
 const StripeCheckOutForm = ({ totalAmount }) => {
+  const user = useAuth();
   const [error, setError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
@@ -14,11 +16,11 @@ const StripeCheckOutForm = ({ totalAmount }) => {
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const  user  = useAuth();
+  const [cart] = useCart();
 
   // Create payment intent when totalAmount changes
   useEffect(() => {
-    if (!totalAmount || totalAmount <= 0) return; 
+    if (!totalAmount || totalAmount <= 0) return;
 
     // console.log("Total Amount:", totalAmount);
     axiosSecure
@@ -27,14 +29,15 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         // console.log("Payment intent response:", res.data);
         if (res.data.clientSecret) {
           setClientSecret(res.data.clientSecret);
-        //   toast.success("Payment intent created successfully!");
+          //   toast.success("Payment intent created successfully!");
         } else {
           throw new Error("No client secret received");
         }
       })
       .catch((error) => {
         console.error("Payment intent creation failed:", error);
-        const message = error.response?.data?.message || error.message || "Unknown error";
+        const message =
+          error.response?.data?.message || error.message || "Unknown error";
         toast.error(`Failed to create payment intent: ${message}`);
         setError(`Failed to create payment intent: ${message}`);
       });
@@ -73,10 +76,11 @@ const StripeCheckOutForm = ({ totalAmount }) => {
     setError("");
 
     // Create payment method
-    const { error: paymentMethodError, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card,
-    });
+    const { error: paymentMethodError, paymentMethod } =
+      await stripe.createPaymentMethod({
+        type: "card",
+        card,
+      });
 
     if (paymentMethodError) {
       setError(paymentMethodError.message);
@@ -85,15 +89,16 @@ const StripeCheckOutForm = ({ totalAmount }) => {
     }
 
     // Confirm card payment
-    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card,
-        billing_details: {
-          email: user?.email || "anonymous",
-          name: user?.displayName || "anonymous",
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card,
+          billing_details: {
+            email: user?.email || "anonymous",
+            name: user?.displayName || "anonymous",
+          },
         },
-      },
-    });
+      });
 
     if (confirmError) {
       setError(confirmError.message);
@@ -109,12 +114,15 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         email: user?.email || "anonymous",
         totalAmount,
         transactionId: paymentIntent.id,
+        cartIds: cart.map((item) => item._id),
+        productId: cart.map((item) => item.productId),
         date: new Date().toISOString(),
       };
 
       try {
         const res = await axiosSecure.post("/payments", paymentInfo);
-        if (res.data?.insertedId) {
+
+        if (res?.data?.result?.insertedId) {
           Swal.fire({
             icon: "success",
             title: "Payment Successful",
@@ -146,7 +154,9 @@ const StripeCheckOutForm = ({ totalAmount }) => {
 
       {/* Right: Payment Form */}
       <form onSubmit={handleSubmit} className="p-8 space-y-4 w-full">
-        <h2 className="text-2xl font-semibold text-gray-800">Your Payment Details</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Your Payment Details
+        </h2>
 
         <div>
           <label className="text-sm">Card Details</label>
@@ -168,7 +178,9 @@ const StripeCheckOutForm = ({ totalAmount }) => {
 
         <div className="flex items-center gap-2">
           <input type="checkbox" className="accent-blue-500" />
-          <span className="text-sm text-gray-600">Save my details for further payment.</span>
+          <span className="text-sm text-gray-600">
+            Save my details for further payment.
+          </span>
         </div>
 
         <button
@@ -180,7 +192,11 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         </button>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        {transactionId && <p className="text-green-500 text-sm">Transaction ID: {transactionId}</p>}
+        {transactionId && (
+          <p className="text-green-500 text-sm">
+            Transaction ID: {transactionId}
+          </p>
+        )}
       </form>
     </div>
   );

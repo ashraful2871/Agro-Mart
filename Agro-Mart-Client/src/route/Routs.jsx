@@ -55,11 +55,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/payment/nagad",
-        element: <NagadPayment></NagadPayment>
+        element: <NagadPayment></NagadPayment>,
       },
       {
         path: "payment/SSLCommerz",
-        element:<SslCommerzePayment></SslCommerzePayment>
+        element: <SslCommerzePayment></SslCommerzePayment>,
       },
       {
         path: "/wish-list",

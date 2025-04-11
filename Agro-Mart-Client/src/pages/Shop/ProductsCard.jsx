@@ -14,10 +14,12 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import ViewModal from "./ViewModal";
 import WishListModal from "./Wishlist/WishListModal";
+import useCart from "../../hooks/useCart";
 
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
+  const [cart, refetch] = useCart();
   const { image, name, category, price } = product;
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
@@ -44,9 +46,9 @@ const ProductsCard = ({ product }) => {
       const { data } = await axiosSecure.post("/add-cart", {
         cartData,
       });
-      console.log(data);
       if (data.insertedId) {
         toast.success("item added successfully in cart");
+        refetch();
       }
     } catch (error) {
       toast.error(error.response.data.message);

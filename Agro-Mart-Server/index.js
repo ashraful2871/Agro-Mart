@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const uri = process.env.MONGO_URI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -239,22 +239,22 @@ async function run() {
       res.send(result);
     });
 
-    // Payment Intant
+    // Payment Intent
     app.post("/create-payment-intent", async (req, res) => {
       const { totalAmount } = req.body;
-    
+
       if (!totalAmount || totalAmount <= 0) {
         return res.status(400).send({ error: "Invalid amount provided." });
       }
-    
+
       try {
-        const amount = parseInt(totalAmount * 100); 
+        const amount = parseInt(totalAmount * 100);
         const paymentIntent = await stripe.paymentIntents.create({
           amount,
           currency: "usd",
           payment_method_types: ["card"],
         });
-    
+
         res.send({
           clientSecret: paymentIntent.client_secret,
         });
@@ -263,21 +263,27 @@ async function run() {
         res.status(500).send({ error: err.message });
       }
     });
-  
 
-  app.post("/payments", async (req, res) => {
-    try {
-      const paymentInfo = req.body;
-      const result = await paymentCollection.insertOne(paymentInfo);
-      res.send({
-        insertedId: result.insertedId,
-      });
-    } catch (err) {
-      console.error("Error saving payment:", err);
-      res.status(500).send({ error: "Failed to save payment" });
-    }
-  });
+    app.post("/payments", async (req, res) => {
+      try {
+        const paymentInfo = req.body;
+        const result = await paymentCollection.insertOne(paymentInfo);
+        const query = {
+          _id: {
+            $in: paymentInfo.cartIds.map((id) => new ObjectId(id)),
+          },
+        };
 
+        const deletedResult = await cartCollection.deleteMany(query);
+        res.send({
+          result,
+          deletedResult,
+        });
+      } catch (err) {
+        console.error("Error saving payment:", err);
+        res.status(500).send({ error: "Failed to save payment" });
+      }
+    });
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");

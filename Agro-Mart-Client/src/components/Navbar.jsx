@@ -11,23 +11,17 @@ import { FaShoppingCart } from "react-icons/fa";
 import { LuShoppingBag } from "react-icons/lu";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useCart from "../hooks/useCart";
 
 const Navbar = () => {
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
-  const { theme } = useContext(ThemeContext);
-  console.log(user);
+  const [cart] = useCart();
   const isHomePage = location.pathname === "/";
-  const axiosSecure = useAxiosSecure();
-  const { data: cartData = [], isLoading } = useQuery({
-    queryKey: ["all-cart", user?.email],
-    queryFn: async () => {
-      const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
-      return data;
-    },
-  });
+  console.log(user);
 
   const links = (
     <>
@@ -171,7 +165,7 @@ const Navbar = () => {
               </NavLink>
             </div>
             <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-              {cartData.length}
+              {cart.length}
             </div>
           </div>
           {/* toggle theme */}
