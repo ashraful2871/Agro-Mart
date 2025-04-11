@@ -19,7 +19,7 @@ const Home = () => {
           <AgricultureProcess></AgricultureProcess>
         </div>
 
-        {/* Our Services */}
+        {/* Our Services section */}
         <div>
           <Service></Service>
         </div>
@@ -31,8 +31,8 @@ const Home = () => {
 
         {/* Review Posting Section */}
         {/* <section>
-        <ReviewPosting></ReviewPosting>
-      </section> */}
+           <ReviewPosting></ReviewPosting>
+         </section> */}
 
         {/* Why Choose Us */}
         <div className="max-w-screen-xl mx-auto p-2">
@@ -46,6 +46,7 @@ const Home = () => {
         <div>
           <ReviewDisplay></ReviewDisplay>
         </div>
+
       </div>
     </div>
   );

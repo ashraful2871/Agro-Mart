@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FaqSectionsImageOne from "../../assets/senior-hardworking-farmer-agronomist-soybean-field-checking-crops-before-harvest.jpg";
 import FaqSectionsImageTwo from "../../assets/positive-mature-man-carrying-basket-with-fresh-strawberries.jpg";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const FaqSection = () => {
   const [activeFAQ, setActiveFAQ] = useState(null);
-
+  const { theme } = useContext(ThemeContext);
+  
   const toggleFAQ = (index) => {
     if (activeFAQ === index) {
       setActiveFAQ(null);
@@ -45,10 +47,10 @@ const FaqSection = () => {
             />
           </div>
           <div className="max-w-lg lg:max-w-xl">
-            <h3 className="text-xl text-green-700">
+            <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl`}>
               Frequently Asked Questions
             </h3>
-            <h3 className="text-xl md:text-5xl text-green-400 font-bold my-2 font-syne">
+            <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl md:text-5xl font-bold my-2 font-syne`}>
               Do You Have Any Questions ?
             </h3>
             <p>
@@ -72,7 +74,7 @@ const FaqSection = () => {
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="mb-4 bg-green-700 text-white rounded-lg"
+                  className={`${theme === "dark" ? "bg-green-600" : "bg-green-700"} mb-4 text-white rounded-lg`}
                 >
                   <button
                     className="w-full py-3 px-4 text-left   rounded-lg flex justify-between items-center focus:outline-none hover:"
