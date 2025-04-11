@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const uri = process.env.MONGO_URI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -28,6 +29,8 @@ async function run() {
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
     const cartCollection = client.db("AgroMart").collection("carts");
+    const wishCollection = client.db("AgroMart").collection("wishes");
+    const paymentCollection = client.db("AgroMart").collection("payments");
 
     //generate jwt token
     app.post("/jwt", async (req, res) => {
@@ -174,14 +177,112 @@ async function run() {
 
     //add cart products
     app.post("/add-cart", verifyToken, async (req, res) => {
-      const { cardData } = req.body;
-      const result = await cartCollection.insertOne(cardData);
+      const { cartData } = req.body;
+      const { productId } = cartData;
+      const query = {
+        productId: productId,
+        "userInfo.email": cartData.userInfo.email,
+      };
+      const isExist = await cartCollection.findOne(query);
+      if (isExist) {
+        return res
+          .status(409)
+          .send({ message: "This Product Already in Cart" });
+      }
+      const result = await cartCollection.insertOne(cartData);
       res.send(result);
     });
 
-    app.get("/all-cart-items", verifyToken, async (req, res) => {
-      const result = await cartCollection.find().toArray();
+    app.get("/all-cart-items/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const query = { "userInfo.email": email };
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
+    });
+
+    // Delete a cart item
+    app.delete("/delete-cart-item/:id", verifyToken, async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    //add wish products
+    app.post("/add-wish", verifyToken, async (req, res) => {
+      const { wishData } = req.body;
+      const { productId, userInfo } = wishData;
+      const exists = await wishCollection.findOne({
+        productId: productId,
+        "userInfo.email": userInfo.email,
+      });
+      if (exists) {
+        return res.status(409).send({ message: "Already in wishlist" });
+      }
+      const result = await wishCollection.insertOne(wishData);
+      res.send(result);
+    });
+
+    // get wishlist item by email
+    app.get("/wishlist/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { "userInfo.email": email };
+      const result = await wishCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // Delete Wishlist Item
+    app.delete("/wishlist/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await wishCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // Payment Intent
+    app.post("/create-payment-intent", async (req, res) => {
+      const { totalAmount } = req.body;
+
+      if (!totalAmount || totalAmount <= 0) {
+        return res.status(400).send({ error: "Invalid amount provided." });
+      }
+
+      try {
+        const amount = parseInt(totalAmount * 100);
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency: "usd",
+          payment_method_types: ["card"],
+        });
+
+        res.send({
+          clientSecret: paymentIntent.client_secret,
+        });
+      } catch (err) {
+        console.error("Error creating payment intent:", err);
+        res.status(500).send({ error: err.message });
+      }
+    });
+
+    app.post("/payments", async (req, res) => {
+      try {
+        const paymentInfo = req.body;
+        const result = await paymentCollection.insertOne(paymentInfo);
+        const query = {
+          _id: {
+            $in: paymentInfo.cartIds.map((id) => new ObjectId(id)),
+          },
+        };
+
+        const deletedResult = await cartCollection.deleteMany(query);
+        res.send({
+          result,
+          deletedResult,
+        });
+      } catch (err) {
+        console.error("Error saving payment:", err);
+        res.status(500).send({ error: "Failed to save payment" });
+      }
     });
 
     app.get("/", async (req, res) => {

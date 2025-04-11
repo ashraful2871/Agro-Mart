@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./reviewStyle.css";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 export default () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
@@ -19,110 +21,115 @@ export default () => {
   });
 
   return (
-    <div 
-    className="pt-20">
+    <div className="pt-20">
       <div className="">
-      <div className="flex items-center justify-center">
-        <div className="text-center">
-          <h5 className="text-green-700">Our Testimonials</h5>
-          <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
-            Hear What Our Global Clients Say About Us
-          </h3>
+        <div className="flex items-center justify-center">
+          <div className="text-center">
+            <h5 className="text-green-700">Our Testimonials</h5>
+            <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
+              Hear What Our Global Clients Say About Us
+            </h3>
+          </div>
         </div>
-      </div>
 
-      <div
-      className="pb-20"
-      style={{ 
-        backgroundImage: `url('https://i.ibb.co.com/1JsMjXv0/bg-1.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}>
-      <div 
-      className="navigation-wrapper max-w-4xl mx-auto">
-        <div ref={sliderRef} className="keen-slider">
-          <div className="keen-slider__slide number-slide2 flex-col">
-            <p className="my-2">
-              <strong>Rating:</strong> 0 / 5
-            </p>
-            <p className="w-3/4 text-center">
-              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
-              iure tempore mollitia in. Illo, molestias! "
-            </p>
-            <div className="my-7 text-center text-green-700">
-              <p>
-                <strong>User Name</strong>
-              </p>
-              <p>
-                <small>Posted on: this date</small>
-              </p>
+        <div
+          className="pb-20"
+          style={
+            theme === "light"
+              ? {
+                  backgroundImage: `url('https://i.ibb.co.com/1JsMjXv0/bg-1.png')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }
+              : {}
+          }
+        >
+          <div className="navigation-wrapper max-w-4xl mx-auto">
+            <div ref={sliderRef} className="keen-slider">
+              <div className="keen-slider__slide number-slide2 flex-col">
+                <p className="my-2">
+                  <strong>Rating:</strong> 0 / 5
+                </p>
+                <p className="w-3/4 text-center">
+                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
+                  amet, consectetur adipisicing elit. Non quod aut obcaecati
+                  eaque minus, iure tempore mollitia in. Illo, molestias! "
+                </p>
+                <div className="my-7 text-center text-green-700">
+                  <p>
+                    <strong>User Name</strong>
+                  </p>
+                  <p>
+                    <small>Posted on: this date</small>
+                  </p>
+                </div>
+              </div>
+              <div className="keen-slider__slide number-slide2 ">
+                <p className="max-w-2xl text-center">
+                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
+                  amet, consectetur adipisicing elit. Non quod aut obcaecati
+                  eaque minus, iure tempore mollitia in. Illo, molestias! "
+                </p>
+              </div>
+              <div className="keen-slider__slide number-slide2 ">
+                <p className="max-w-2xl text-center">
+                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
+                  amet, consectetur adipisicing elit. Non quod aut obcaecati
+                  eaque minus, iure tempore mollitia in. Illo, molestias! "
+                </p>
+              </div>
+              <div className="keen-slider__slide number-slide2 ">
+                <p className="max-w-2xl text-center">
+                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
+                  amet, consectetur adipisicing elit. Non quod aut obcaecati
+                  eaque minus, iure tempore mollitia in. Illo, molestias! "
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">
-              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
-              iure tempore mollitia in. Illo, molestias! "
-            </p>
-          </div>
-          <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">
-              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
-              iure tempore mollitia in. Illo, molestias! "
-            </p>
-          </div>
-          <div className="keen-slider__slide number-slide2 ">
-            <p className="max-w-2xl text-center">
-              Testimonial 2: "Highly recommended! Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Non quod aut obcaecati eaque minus,
-              iure tempore mollitia in. Illo, molestias! "
-            </p>
-          </div>
-        </div>
 
-        {loaded && instanceRef.current && (
-          <>
-            <Arrow
-              left
-              onClick={(e) =>
-                e.stopPropagation() || instanceRef.current?.prev()
-              }
-              disabled={currentSlide === 0}
-            />
-            <Arrow
-              onClick={(e) =>
-                e.stopPropagation() || instanceRef.current?.next()
-              }
-              disabled={
-                currentSlide ===
-                instanceRef.current.track.details.slides.length - 1
-              }
-            />
-          </>
-        )}
-      </div>
+            {loaded && instanceRef.current && (
+              <>
+                <Arrow
+                  left
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.prev()
+                  }
+                  disabled={currentSlide === 0}
+                />
+                <Arrow
+                  onClick={(e) =>
+                    e.stopPropagation() || instanceRef.current?.next()
+                  }
+                  disabled={
+                    currentSlide ===
+                    instanceRef.current.track.details.slides.length - 1
+                  }
+                />
+              </>
+            )}
+          </div>
 
-      {loaded && instanceRef.current && (
-        <div className="dots">
-          {[
-            ...Array(instanceRef.current.track.details.slides.length).keys(),
-          ].map((idx) => {
-            return (
-              <button
-                key={idx}
-                onClick={() => {
-                  instanceRef.current?.moveToIdx(idx);
-                }}
-                className={"dot" + (currentSlide === idx ? " active" : "")}
-              ></button>
-            );
-          })}
+          {loaded && instanceRef.current && (
+            <div className="dots">
+              {[
+                ...Array(
+                  instanceRef.current.track.details.slides.length
+                ).keys(),
+              ].map((idx) => {
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      instanceRef.current?.moveToIdx(idx);
+                    }}
+                    className={"dot" + (currentSlide === idx ? " active" : "")}
+                  ></button>
+                );
+              })}
+            </div>
+          )}
         </div>
-      )}
-      </div>
       </div>
     </div>
   );

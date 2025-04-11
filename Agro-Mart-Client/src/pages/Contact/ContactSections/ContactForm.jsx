@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,8 @@ const ContactForm = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { theme } = useContext(ThemeContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +56,7 @@ const ContactForm = () => {
 
   return (
     <div className="mb-20">
-      <div className="card lg:card-side bg-gray-100 shadow-sm">
+      <div className="card lg:card-side shadow-sm">
         {/* Image Section */}
         <div className="lg:w-1/2">
           <img
@@ -64,101 +67,116 @@ const ContactForm = () => {
         </div>
 
         {/* Form Section */}
-        <div className="card-body lg:w-1/2 p-8">
+        <div className="card-body p-2 lg:w-1/2 ">
           <div className="text-center">
-            <h1 className="font-bold text-gray-600">GET TO CONTACT US</h1>
-            <p className="mt-4 text-4xl font-bold text-green-700">
+            <h1 className="font-bold text-base-content">GET TO CONTACT US</h1>
+            <p
+              className={`mt-4 text-4xl font-bold ${
+                theme === "dark" ? "text-green-500" : "text-green-600"
+              }`}
+            >
               Send Your Message
             </p>
           </div>
 
           {/* Contact Form */}
-          <div className="mt-12 bg-white p-8 rounded-lg shadow-md">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
+          <div
+            className={`mt-12 ${
+              theme === "dark" ? "bg-base-300" : "bg-white"
+            } p-8 rounded-xl shadow-md `}
+          >
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {/* Full Name */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-base-content">
                   Full Name*
                 </label>
                 <input
                   type="text"
                   name="from_name"
+                  placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
                 />
               </div>
 
               {/* Email Address */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-base-content">
                   Email Address*
                 </label>
                 <input
                   type="email"
                   name="from_email"
+                  placeholder="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
                 />
               </div>
 
               {/* Phone */}
               <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-base-content">
                   Phone
                 </label>
                 <input
                   type="tel"
                   name="tel"
+                  placeholder="Phone"
                   value={tel}
                   onChange={(e) => setTel(e.target.value)}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
                 />
               </div>
 
               {/* Subject */}
               <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-base-content">
                   Subject
                 </label>
                 <input
                   type="text"
                   name="subject"
+                  placeholder="Subject"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   required
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
                 />
               </div>
 
               {/* Message */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Write Message...
+                <label className="block text-sm font-medium text-base-content">
+                  Message
                 </label>
                 <textarea
                   rows="4"
                   name="message"
+                  placeholder="Write Message..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
                 ></textarea>
               </div>
 
               {/* Send Message Button */}
               {loading ? (
-                <button className="w-full py-1 px-4 font-bold text-base text-black bg-[#f9df60] hover:bg-[#fde047] rounded-lg focus:outline-none">
+                <button className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
                   <span className="loading loading-spinner"></span>
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300"
+                  className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300"
                 >
                   Send Message →
                 </button>

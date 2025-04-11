@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { MdBrowserUpdated } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../components/loading/Loading";
+import { ThemeContext } from "../../../../provider/ThemeProvider";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ const ManageProduct = () => {
   const [error, setError] = useState("");
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const fetchProducts = async () => {
     try {
@@ -56,6 +58,8 @@ const ManageProduct = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+      color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -67,12 +71,16 @@ const ManageProduct = () => {
             title: "Deleted!",
             text: "The product has been deleted.",
             icon: "success",
+            background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+            color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
           });
         } catch (error) {
           Swal.fire({
             title: "Error!",
             text: "Something went wrong while deleting the product.",
             icon: "error",
+            background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+            color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
           });
           console.error("Error deleting product:", error);
         }

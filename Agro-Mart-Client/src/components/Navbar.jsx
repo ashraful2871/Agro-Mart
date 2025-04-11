@@ -7,15 +7,21 @@ import useAuth from "../hooks/useAuth";
 import Sidebar from "./nav-sidebar/Sidebar";
 import { ThemeContext } from "../provider/ThemeProvider";
 import Theme from "./theme/Theme";
+import { FaShoppingCart } from "react-icons/fa";
+import { LuShoppingBag } from "react-icons/lu";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useCart from "../hooks/useCart";
 
 const Navbar = () => {
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(user?.displayName);
+  const [cart] = useCart();
   const isHomePage = location.pathname === "/";
+  console.log(user);
 
   const links = (
     <>
@@ -23,7 +29,11 @@ const Navbar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : isHomePage ? "text-white" : ""
+            isActive
+              ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
+              : isHomePage
+              ? "text-white"
+              : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
         >
@@ -36,10 +46,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -53,10 +63,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -70,10 +80,10 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? !isHomePage
-                ? "text-yellow-400"
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
                 : ""
               : isHomePage
-              ? "text-white"
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
               : ""
           }
           style={{ color: "", backgroundColor: "transparent" }}
@@ -102,8 +112,10 @@ const Navbar = () => {
 
   return (
     <div
-      className={`navbar fixed bg-opacity-30 bg-black px-4 lg:px-8 transition-all duration-300 z-50 ${
-        isHomePage ? " top-0 left-0 w-full" : "bg-base-100 shadow-md"
+      className={`navbar fixed ${
+        theme === "dark" ? "bg-[#111827]" : "bg-gray-300"
+      } px-4 lg:px-8 transition-all duration-300 z-50 ${
+        isHomePage ? " top-0 left-0 w-full" : " shadow-md"
       }`}
     >
       {/* Left Section */}
@@ -116,7 +128,9 @@ const Navbar = () => {
           />
           <span
             className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
-              isHomePage ? "text-white" : ""
+              isHomePage
+                ? `${theme === "dark" ? "text-white" : "text-black"}`
+                : ""
             }`}
           >
             AgroMart
@@ -133,9 +147,31 @@ const Navbar = () => {
 
       {/* Right Section (Cart & Profile) */}
       <div className="navbar-end flex gap-4">
-        {/* toggle theme */}
-        <div>
-          <Theme></Theme>
+        <div className="flex items-center gap-5">
+          <div className="relative mt-2 ">
+            <div>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-green-700"
+                    : isHomePage
+                    ? `${theme === "dark" ? "text-white" : "text-black"}`
+                    : ""
+                }
+                style={{ color: "", backgroundColor: "transparent" }}
+                to="/shopping-cart"
+              >
+                <LuShoppingBag className="text-3xl"></LuShoppingBag>
+              </NavLink>
+            </div>
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cart.length}
+            </div>
+          </div>
+          {/* toggle theme */}
+          <div>
+            <Theme></Theme>
+          </div>
         </div>
         {/* Profile Dropdown */}
         {user ? (
@@ -162,7 +198,7 @@ const Navbar = () => {
                 <div>
                   <span
                     className={`${!isHomePage ? "text-black" : "text-white"}${
-                      theme === "dark" ? "text-white" : ""
+                      theme === "dark" ? "text-white" : "text-black"
                     } font-syne`}
                   >
                     {user?.displayName}
@@ -171,22 +207,33 @@ const Navbar = () => {
               </div>
 
               {/* Dropdown */}
-              <div className="absolute right-16 mt-2 w-48 bg-white shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              <div
+                className={`absolute right-6 mt-4 w-48 ${
+                  theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"
+                }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
+              >
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  } `}
                 >
                   Profile
                 </Link>
                 <Link
                   to="/dashboard/overview"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  c
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                  }`}
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={signOutUser}
-                  className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200"
+                  className={`block w-full text-left px-4 py-2 text-red-600 ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                  }`}
                 >
                   Logout
                 </button>

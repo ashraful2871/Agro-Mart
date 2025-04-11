@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 const Privet = ({ children }) => {
   const user = useAuth();
   const loading = useSelector((state) => state.auth.loading);
-  console.log(loading);
   if (loading) {
     return <Loading></Loading>;
   }
