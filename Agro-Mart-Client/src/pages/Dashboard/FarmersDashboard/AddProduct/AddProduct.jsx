@@ -12,47 +12,51 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const form = e.target;
-    const name = form.name.value;
-    const category = form.category.value;
-    const price = parseFloat(form.price.value);
-    const description = form.description.value;
-    const stockQuantity = parseInt(form.stockQuantity.value);
-    const imageFile = form.image.files[0];
-
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const category = formData.get("category");
+    const price = parseFloat(formData.get("price"));
+    const description = formData.get("description");
+    const stockQuantity = parseInt(formData.get("stockQuantity"));
+    const imageFile = formData.get("image");
+    // Continue to product submit
+    // const productData = {
+    //   name,
+    //   category,
+    //   price,
+    //   description,
+    //   stockQuantity,
+    //   imageFile,
+    //   addedBy: {
+    //     name: user?.displayName,
+    //     email: user?.email,
+    //   },
+    // };
+    // console.log(productData);
     let imageUrl = "";
     if (imageFile) {
       const imageFormData = new FormData();
       imageFormData.append("image", imageFile);
-
       try {
         const response = await axios.post(image_upload_api, imageFormData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
-
-        console.log("Upload Response:", response);
-
         if (response.data.success) {
           imageUrl = response.data.data.display_url;
-        } else {
-          console.error("Upload failed:", response.data);
-          toast.error("Image upload failed: " + response.data.error.message);
-          return;
         }
       } catch (error) {
-        console.error("Upload error:", error.response?.data || error.message);
-        toast.error("Image upload failed. Check API key and file type.");
+        console.log(error);
+        toast.error("Image upload failed");
         return;
       }
     }
-
-    // Continue to product submit
     const productData = {
       name,
       category,
@@ -65,7 +69,6 @@ const AddProduct = () => {
         email: user?.email,
       },
     };
-
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/products`,
@@ -74,7 +77,7 @@ const AddProduct = () => {
 
       console.log("Product Added:", data);
       toast.success("Product successfully added!");
-      form.reset();
+      e.target.reset();
       navigate("/dashboard/manageProduct");
     } catch (err) {
       setError("An error occurred while adding the product.");
