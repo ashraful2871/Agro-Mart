@@ -21,7 +21,7 @@ const Service = () => {
                     </div>
                     <div className="lg:text-left">
                         <h4 className="font-bold">Best Services</h4>
-                        <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"} text-base`}>National Best Services Awards</p>
+                        <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-base`}>National Best Services Awards</p>
                         <p className= {`${theme === "dark" ? "text-green-600" : "text-green-700"} font-medium flex items-center gap-1`}><span className="text-yellow-400"><FaStar /></span> 5/5 For The Agro Service</p>
                     </div>
                 </div>

@@ -1,13 +1,15 @@
 // components/modals/PaymentModal.jsx
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { FaCcStripe } from "react-icons/fa";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const PaymentModal = ({ isOpen, closeModal, totalAmount }) => {
   const [agree, setAgree] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const handleProceed = () => {
@@ -22,7 +24,7 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount }) => {
     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
       <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-lg rounded-2xl bg-[#0f0f1c] p-8 text-white space-y-4 shadow-lg">
+        <Dialog.Panel className={`${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} tmx-auto max-w-lg rounded-2xl p-8 space-y-4 shadow-lg`}>
           <Dialog.Title className="text-2xl font-bold text-green-600 text-center mb-4">
             Select Payment Method
           </Dialog.Title>

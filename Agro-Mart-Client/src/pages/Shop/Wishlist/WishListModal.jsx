@@ -1,15 +1,17 @@
 import { Dialog } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const WishListModal = ({ isOpen, closeModal }) => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const axiosSecure = useAxiosSecure();
+  const { theme } = useContext(ThemeContext);
   const user = useAuth();
 
   // Fetch wishlist data when modal is opened
@@ -87,13 +89,16 @@ const WishListModal = ({ isOpen, closeModal }) => {
     ) : (
       <div className="bg-base-100 border rounded-xl overflow-hidden shadow">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[600px] table-auto min-h-40">
+          <table className="w-full min-w-[600px]  table-auto min-h-40">
             <tbody>
               {wishlist?.map((item) => (
                 <tr
-                  key={item._id}
-                  className="border-b last:border-b-0 transition ease-in-out duration-200"
-                >
+                key={item._id}
+                className={`
+                  border-b last:border-b-0 transition ease-in-out duration-200 
+                  ${theme === "dark" ? "hover:bg-gray-900" : "hover:bg-gray-100"}
+                `}
+              >              
                   <td className="p-4 w-28">
                     <img
                       src={item.image}
