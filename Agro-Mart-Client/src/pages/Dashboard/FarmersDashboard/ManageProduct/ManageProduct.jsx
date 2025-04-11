@@ -94,7 +94,7 @@ const ManageProduct = () => {
 
   return (
     <div className="">
-      <h3 className="text-4xl mb-10 text-center">Manage Products</h3>
+      <h3 className="text-4xl mt-6 mb-10 text-center">Manage Products</h3>
 
       {/* Display all products */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
@@ -104,7 +104,7 @@ const ManageProduct = () => {
               <img
                 src={product.image || "https://via.placeholder.com/150"}
                 alt={product.name}
-                className="h-72 w-full bg-cover bg-center"
+                className="h-64 w-full bg-cover bg-center"
               />
             </figure>
             <div className="card-body">

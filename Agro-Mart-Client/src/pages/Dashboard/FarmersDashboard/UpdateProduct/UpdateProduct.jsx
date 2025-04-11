@@ -70,8 +70,10 @@ const UpdateProduct = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+    <div className={`${
+      theme === "dark" ? "bg-[#1F2937]" : "bg-white"
+    } max-w-4xl mx-auto p-8 shadow-lg rounded-lg mt-10`}>
+      <h2 className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-3xl font-semibold mb-6 text-center`}>
         Update Product
       </h2>
       <form
@@ -80,7 +82,7 @@ const UpdateProduct = () => {
       >
         {/* Product Name */}
         <div className="flex flex-col justify-end">
-          <label htmlFor="name" className="text-lg font-medium text-gray-700">
+          <label htmlFor="name" className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-lg font-medium`}>
             Product Name
           </label>
           <input
@@ -89,7 +91,7 @@ const UpdateProduct = () => {
             name="name"
             defaultValue={updatedProduct.name || ""}
             required
-            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F6FCDF]"
+            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-100"
           />
         </div>
 
@@ -97,7 +99,7 @@ const UpdateProduct = () => {
         <div className="flex flex-col">
           <label
             htmlFor="category"
-            className="text-lg font-medium text-gray-700"
+            className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-lg font-medium`}
           >
             Category
           </label>
@@ -107,13 +109,13 @@ const UpdateProduct = () => {
             name="category"
             defaultValue={updatedProduct.category || ""}
             required
-            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F6FCDF]"
+            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-100"
           />
         </div>
 
         {/* Price */}
         <div className="flex flex-col">
-          <label htmlFor="price" className="text-lg font-medium text-gray-700 ">
+          <label htmlFor="price" className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-lg font-medium`}>
             Price
           </label>
           <input
@@ -122,7 +124,7 @@ const UpdateProduct = () => {
             name="price"
             defaultValue={updatedProduct.price || ""}
             required
-            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F6FCDF]"
+            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-100"
           />
         </div>
 
@@ -130,7 +132,7 @@ const UpdateProduct = () => {
         <div className="flex flex-col">
           <label
             htmlFor="stockQuantity"
-            className="text-lg font-medium text-gray-700 "
+            className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-lg font-medium`}
           >
             Stock Quantity
           </label>
@@ -140,7 +142,7 @@ const UpdateProduct = () => {
             name="stockQuantity"
             defaultValue={updatedProduct.stockQuantity || ""}
             required
-            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F6FCDF]"
+            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-100"
           />
         </div>
 
@@ -148,7 +150,7 @@ const UpdateProduct = () => {
         <div className="md:col-span-2">
           <label
             htmlFor="description"
-            className="text-lg font-medium text-gray-700 "
+            className={`${theme === "dark" ? "text-white" : "text-gray-800"} text-lg font-medium`}
           >
             Description
           </label>
@@ -157,7 +159,7 @@ const UpdateProduct = () => {
             name="description"
             defaultValue={updatedProduct.description || ""}
             required
-            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F6FCDF] w-full"
+            className="input text-lg p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-100 w-full"
             rows="4"
           ></textarea>
         </div>
@@ -166,7 +168,7 @@ const UpdateProduct = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="btn text-black bg-[#F6FCDF] px-7 py-3 rounded-lg shadow-lg hover:bg-[#859F3D] w-full"
+            className="btn px-7 py-3 rounded-lg shadow-lg border-none shadow-green-100 hover:shadow-green-400 w-full bg-green-600 text-white hover:bg-green-700 transition duration-300"
           >
             Update Product
           </button>

@@ -46,69 +46,76 @@ const ShoppingCart = () => {
           <h1 className="text-center text-3xl font-bold mb-10">
             My Shopping Cart
           </h1>
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1 border rounded-xl p-6">
-              <div className="flex justify-between border-b pb-4 font-semibold text-sm uppercase">
-                <span className="w-2/5">Product</span>
-                <span className="w-1/5 text-center">Price</span>
-                <span className="w-1/5 text-center">Quantity</span>
-                <span className="w-1/5 text-center">Total</span>
-                <span className="w-1/12"></span>
-              </div>
+          <div className="flex flex-col lg:flex-row gap-6 w-full">
+           {/* Cart Items Section */}
+           <div className="w-full lg:flex-1 border rounded-xl p-4 overflow-x-auto">
+             {/* horizontal scroll wrapper */}
+             <div className="min-w-[600px]">
+               <div className="flex justify-between border-b pb-4 font-semibold text-sm uppercase">
+                 <span className="w-2/5">Product</span>
+                 <span className="w-1/5 text-center">Price</span>
+                 <span className="w-1/5 text-center">Quantity</span>
+                 <span className="w-1/5 text-center">Total</span>
+                 <span className="w-1/12"></span>
+               </div>
+                  
+               {/* cart items */}
+               {cartData?.map((cart) => (
+                 <CartItems
+                   key={cart._id}
+                   cart={cart}
+                   refetch={refetch}
+                   onCartUpdate={() => {
+                     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+                     const total = Object.values(storedCart).reduce(
+                       (sum, item) => sum + item.total,
+                       0
+                     );
+                     setSubtotal(total);
+                   }}
+                 />
+               ))}
+             </div>
+         
+             <div className="flex flex-col md:flex-row justify-between gap-4 mt-6">
+               <button className="btn rounded-full">Return to shop</button>
+               <button className="btn rounded-full">Update Cart</button>
+             </div>
+           </div>
 
-              {/* cart items */}
-              {cartData?.map((cart) => (
-                <CartItems
-                key={cart._id}
-                cart={cart}
-                refetch={refetch}
-                onCartUpdate={() => {
-                  const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
-                  const total = Object.values(storedCart).reduce(
-                    (sum, item) => sum + item.total,
-                    0
-                  );
-                  setSubtotal(total);
-                }}
-              />
-              
-              ))}
-
-              <div className="flex justify-between mt-6">
-                <button className="btn rounded-full">Return to shop</button>
-                <button className="btn rounded-full">Update Cart</button>
-              </div>
-            </div>
-
-            {/* Cart summary */}
-            <div className="w-full lg:w-1/3 border rounded-xl p-6 h-fit">
-              <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
-              <div className="flex justify-between mb-2">
-                <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span>Shipping:</span>
-                <span>${shippingFee.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
-                <span>Total:</span>
-                <span>${finalTotal.toFixed(2)}</span>
-              </div>
-              <button onClick={() => setIsModalOpen(true)} className="btn bg-green-600 w-full mt-4 rounded-full text-white font-bold text-base">
-                Proceed to checkout
-              </button>
-            </div>
-          </div>
+           {/* Cart Summary Section */}
+           <div className="w-full lg:w-1/3 border rounded-xl p-6 h-fit">
+             <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
+             <div className="flex justify-between mb-2">
+               <span>Subtotal:</span>
+               <span>${subtotal.toFixed(2)}</span>
+             </div>
+             <div className="flex justify-between mb-2">
+               <span>Shipping:</span>
+               <span>${shippingFee.toFixed(2)}</span>
+             </div>
+             <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
+               <span>Total:</span>
+               <span>${finalTotal.toFixed(2)}</span>
+             </div>
+             <button
+               onClick={() => setIsModalOpen(true)}
+               className="btn bg-green-600 w-full mt-4 rounded-full text-white font-bold text-base"
+             >
+               Proceed to checkout
+             </button>
+           </div>
+         </div>
+         
 
           {/* Coupon section */}
           <div className="mt-10 border rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <input
                 type="text"
                 placeholder="Enter code"
-                className="input input-bordered rounded-full w-64"
+                className="input input-bordered rounded-full"
               />
               <button className="btn bg-black text-white rounded-full">
                 Apply Coupon

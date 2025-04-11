@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ImSpinner9 } from "react-icons/im";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ThemeContext } from "../../../../provider/ThemeProvider";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -12,6 +13,8 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -90,7 +93,9 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="">
+    <div className={`p-4 min-h-screen xl:mt-6 ${
+      theme === "dark" ? "bg-[#1f29374b]" : "bg-white"
+    } rounded-xl`}>
       <h3 className="text-4xl mb-10 text-center">Add Product</h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -180,7 +185,7 @@ const AddProduct = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="btn w-full text-black text-bold text-lg bg-[#F6FCDF] hover:bg-[#c3e858] mt-4"
+          className="btn w-full text-bold text-lg mt-10 bg-green-600 text-white hover:bg-green-700 transition duration-300 rounded-lg"
           disabled={loading}
         >
           {loading ? (
