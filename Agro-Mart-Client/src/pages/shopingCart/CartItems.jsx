@@ -119,7 +119,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
   return (
     <div className="flex items-center justify-between border-b py-4">
       <div className="w-2/5 flex items-center gap-4">
-        <img src={image} alt="Item Image" className="w-16 h-16 rounded-lg" />
+        <img src={image} alt="Item Image" className="w-10 h-10 rounded-lg" />
         <span>{name}</span>
       </div>
       <div className="w-1/5 text-center">${price}</div>
@@ -127,7 +127,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
         <div className="flex justify-center items-center border rounded-full px-3 py-1 gap-2">
           <button
             onClick={() => handleQuantity(quantity - 1)}
-            className="w-8 h-8 text-lg"
+            className="w-2 h-2 md:w-10 md:h-10 "
           >
             <FiMinus />
           </button>
@@ -135,11 +135,11 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
             type="number"
             value={quantity}
             onChange={(e) => handleQuantity(parseInt(e.target.value))}
-            className="w-16 text-center bg-transparent"
+            className="w-2 md:w-10 text-center bg-transparent"
           />
           <button
             onClick={() => handleQuantity(quantity + 1)}
-            className="w-8 h-8 text-lg"
+            className="w-2 h-2 md:w-10 md:h-10"
           >
             <FiPlus />
           </button>
