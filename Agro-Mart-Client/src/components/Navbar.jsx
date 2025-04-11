@@ -12,6 +12,7 @@ import { LuShoppingBag } from "react-icons/lu";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useCart from "../hooks/useCart";
+import useRole from "../hooks/useRole";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -19,6 +20,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
+  const [role] = useRole();
   const [cart] = useCart();
   const isHomePage = location.pathname === "/";
   console.log(user);
@@ -221,8 +223,11 @@ const Navbar = () => {
                   Profile
                 </Link>
                 <Link
-                  to="/dashboard/overview"
-                  c
+                  to={`${
+                    role === "admin"
+                      ? "/dashboard/overview"
+                      : "/dashboard/all-orders"
+                  }`}
                   className={`block px-4 py-2 text-base-content ${
                     theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
                   }`}
