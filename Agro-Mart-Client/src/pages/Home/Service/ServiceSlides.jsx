@@ -148,7 +148,7 @@ const ServiceSlides = () => {
                 {service.description}
               </p>
             </div>
-            <div className="bg-green-700 text-base-content hover:bg-yellow-400 hover:text-black w-fit py-4 px-4 rounded-b-full absolute top-0 right-0 transition-colors duration-300">
+            <div className="bg-green-700 text-white hover:bg-yellow-400 hover:text-black w-fit py-4 px-4 rounded-b-full absolute top-0 right-0 transition-colors duration-300">
               <FaArrowRight />
             </div>
           </div>

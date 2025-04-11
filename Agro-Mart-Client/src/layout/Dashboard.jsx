@@ -8,9 +8,12 @@ import AdminMenu from "../dashboard/admin-menu/AdminMenu";
 import DashNav from "../pages/Dashboard/FarmersDashboard/DashNav";
 import { useContext } from "react";
 import { ThemeContext } from "../provider/ThemeProvider";
+import useRole from "../hooks/useRole";
 
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
+  const [role] = useRole();
+  console.log(role);
   return (
     <>
       <div className="lg:flex lg:h-screen overflow-hidden ">
