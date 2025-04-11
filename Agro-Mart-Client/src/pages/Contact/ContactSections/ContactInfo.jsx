@@ -12,14 +12,14 @@ const ContactInfo = () => {
         <h4
           className={`${
             theme === "dark" ? "text-green-500" : "text-green-700"
-          } uppercase text-xs font-bold text-center`}
+          } uppercase text-xs font-bold `}
         >
           Contact Info
         </h4>
-        <h3 className="text-4xl text-center font-bold font-syne my-4">
+        <h3 className="text-4xl  font-bold font-syne my-4">
           Get in Touch
         </h3>
-        <p className="text-sm text-center">
+        <p className="text-sm ">
           You can contact us through email, phone, or by filling out the form
           below. We aim to respond to all inquiries as quickly as possible and
           ensure your experience with us is seamless. Your communication is

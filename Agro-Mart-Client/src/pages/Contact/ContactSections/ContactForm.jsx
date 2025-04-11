@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
 import { ThemeContext } from "../../../provider/ThemeProvider";
@@ -13,13 +13,32 @@ const ContactForm = () => {
 
   const { theme } = useContext(ThemeContext);
 
+  useEffect(() => {
+    emailjs.init("61mSC3agsF3cMsWXG");
+  }, []);
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!name || !email || !subject || !message) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     setLoading(true);
 
     const serviceID = "service_8z6oxv8";
-    const templateID = "template_0m98pb9";
-    const publicKey = "61mSC3agsF3cMsWXG";
+    const templateID = "template_0m98pb9"; 
 
     const templateParams = {
       from_name: name,
@@ -30,7 +49,7 @@ const ContactForm = () => {
     };
 
     emailjs
-      .send(serviceID, templateID, templateParams, publicKey)
+      .send(serviceID, templateID, templateParams)
       .then((response) => {
         console.log("Email sent successfully:", response);
         toast.success("Message sent successfully!", {
@@ -46,8 +65,8 @@ const ContactForm = () => {
         setMessage("");
       })
       .catch((error) => {
-        console.error("Error sending email:", error);
-        toast.error("Failed to send message. Try again.");
+        console.error("Error sending email:", error.text || error);
+        toast.error("Failed to send message: " + (error.text || "Unknown error"));
       })
       .finally(() => {
         setLoading(false);
