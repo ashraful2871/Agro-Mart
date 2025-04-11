@@ -1,11 +1,12 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import useCart from "../../hooks/useCart";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const StripeCheckOutForm = ({ totalAmount }) => {
   const user = useAuth();
@@ -17,6 +18,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [cart] = useCart();
+  const { theme } = useContext(ThemeContext);
 
   // Create payment intent when totalAmount changes
   useEffect(() => {
@@ -128,6 +130,8 @@ const StripeCheckOutForm = ({ totalAmount }) => {
             title: "Payment Successful",
             timer: 1500,
             showConfirmButton: false,
+            background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+            color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
           });
           navigate("/shop");
         } else {

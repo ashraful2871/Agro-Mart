@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FiMinus, FiPlus, FiX } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { ThemeContext } from "../../provider/ThemeProvider";
 
 const CartItems = ({ cart, refetch, onCartUpdate }) => {
   const { name, image, price, _id, stockQuantity } = cart;
   const axiosSecure = useAxiosSecure();
   const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(price); 
+  const [total, setTotal] = useState(price);
+  const { theme } = useContext(ThemeContext);
 
   // Function to calculate total and save in localStorage
   const calculateAndStoreTotal = (qty) => {
@@ -22,7 +24,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
       name,
       price,
       quantity: qty,
-      total: calculatedTotal, 
+      total: calculatedTotal,
     };
     localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
@@ -55,7 +57,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
 
     if (savedItem) {
       setQuantity(savedItem.quantity);
-      setTotal(savedItem.total); 
+      setTotal(savedItem.total);
     } else {
       calculateAndStoreTotal(quantity);
     }
@@ -71,20 +73,25 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+      color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
           .delete(`/delete-cart-item/${_id}`)
           .then((res) => {
             if (res.status === 200) {
-              Swal.fire(
-                "Deleted!",
-                "The item has been deleted from your cart.",
-                "success"
-              );
+              Swal.fire({
+                title: "Deleted!",
+                text: "The item has been deleted from your cart.",
+                icon: "success",
+                background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+                color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
+              });
 
               // Remove from localStorage as well
-              const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+              const storedCart =
+                JSON.parse(localStorage.getItem("cartItems")) || {};
               delete storedCart[_id];
               localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
@@ -93,7 +100,6 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
               if (onCartUpdate) {
                 onCartUpdate();
               }
-
             }
           })
           .catch((error) => {
@@ -101,6 +107,8 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
               title: "Error",
               text: "Something went wrong while deleting the item.",
               icon: "error",
+              background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+              color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
             });
             console.error("Error deleting the item:", error);
           });

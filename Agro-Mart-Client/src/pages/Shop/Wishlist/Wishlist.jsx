@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
+  const { theme } = useContext(ThemeContext);
 
   // Fetch wishlist data when user email is available
   useEffect(() => {
@@ -69,6 +71,8 @@ const Wishlist = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+      color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
     }).then((result) => {
       if (result.isConfirmed) {
         // Sending DELETE request to the backend
@@ -80,6 +84,8 @@ const Wishlist = () => {
                 title: "Deleted!",
                 text: "The item has been deleted from your wishlist.",
                 icon: "success",
+                background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+                color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
               });
 
               // Optimistically update the UI by removing the deleted item from the wishlist
@@ -93,6 +99,9 @@ const Wishlist = () => {
               title: "Error",
               text: "Something went wrong while deleting the item.",
               icon: "error",
+
+              background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
+              color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
             });
             console.error("Error deleting the item:", error);
           });
