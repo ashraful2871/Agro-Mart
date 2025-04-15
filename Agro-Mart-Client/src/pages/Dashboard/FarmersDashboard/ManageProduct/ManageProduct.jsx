@@ -1,23 +1,23 @@
 import { useContext, useEffect, useState } from "react";
-import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { MdBrowserUpdated } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../components/loading/Loading";
 import { ThemeContext } from "../../../../provider/ThemeProvider";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosPublic.get("/products");
+      const response = await axiosSecure.get("/products");
       console.log("Fetched Products:", response.data);
       if (Array.isArray(response.data)) {
         setProducts(response.data);
@@ -34,7 +34,7 @@ const ManageProduct = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [axiosPublic]);
+  }, [axiosSecure]);
 
   if (loading) {
     return <Loading></Loading>;
@@ -63,7 +63,7 @@ const ManageProduct = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axiosPublic.delete(`/product/${id}`);
+          await axiosSecure.delete(`/product/${id}`);
 
           fetchProducts();
 
@@ -94,7 +94,7 @@ const ManageProduct = () => {
 
   return (
     <div className="">
-      <h3 className="text-4xl mb-10 text-center">Manage Products</h3>
+      <h3 className="text-4xl mt-6 mb-10 text-center">Manage Products</h3>
 
       {/* Display all products */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
@@ -104,7 +104,7 @@ const ManageProduct = () => {
               <img
                 src={product.image || "https://via.placeholder.com/150"}
                 alt={product.name}
-                className="h-72 w-full bg-cover bg-center"
+                className="h-64 w-full bg-cover bg-center"
               />
             </figure>
             <div className="card-body">

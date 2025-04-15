@@ -79,19 +79,19 @@ async function run() {
     });
 
     //get all user
-    app.get("/users", (req, res) => {
-      const result = usersCollection.find().toArray();
-      req.send(result);
+    app.get("/users", verifyToken, async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
     });
 
-    app.get("/users/:uid", (req, res) => {
+    app.get("/users/:uid", verifyToken, (req, res) => {
       const result = usersCollection.findOne();
       req.send(result);
     });
 
     // products related apis crud
     // products create
-    app.post("/products", async (req, res) => {
+    app.post("/products", verifyToken, async (req, res) => {
       const {
         name,
         category,
@@ -148,7 +148,7 @@ async function run() {
     });
 
     // Update a product by ID
-    app.get("/dashboard/product/:id", async (req, res) => {
+    app.get("/dashboard/product/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const product = await productCollection.findOne(query);
@@ -156,19 +156,23 @@ async function run() {
     });
 
     // Update a product by ID
-    app.patch("/dashboard/product-update/:id", async (req, res) => {
-      const id = req.params.id;
-      const { updatedProduct } = req.body;
-      const query = { _id: new ObjectId(id) };
-      const updateDoc = {
-        $set: updatedProduct,
-      };
-      const result = await productCollection.updateOne(query, updateDoc);
-      res.send(result);
-    });
+    app.patch(
+      "/dashboard/product-update/:id",
+      verifyToken,
+      async (req, res) => {
+        const id = req.params.id;
+        const { updatedProduct } = req.body;
+        const query = { _id: new ObjectId(id) };
+        const updateDoc = {
+          $set: updatedProduct,
+        };
+        const result = await productCollection.updateOne(query, updateDoc);
+        res.send(result);
+      }
+    );
 
     // Delete product using id
-    app.delete("/product/:id", async (req, res) => {
+    app.delete("/product/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productCollection.deleteOne(query);
@@ -224,7 +228,7 @@ async function run() {
     });
 
     // get wishlist item by email
-    app.get("/wishlist/:email", async (req, res) => {
+    app.get("/wishlist/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
       const query = { "userInfo.email": email };
       const result = await wishCollection.find(query).toArray();
@@ -232,7 +236,7 @@ async function run() {
     });
 
     // Delete Wishlist Item
-    app.delete("/wishlist/:id", async (req, res) => {
+    app.delete("/wishlist/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await wishCollection.deleteOne(query);
@@ -240,7 +244,7 @@ async function run() {
     });
 
     // Payment Intent
-    app.post("/create-payment-intent", async (req, res) => {
+    app.post("/create-payment-intent", verifyToken, async (req, res) => {
       const { totalAmount } = req.body;
 
       if (!totalAmount || totalAmount <= 0) {
@@ -264,7 +268,7 @@ async function run() {
       }
     });
 
-    app.post("/payments", async (req, res) => {
+    app.post("/payments", verifyToken, async (req, res) => {
       try {
         const paymentInfo = req.body;
         const result = await paymentCollection.insertOne(paymentInfo);
@@ -283,6 +287,14 @@ async function run() {
         console.error("Error saving payment:", err);
         res.status(500).send({ error: "Failed to save payment" });
       }
+    });
+
+    //user role management
+    app.get("/user/role/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
+      res.send({ role: result?.role });
     });
 
     app.get("/", async (req, res) => {

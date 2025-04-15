@@ -108,53 +108,69 @@ const ServiceSlides = () => {
   });
 
   return (
-    <div ref={sliderRef} className="keen-slider font-inter">
-      {services.map((service) => (
-        <div
-          key={service.id}
-          className="keen-slider__slide min-w-[320px] max-w-[320px] flex flex-col rounded-xl h-[420px] group overflow-visible"
-        >
-          {/* Image Section */}
-          <div className="relative w-full h-[55%] min-h-[220px] overflow-hidden rounded-t-xl">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-              style={{ backgroundImage: `url(${service.image})` }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-200 opacity-30"></div>
-          </div>
-
-          {/* Card Content - Adjusted for ml-20 */}
-          <div className="relative w-[calc(100%-5rem)] shadow-lg p-6 bg-base-100 -mt-16 ml-20 rounded-xl">
-            <div
-              className="flex flex-col h-full"
-              style={
-                theme === "light"
-                  ? {
-                      backgroundImage: `url("https://i.ibb.co/tpwNCzD8/background-single-post.png")`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }
-                  : {}
-              }
-            >
-              <div>
-                <div className="text-green-600">{service.icon}</div>
-                <h3 className="text-xl font-bold text-green-600 mt-2 font-montserrat">
-                  {service.title}
-                </h3>
-                <div className="w-12 h-1 bg-green-300 my-2"></div>
+    <div
+    ref={sliderRef}
+    className="keen-slider font-inter px-4 md:px-8 lg:px-16 xl:px-20"
+  >
+    {services.map((service) => (
+      <div
+        key={service.id}
+        className="keen-slider__slide flex flex-col rounded-xl h-[420px] sm:h-[460px] lg:h-[480px] group overflow-visible"
+      >
+        {/* Image Section */}
+        <div className="relative w-full h-[55%] min-h-[200px] sm:min-h-[230px] md:min-h-[250px] overflow-hidden rounded-t-xl">
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+            style={{ backgroundImage: `url(${service.image})` }}
+          ></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-200 opacity-30"></div>
+        </div>
+  
+        {/* Card Content */}
+        <div className="relative shadow-lg p-5 sm:p-6 md:p-8 bg-base-100 -mt-16 ml-6 sm:ml-10 md:ml-12 rounded-xl">
+          <div
+            className="flex flex-col h-full"
+            style={
+              theme === "light"
+                ? {
+                    backgroundImage: `url("https://i.ibb.co/tpwNCzD8/background-single-post.png")`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+                : {}
+            }
+          >
+            <div>
+              <div
+                className={`${
+                  theme === "dark" ? "text-green-500" : "text-green-700"
+                } text-2xl`}
+              >
+                {service.icon}
               </div>
-              <p className="text-base-content text-base leading-relaxed line-clamp-2">
-                {service.description}
-              </p>
+              <h3
+                className={`${
+                  theme === "dark" ? "text-green-500" : "text-green-700"
+                } text-lg md:text-xl font-bold mt-2 font-montserrat`}
+              >
+                {service.title}
+              </h3>
+              <div className="w-10 h-[3px] bg-green-300 my-2"></div>
             </div>
-            <div className="bg-green-700 text-base-content hover:bg-yellow-400 hover:text-black w-fit py-4 px-4 rounded-b-full absolute top-0 right-0 transition-colors duration-300">
-              <FaArrowRight />
-            </div>
+            <p className="text-base-content text-sm md:text-base leading-relaxed line-clamp-2">
+              {service.description}
+            </p>
+          </div>
+  
+          {/* Action Button */}
+          <div className="bg-green-700 text-base-content hover:bg-yellow-400 hover:text-black w-fit py-3 px-3 rounded-b-full absolute top-0 right-0 transition-colors duration-300">
+            <FaArrowRight />
           </div>
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+  </div>
+  
   );
 };
 

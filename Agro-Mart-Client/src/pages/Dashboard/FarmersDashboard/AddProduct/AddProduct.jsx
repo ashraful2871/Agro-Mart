@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ImSpinner9 } from "react-icons/im";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ThemeContext } from "../../../../provider/ThemeProvider";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -12,47 +13,54 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const form = e.target;
-    const name = form.name.value;
-    const category = form.category.value;
-    const price = parseFloat(form.price.value);
-    const description = form.description.value;
-    const stockQuantity = parseInt(form.stockQuantity.value);
-    const imageFile = form.image.files[0];
-
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const category = formData.get("category");
+    const price = parseFloat(formData.get("price"));
+    const description = formData.get("description");
+    const stockQuantity = parseInt(formData.get("stockQuantity"));
+    const imageFile = formData.get("image");
+    // Continue to product submit
+    // const productData = {
+    //   name,
+    //   category,
+    //   price,
+    //   description,
+    //   stockQuantity,
+    //   imageFile,
+    //   addedBy: {
+    //     name: user?.displayName,
+    //     email: user?.email,
+    //   },
+    // };
+    // console.log(productData);
     let imageUrl = "";
     if (imageFile) {
       const imageFormData = new FormData();
       imageFormData.append("image", imageFile);
-
       try {
         const response = await axios.post(image_upload_api, imageFormData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
-
-        console.log("Upload Response:", response);
-
         if (response.data.success) {
           imageUrl = response.data.data.display_url;
-        } else {
-          console.error("Upload failed:", response.data);
-          toast.error("Image upload failed: " + response.data.error.message);
-          return;
         }
       } catch (error) {
-        console.error("Upload error:", error.response?.data || error.message);
-        toast.error("Image upload failed. Check API key and file type.");
+        console.log(error);
+        toast.error("Image upload failed");
+        setLoading(false);
         return;
       }
     }
-
-    // Continue to product submit
     const productData = {
       name,
       category,
@@ -65,7 +73,6 @@ const AddProduct = () => {
         email: user?.email,
       },
     };
-
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/products`,
@@ -74,18 +81,21 @@ const AddProduct = () => {
 
       console.log("Product Added:", data);
       toast.success("Product successfully added!");
-      form.reset();
+      e.target.reset();
       navigate("/dashboard/manageProduct");
     } catch (err) {
       setError("An error occurred while adding the product.");
       console.error("Product Upload Error:", err.response?.data || err.message);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="">
+    <div className={`p-4 min-h-screen xl:mt-6 ${
+      theme === "dark" ? "bg-[#1f29374b]" : "bg-white"
+    } rounded-xl`}>
       <h3 className="text-4xl mb-10 text-center">Add Product</h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -175,7 +185,7 @@ const AddProduct = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="btn w-full text-black text-bold text-lg bg-[#F6FCDF] hover:bg-[#c3e858] mt-4"
+          className="btn w-full text-bold text-lg mt-10 bg-green-600 text-white hover:bg-green-700 transition duration-300 rounded-lg"
           disabled={loading}
         >
           {loading ? (

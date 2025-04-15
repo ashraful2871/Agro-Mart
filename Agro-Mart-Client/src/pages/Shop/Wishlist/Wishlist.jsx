@@ -115,81 +115,83 @@ const Wishlist = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-center text-3xl font-bold mb-10">My Wishlist</h2>
+  <h2 className="text-center text-3xl font-bold mb-10">My Wishlist</h2>
 
-      <div className="bg-base-100 border rounded-xl overflow-hidden shadow">
-        <table className="w-full table-auto min-h-40">
-          <tbody>
-            {wishlist?.map((item) => (
-              <tr
-                key={item._id}
-                className="border-b last:border-b-0 hover:bg-gray-900"
+  {/* Responsive table wrapper */}
+  <div className="bg-base-100 border rounded-xl overflow-x-auto shadow min-h-28">
+    <table className="w-full table-auto min-w-[600px]">
+      <tbody>
+        {wishlist?.map((item) => (
+          <tr
+            key={item._id}
+            className={`${theme === "dark" ? "hover:bg-gray-900" : "hover:bg-gray-100"} border-b last:border-b-0`}
+          >
+            {/* Image */}
+            <td className="p-4 w-28">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-16 h-16 object-contain rounded-md"
+              />
+            </td>
+
+            {/* Name + Date */}
+            <td className="p-4">
+              <div className="text-lg font-semibold text-base-content">
+                {item.name}
+              </div>
+              <div className="text-sm text-base-content">
+                ${item.price.toFixed(2)}
+              </div>
+              <div className="text-sm text-base-content mt-1">
+                {new Date(item.addedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </div>
+            </td>
+
+            {/* Add to Cart Button */}
+            <td className="p-4 text-right whitespace-nowrap">
+              <button
+                onClick={() => handleAddToCart(item)}
+                className="bg-green-700 hover:bg-yellow-300 hover:text-black text-white px-6 py-2 rounded-full font-semibold transition"
               >
-                {/* Image */}
-                <td className="p-4 w-28">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-contain rounded-md"
-                  />
-                </td>
+                Add To Cart
+              </button>
+            </td>
 
-                {/* Name + Date */}
-                <td className="p-4">
-                  <div className="text-lg font-semibold text-base-content">
-                    {item.name}
-                  </div>
-                  <div className="text-sm text-base-content">
-                    ${item.price.toFixed(2)}
-                  </div>
-                  <div className="text-sm text-base-content mt-1">
-                    {new Date(item.addedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </div>
-                </td>
+            {/* Delete Button */}
+            <td className="p-4 text-right whitespace-nowrap">
+              <button
+                onClick={() => handleDelete(item._id)}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-semibold transition"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
-                {/* Add to Cart Button */}
-                <td className="p-4 text-right">
-                  <button
-                    onClick={() => handleAddToCart(item)}
-                    className="bg-green-700 hover:bg-yellow-300 hover:text-black text-white px-6 py-2 rounded-full font-semibold transition"
-                  >
-                    Add To Cart
-                  </button>
-                </td>
+  {/* Wishlist Share Link */}
+  <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+    <span className="font-medium">Wishlist link:</span>
+    <input
+      type="text"
+      value="https://demo2.themelexus.com"
+      readOnly
+      className="border px-4 py-2 rounded-full w-full sm:w-96"
+    />
+    <button className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-full font-semibold transition">
+      Copy
+    </button>
+  </div>
+</div>
 
-                {/* Delete Button */}
-                <td className="p-4 text-right">
-                  <button
-                    onClick={() => handleDelete(item._id)} // Call handleDelete with the item's _id
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-semibold transition"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Wishlist Share Link */}
-      <div className="mt-10 flex items-center gap-4">
-        <span className="font-medium">Wishlist link:</span>
-        <input
-          type="text"
-          value="https://demo2.themelexus.com"
-          readOnly
-          className="border px-4 py-2 rounded-full w-96"
-        />
-        <button className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-full font-semibold transition">
-          Copy
-        </button>
-      </div>
-    </div>
   );
 };
 

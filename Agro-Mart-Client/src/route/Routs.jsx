@@ -23,6 +23,7 @@ import StripePayment from "../pages/Payment/StripePayment";
 import BKashPayment from "../pages/Payment/bKashPayment";
 import NagadPayment from "../pages/Payment/NagadPayment";
 import SslCommerzePayment from "../pages/Payment/SslCommerzePayment";
+import CropDoctor from "../pages/CropDoctor/CropDoctor";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -43,7 +44,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shopping-cart",
-        element: <ShoppingCart></ShoppingCart>,
+        element: (
+          <Privet>
+            <ShoppingCart></ShoppingCart>
+          </Privet>
+        ),
       },
       {
         path: "/payment/stripe",
@@ -89,7 +94,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard></Dashboard>,
+    element: (
+      <Privet>
+        <Dashboard></Dashboard>
+      </Privet>
+    ),
     children: [
       // admin route
       {
@@ -106,6 +115,10 @@ export const router = createBrowserRouter([
       },
 
       //farmer route
+      {
+        path: "crop-doctor",
+        element: <CropDoctor></CropDoctor>,
+      },
       {
         path: "addProduct",
         element: <AddProduct></AddProduct>,

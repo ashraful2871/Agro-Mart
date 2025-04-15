@@ -1,61 +1,72 @@
 import React, { useContext } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-const users = [
-  {
-    id: "81E9",
-    date: "Oct 22, 2024",
-    name: "Justin J. Ruiz",
-    email: "justin@gmail.com",
-    phone: "212-512-2888",
-  },
-  {
-    id: "81E8",
-    date: "Oct 22, 2024",
-    name: "Aurora E. Amerson",
-    email: "aurora@gmail.com",
-    phone: "660-515-7629",
-  },
-  {
-    id: "81E7",
-    date: "Oct 22, 2024",
-    name: "Christopher M. Fox",
-    email: "christopher@gmail.com",
-    phone: "812-886-0550",
-  },
-  {
-    id: "81E6",
-    date: "Oct 22, 2024",
-    name: "James J. Allen",
-    email: "james@gmail.com",
-    phone: "818-356-8600",
-  },
-  {
-    id: "81E5",
-    date: "Oct 22, 2024",
-    name: "Hilary W. Becker",
-    email: "hilary@gmail.com",
-    phone: "802-516-2269",
-  },
-  {
-    id: "81E4",
-    date: "Oct 22, 2024",
-    name: "Jon B. Krueger",
-    email: "jon@gmail.com",
-    phone: "360-943-7332",
-  },
-  {
-    id: "81E3",
-    date: "Oct 22, 2024",
-    name: "Paul R. Bruns",
-    email: "paul@gmail.com",
-    phone: "715-651-7487",
-  },
-];
+// const users = [
+//   {
+//     id: "81E9",
+//     date: "Oct 22, 2024",
+//     name: "Justin J. Ruiz",
+//     email: "justin@gmail.com",
+//     phone: "212-512-2888",
+//   },
+//   {
+//     id: "81E8",
+//     date: "Oct 22, 2024",
+//     name: "Aurora E. Amerson",
+//     email: "aurora@gmail.com",
+//     phone: "660-515-7629",
+//   },
+//   {
+//     id: "81E7",
+//     date: "Oct 22, 2024",
+//     name: "Christopher M. Fox",
+//     email: "christopher@gmail.com",
+//     phone: "812-886-0550",
+//   },
+//   {
+//     id: "81E6",
+//     date: "Oct 22, 2024",
+//     name: "James J. Allen",
+//     email: "james@gmail.com",
+//     phone: "818-356-8600",
+//   },
+//   {
+//     id: "81E5",
+//     date: "Oct 22, 2024",
+//     name: "Hilary W. Becker",
+//     email: "hilary@gmail.com",
+//     phone: "802-516-2269",
+//   },
+//   {
+//     id: "81E4",
+//     date: "Oct 22, 2024",
+//     name: "Jon B. Krueger",
+//     email: "jon@gmail.com",
+//     phone: "360-943-7332",
+//   },
+//   {
+//     id: "81E3",
+//     date: "Oct 22, 2024",
+//     name: "Paul R. Bruns",
+//     email: "paul@gmail.com",
+//     phone: "715-651-7487",
+//   },
+// ];
 
 const UserTable = () => {
   const { theme } = useContext(ThemeContext);
+  const axiosSecure = useAxiosSecure();
+  const { data: users = [], isLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get("/users");
+      return data;
+    },
+  });
+  console.log(users);
   return (
     <div
       className={`p-6 ${
@@ -102,13 +113,17 @@ const UserTable = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className=" border-2">
-                <td className="font-semibold text-end border">{user.id}</td>
-                <td className="border text-end">{user.date}</td>
-                <td className="border text-end">{user.name}</td>
-                <td className="border text-end">{user.email}</td>
-                <td className="border text-end">{user.phone}</td>
+            {users.map((user, idx) => (
+              <tr key={user._id} className=" border-2">
+                <td className="font-semibold text-end border">{idx + 1}</td>
+                <td className="border text-end">{user.date || "5th April"}</td>
+                <td className="border text-end">{user.name || "Ashraful"}</td>
+                <td className="border text-end">
+                  {user.email || "ash2871@gmail.com"}
+                </td>
+                <td className="border text-end">
+                  {user.phone || "01759030544"}
+                </td>
                 <td className="flex justify-end space-x-3">
                   <button className="btn btn-sm btn-ghost text-primary">
                     <FaEye />

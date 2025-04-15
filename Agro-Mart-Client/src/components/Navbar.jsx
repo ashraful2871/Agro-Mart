@@ -12,6 +12,7 @@ import { LuShoppingBag } from "react-icons/lu";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useCart from "../hooks/useCart";
+import useRole from "../hooks/useRole";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -19,6 +20,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useAuth();
+  const [role] = useRole();
   const [cart] = useCart();
   const isHomePage = location.pathname === "/";
   console.log(user);
@@ -122,12 +124,12 @@ const Navbar = () => {
       <div className="navbar-start">
         <Link to="/" className="flex items-center">
           <img
-            className="h-9 md:h-14"
+            className="h-9 md:h-9"
             src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
             alt="AgroMart"
           />
           <span
-            className={`text-2xl md:text-3xl font-bold font-syne ml-2 ${
+            className={`text-2xl md:text-2xl font-bold font-syne ml-2 ${
               isHomePage
                 ? `${theme === "dark" ? "text-white" : "text-black"}`
                 : ""
@@ -164,10 +166,13 @@ const Navbar = () => {
                 <LuShoppingBag className="text-3xl"></LuShoppingBag>
               </NavLink>
             </div>
-            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-              {cart.length}
-            </div>
+            {user && (
+              <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+                {cart.length}
+              </div>
+            )}
           </div>
+
           {/* toggle theme */}
           <div>
             <Theme></Theme>
@@ -221,8 +226,11 @@ const Navbar = () => {
                   Profile
                 </Link>
                 <Link
-                  to="/dashboard/overview"
-                  c
+                  to={`${
+                    role === "admin"
+                      ? "/dashboard/overview"
+                      : "/dashboard/all-orders"
+                  }`}
                   className={`block px-4 py-2 text-base-content ${
                     theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
                   }`}
