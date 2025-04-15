@@ -118,13 +118,13 @@ const Wishlist = () => {
   <h2 className="text-center text-3xl font-bold mb-10">My Wishlist</h2>
 
   {/* Responsive table wrapper */}
-  <div className="bg-base-100 border rounded-xl overflow-x-auto shadow">
+  <div className="bg-base-100 border rounded-xl overflow-x-auto shadow min-h-28">
     <table className="w-full table-auto min-w-[600px]">
       <tbody>
         {wishlist?.map((item) => (
           <tr
             key={item._id}
-            className="border-b last:border-b-0 hover:bg-gray-900"
+            className={`${theme === "dark" ? "hover:bg-gray-900" : "hover:bg-gray-100"} border-b last:border-b-0`}
           >
             {/* Image */}
             <td className="p-4 w-28">
