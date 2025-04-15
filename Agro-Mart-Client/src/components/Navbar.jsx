@@ -166,10 +166,13 @@ const Navbar = () => {
                 <LuShoppingBag className="text-3xl"></LuShoppingBag>
               </NavLink>
             </div>
-            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-              {cart.length}
-            </div>
+            {user && (
+              <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+                {cart.length}
+              </div>
+            )}
           </div>
+
           {/* toggle theme */}
           <div>
             <Theme></Theme>

@@ -44,7 +44,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shopping-cart",
-        element: <ShoppingCart></ShoppingCart>,
+        element: (
+          <Privet>
+            <ShoppingCart></ShoppingCart>
+          </Privet>
+        ),
       },
       {
         path: "/payment/stripe",
@@ -113,7 +117,7 @@ export const router = createBrowserRouter([
       //farmer route
       {
         path: "crop-doctor",
-        element: <CropDoctor></CropDoctor>
+        element: <CropDoctor></CropDoctor>,
       },
       {
         path: "addProduct",
