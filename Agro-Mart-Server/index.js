@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
+const { Parser } = require('json2csv');
 
 //middleware
 app.use(cors());
@@ -288,6 +289,114 @@ async function run() {
         res.status(500).send({ error: "Failed to save payment" });
       }
     });
+
+    // Update payment status
+    app.patch('/orders/:id', async (req, res) => {
+      const { id } = req.params;
+      const { status } = req.body;
+    
+      const result = await paymentCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { status: status } }
+      );
+    
+      res.send(result);
+    });    
+
+    // Pagination for orders
+    app.get('/orders', async (req, res) => {
+      try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 8;
+        const skip = (page - 1) * limit;
+    
+        const query = {};
+    
+        // Optional Filters
+        if (req.query.email) {
+          query.email = req.query.email;
+        }
+    
+        if (req.query.status) {
+          query.status = req.query.status;
+        }
+    
+        if (req.query.method) {
+          query.method = req.query.method;
+        }
+
+        if (req.query.orderLimit) {
+          const daysAgo = new Date();
+          daysAgo.setDate(daysAgo.getDate() - parseInt(req.query.orderLimit));
+          query.date = { $gte: daysAgo.toISOString().split('T')[0] };
+        }
+
+        if (req.query.startDate && req.query.endDate) {
+          query.date = {
+            $gte: req.query.startDate,
+            $lte: req.query.endDate,
+          };
+        }
+    
+        // Total Orders count (without pagination, for frontend)
+        const totalOrders = await paymentCollection.countDocuments(query);
+    
+        // Paginated Orders
+        const orders = await paymentCollection
+          .find(query)
+          .sort({ date: -1 })
+          .skip(skip)
+          .limit(limit)
+          .toArray();
+    
+        const totalPages = Math.ceil(totalOrders / limit);
+    
+        res.json({
+          orders,
+          totalOrders,
+          totalPages,
+        });
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        res.status(500).json({ message: "Failed to fetch orders" });
+      }
+    });
+    
+    // Download orders as CSV
+    app.get('/orders/download', async (req, res) => {
+
+      try {
+        const orders = await paymentCollection.find().toArray();
+    
+        if (!orders.length) {
+          return res.status(404).send({ message: "No orders found" });
+        }
+
+        const flattenedOrders = orders.map(order => ({
+          id: order._id.toString(),
+          name: order.name || '',
+          email: order.email || '',
+          status: order.status || '',
+          totalAmount: order.totalAmount || '',
+          method: order.method || '',
+          transactionId: order.transactionId || '',
+          date: order.date || '',
+          invoiceNo: order.invoiceNo || ''
+        }));
+    
+        const json2csv = new Parser();
+        const csv = json2csv.parse(flattenedOrders);
+    
+        res.header('Content-Type', 'text/csv');
+        res.attachment('orders.csv');
+        res.send(csv);
+    
+      } catch (err) {
+        console.error('Error generating CSV:', err);
+        res.status(500).json({ message: 'Failed to download orders' });
+      }
+    });
+    
 
     //user role management
     app.get("/user/role/:email", verifyToken, async (req, res) => {
