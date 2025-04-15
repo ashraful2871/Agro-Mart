@@ -110,17 +110,22 @@ const StripeCheckOutForm = ({ totalAmount }) => {
 
     if (paymentIntent.status === "succeeded") {
       setTransactionId(paymentIntent.id);
+      console.log(paymentIntent);
 
       // Save payment info to server
       const paymentInfo = {
         email: user?.email || "anonymous",
+        name: user?.name || "anonymous",
         totalAmount,
+        status: "Pending",
+        method: "Stripe",
         transactionId: paymentIntent.id,
         cartIds: cart.map((item) => item._id),
         productId: cart.map((item) => item.productId),
-        date: new Date().toISOString(),
+        date: new Date().toLocaleDateString('en-CA'),
+        invoiceNo: Math.floor(100000 + Math.random() * 900000),
       };
-
+      console.log(paymentInfo)
       try {
         const res = await axiosSecure.post("/payments", paymentInfo);
 
@@ -144,6 +149,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
       }
     }
   };
+  
 
   return (
     <div className="bg-white rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden w-full max-w-4xl">
