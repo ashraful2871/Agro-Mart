@@ -303,7 +303,6 @@ function CropDoctor() {
         </div>
       )}
 
-      {/* Image preview */}
       {image && (
         <div className="mb-6">
           <h3

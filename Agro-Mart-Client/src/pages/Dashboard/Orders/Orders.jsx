@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import OrderTable from "../overview/OrderTable";
 import { ThemeContext } from "../../../provider/ThemeProvider";
@@ -6,7 +6,7 @@ import { ThemeContext } from "../../../provider/ThemeProvider";
 const Orders = () => {
   const { theme } = useContext(ThemeContext);
   const [filters, setFilters] = useState({
-    customerName: "",
+    email: "",
     status: "",
     orderLimit: "",
     method: "",
@@ -24,14 +24,31 @@ const Orders = () => {
 
   const resetFilters = () => {
     setFilters({
-      customerName: "",
+      email: "",
       status: "",
       orderLimit: "",
       method: "",
       startDate: "",
       endDate: "",
     });
+    setCurrentPage(1);
   };
+
+  const handleDownload = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/orders/download");
+      const blob = await res.blob();
+  
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "orders.csv"; 
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+  
+  
 
   return (
     <div className="py-10">
@@ -45,9 +62,9 @@ const Orders = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
           <input
             type="text"
-            name="customerName"
-            placeholder="Search by Customer Name"
-            value={filters.customerName}
+            name="email"
+            placeholder="Search by Customer email"
+            value={filters.email}
             onChange={handleFilterChange}
             className={`w-full p-2 ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
@@ -75,9 +92,9 @@ const Orders = () => {
             } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
           >
             <option value="">Order Limits</option>
-            <option value="10">Last 10 Orders</option>
-            <option value="50">Last 50 Orders</option>
-            <option value="100">Last 100 Orders</option>
+            <option value="10">Last 10 days Orders</option>
+            <option value="50">Last 50 days Orders</option>
+            <option value="100">Last 100 days Orders</option>
           </select>
           <select
             name="method"
@@ -88,7 +105,7 @@ const Orders = () => {
             } bg-gray-800 text-base-content border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
           >
             <option value="">Method</option>
-            <option value="Cash">Cash</option>
+            <option value="Stripe">Stripe</option>
             <option value="Card">Card</option>
             <option value="Online">Online</option>
           </select>
@@ -124,13 +141,10 @@ const Orders = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-between items-center mt-4">
-          <button className="bg-green-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-green-700 transition">
+          <button onClick={handleDownload} className="bg-green-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-green-700 transition">
             <FaCloudDownloadAlt /> Download All Orders
           </button>
-          <div className="flex gap-2">
-            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-              Filter
-            </button>
+          <div className="">
             <button
               onClick={resetFilters}
               className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 hover:bg-gray-700 transition"
@@ -143,7 +157,7 @@ const Orders = () => {
 
       {/* Orders Table */}
       <div className="mt-6">
-        <OrderTable />
+      <OrderTable filters={filters} />
       </div>
     </div>
   );
