@@ -1,73 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaPrint } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
-
-const orders = [
-  {
-    id: 11868,
-    time: "22 Mar, 2025 5:21 PM",
-    customer: "Omprakash Ranjan",
-    method: "Cash",
-    amount: "$1996.16",
-    status: "Pending",
-  },
-  {
-    id: 11820,
-    time: "22 Mar, 2025 12:18 PM",
-    customer: "ss ss",
-    method: "Cash",
-    amount: "$81.21",
-    status: "Delivered",
-  },
-  {
-    id: 11864,
-    time: "22 Mar, 2025 10:59 AM",
-    customer: "Native Ecommerce",
-    method: "Cash",
-    amount: "$188.81",
-    status: "Delivered",
-  },
-  {
-    id: 11867,
-    time: "22 Mar, 2025 9:54 AM",
-    customer: "4324",
-    method: "Cash",
-    amount: "$491.29",
-    status: "Delivered",
-  },
-  {
-    id: 11865,
-    time: "22 Mar, 2025 12:19 AM",
-    customer: "Tanvir Hossain",
-    method: "Cash",
-    amount: "$333.26",
-    status: "Pending",
-  },
-  {
-    id: 11866,
-    time: "22 Mar, 2025 12:19 AM",
-    customer: "4324",
-    method: "Cash",
-    amount: "$90.00",
-    status: "Processing",
-  },
-  {
-    id: 11846,
-    time: "21 Mar, 2025 2:43 PM",
-    customer: "Junaid Raza",
-    method: "Cash",
-    amount: "$230.06",
-    status: "Pending",
-  },
-  {
-    id: 11856,
-    time: "21 Mar, 2025 1:22 PM",
-    customer: "john doe",
-    method: "Cash",
-    amount: "$510.00",
-    status: "Delivered",
-  },
-];
+import { useReactToPrint } from "react-to-print";
+import OrderInvoice from "./OrderInvoice";
+import toast from "react-hot-toast";
 
 const statusColors = {
   Pending: "badge-warning",
@@ -75,33 +11,100 @@ const statusColors = {
   Processing: "badge-info",
 };
 
-const OrderTable = () => {
-  const [orderData, setOrderData] = useState(orders);
+const OrderTable = ({ filters }) => {
   const { theme } = useContext(ThemeContext);
-  const handleStatusChange = (id, newStatus) => {
-    setOrderData((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === id ? { ...order, status: newStatus } : order
-      )
-    );
+  const [orderData, setOrderData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const componentRef = useRef();
+
+  const fetchOrders = async (page = 1, filters) => {
+    try {
+      const queryParams = new URLSearchParams({
+        page,
+        limit: 8,
+        email: filters.email || "",
+        status: filters.status || "",
+        orderLimit: filters.orderLimit || "",
+        method: filters.method || "",
+        startDate: filters.startDate || "",
+        endDate: filters.endDate || "",
+      });
+      const res = await fetch(`http://localhost:5000/orders?${queryParams}`);
+      const data = await res.json();
+      setOrderData(data.orders);
+      setTotalPages(data.totalPages);
+      setTotalOrders(data.totalOrders);
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+    }
   };
 
+  useEffect(() => {
+    fetchOrders(currentPage, filters);
+  }, [currentPage, filters]);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => setSelectedOrder(null),
+  });  
+  
+  const triggerPrint = (order) => {
+    setSelectedOrder(order);
+  };
+  
+  useEffect(() => {
+    if (!selectedOrder) return;
+  
+    const waitForDomUpdate = setTimeout(() => {
+      handlePrint();
+    }, 300);
+  
+    return () => clearTimeout(waitForDomUpdate);
+  }, [selectedOrder]);
+  
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      const res = await fetch(`http://localhost:5000/orders/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+  
+      const result = await res.json();
+  
+      if (result.modifiedCount > 0) {
+        setOrderData((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === id ? { ...order, status: newStatus } : order
+          )
+        );
+        toast.success("Order status updated successfully!");
+        fetchOrders(currentPage, filters);
+      } else {
+        toast.error("Failed to update order status!");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("An error occurred while updating status.");
+    }
+  };
+  
+  
+
   return (
-    <div
-      className={`overflow-x-auto ${
-        theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"
-      } p-6 rounded-lg shadow-md`}
-    >
+    <div className={`overflow-x-auto ${theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"} p-6 rounded-lg shadow-md`}>
       <table className="table w-full">
         <thead>
-          <tr
-            className={`${
-              theme === "dark" ? "bg-base-100" : "bg-gray-100"
-            }  text-base-content`}
-          >
+          <tr className={`${theme === "dark" ? "bg-base-100" : "bg-gray-100"} text-base-content`}>
             <th>INVOICE NO</th>
             <th>ORDER TIME</th>
-            <th>CUSTOMER NAME</th>
+            <th>CUSTOMER EMAIL</th>
             <th>METHOD</th>
             <th>AMOUNT</th>
             <th>STATUS</th>
@@ -111,12 +114,12 @@ const OrderTable = () => {
         </thead>
         <tbody>
           {orderData.map((order) => (
-            <tr key={order.id}>
-              <td className="font-semibold">{order.id}</td>
-              <td>{order.time}</td>
-              <td>{order.customer}</td>
+            <tr key={order._id}>
+              <td className="font-semibold">{order.invoiceNo}</td>
+              <td>{order.date}</td>
+              <td>{order.email}</td>
               <td className="font-semibold">{order.method}</td>
-              <td className="font-semibold">{order.amount}</td>
+              <td className="font-semibold">{order.totalAmount}</td>
               <td>
                 <span className={`badge ${statusColors[order.status]}`}>
                   {order.status}
@@ -126,7 +129,7 @@ const OrderTable = () => {
                 <select
                   className="select select-bordered select-sm"
                   value={order.status}
-                  onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                  onChange={(e) => handleStatusChange(order._id, e.target.value)}
                 >
                   <option>Pending</option>
                   <option>Delivered</option>
@@ -134,9 +137,9 @@ const OrderTable = () => {
                 </select>
               </td>
               <td>
-                <button className="btn btn-ghost btn-sm">
-                  <FaPrint size={16} />
-                </button>
+              <button onClick={() => triggerPrint(order)} className="btn btn-ghost btn-sm">
+                <FaPrint size={16} />
+              </button>
               </td>
             </tr>
           ))}
@@ -145,16 +148,27 @@ const OrderTable = () => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <p className="text-sm text-base-content">SHOWING 1-8 OF 861</p>
+        <p className="text-sm text-base-content">
+          SHOWING {((currentPage - 1) * 8) + 1} - {Math.min(currentPage * 8, totalOrders)} OF {totalOrders}
+        </p>
         <div className="join">
-          <button className="join-item btn btn-sm">{"<"}</button>
-          <button className="join-item btn btn-sm btn-success">1</button>
-          <button className="join-item btn btn-sm">2</button>
-          <button className="join-item btn btn-sm">3</button>
-          <button className="join-item btn btn-sm">...</button>
-          <button className="join-item btn btn-sm">108</button>
-          <button className="join-item btn btn-sm">{">"}</button>
+          <button className="join-item btn btn-sm" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            {"<"}
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button key={i} onClick={() => setCurrentPage(i + 1)} className={`join-item btn btn-sm ${currentPage === i + 1 ? "btn-success" : ""}`}>
+              {i + 1}
+            </button>
+          ))}
+          <button className="join-item btn btn-sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+            {">"}
+          </button>
         </div>
+      </div>
+
+      {/* Hidden printable component */}
+      <div style={{ display: "none" }}>
+        {selectedOrder && <div ref={componentRef}><OrderInvoice order={selectedOrder} /></div>}
       </div>
     </div>
   );
