@@ -254,6 +254,7 @@ function CropDoctor() {
             Use <strong>Roboflow</strong> (instead of Plant.id)
           </span>
         </label>
+        <p className={`${theme === "dark" ?"text-gray-300" : "text-gray-700" } mt-2`}>Specific plant parts like leaves, stems, roots, and fruits should be targeted for early and accurate disease detection.</p>
       </div>
 
       {/* File input */}
@@ -323,22 +324,26 @@ function CropDoctor() {
       {/* Plant.id Result */}
       {result && (
         <div
-          className={`p-6 border rounded-lg ${
-            result.isHealthy ? "bg-green-50" : "bg-red-50"
-          }`}
-        >
-          <h3 className="text-lg font-bold text-green-800 mb-4">
+        className={`p-6 border rounded-lg ${
+          theme === "dark"
+            ? "bg-gray-900"
+            : result.isHealthy
+            ? "bg-green-50"
+            : "bg-red-50"
+        }`}
+      >      
+          <h3 className={`${theme==="dark"? "text-green-600":"text-green-700"} text-lg font-bold mb-4`}>
             {result.isHealthy ? "✅ Healthy Plant" : "⚠️ Disease Detected"}
           </h3>
           <p className="font-semibold mb-2 text-purple-700">
             Diagnosis: {result.disease}
           </p>
-          <p className="text-gray-700 mb-4">{result.description}</p>
+          <p className={`${theme==="dark"? "text-gray-300":"text-gray-700"} mb-4`}>{result.description}</p>
           <div className="mt-4">
-            <h4 className="font-semibold text-green-800 mb-2">
+            <h4 className={`${theme==="dark"? "text-green-600":"text-green-700"} font-semibold mb-2`}>
               Recommended Treatment:
             </h4>
-            <div className="bg-white p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner">
+            <div className={`${theme==="dark"?"bg-gray-800":"bg-white"} p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner`}>
               {result.treatment}
             </div>
           </div>
