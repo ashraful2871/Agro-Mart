@@ -7,10 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Sidebar from "./nav-sidebar/Sidebar";
 import { ThemeContext } from "../provider/ThemeProvider";
 import Theme from "./theme/Theme";
-import { FaShoppingCart } from "react-icons/fa";
 import { LuShoppingBag } from "react-icons/lu";
-import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
 
@@ -202,7 +199,7 @@ const Navbar = () => {
                 </div>
                 <div>
                   <span
-                    className={`${!isHomePage ? "text-black" : "text-white"}${
+                    className={`text-base-content ${
                       theme === "dark" ? "text-white" : "text-black"
                     } font-syne`}
                   >
@@ -268,9 +265,7 @@ const Navbar = () => {
               </div>
             </div>
             <div
-              className={`${
-                !isHomePage ? "text-black" : "text-white"
-              } dropdown dropdown-end text-lg  font-syne`}
+              className={`text-base-content dropdown dropdown-end text-lg  font-syne`}
             >
               <span className="mr-2">
                 <Link to="/login">Login</Link>

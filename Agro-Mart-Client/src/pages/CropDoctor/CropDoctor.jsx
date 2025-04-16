@@ -6,7 +6,7 @@ import { ThemeContext } from "../../provider/ThemeProvider";
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const plant_id_api_key = import.meta.env.VITE_PLANT_ID_API_KEY;
-const roboflow_api_key = "6ni1DHc1icSyCqjxurIZ"; // Consider securing this
+const roboflow_api_key = "6ni1DHc1icSyCqjxurIZ";
 const plant_id_api = "https://plant.id/api/v3/health_assessment";
 
 function CropDoctor() {
