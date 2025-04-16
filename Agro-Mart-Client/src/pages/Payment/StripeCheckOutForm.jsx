@@ -109,6 +109,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
     }
 
     if (paymentIntent.status === "succeeded") {
+      console.log(paymentIntent);
       setTransactionId(paymentIntent.id);
       console.log(paymentIntent);
 

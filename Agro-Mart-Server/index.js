@@ -80,9 +80,9 @@ async function run() {
     });
 
     //get all user
-    app.get("/users", verifyToken, (req, res) => {
-      const result = usersCollection.find().toArray();
-      req.send(result);
+    app.get("/users", verifyToken, async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
     });
 
     app.get("/users/:uid", verifyToken, (req, res) => {

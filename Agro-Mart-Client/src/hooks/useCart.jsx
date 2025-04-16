@@ -9,9 +9,14 @@ const useCart = () => {
   const { data: cart = [], refetch } = useQuery({
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
-      return data;
+      if (user) {
+        const { data } = await axiosSecure.get(
+          `/all-cart-items/${user?.email}`
+        );
+        return data;
+      }
     },
+    // enabled: !!user,
   });
   return [cart, refetch];
 };

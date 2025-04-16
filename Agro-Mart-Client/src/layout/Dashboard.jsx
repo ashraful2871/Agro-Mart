@@ -1,19 +1,33 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-
 import { LuLogOut } from "react-icons/lu";
-
 import { TiThMenu } from "react-icons/ti";
 import AdminMenu from "../dashboard/admin-menu/AdminMenu";
 import DashNav from "../pages/Dashboard/FarmersDashboard/DashNav";
 import { useContext } from "react";
 import { ThemeContext } from "../provider/ThemeProvider";
 import useRole from "../hooks/useRole";
+import SellerMenu from "../dashboard/saler-menue/SellerMenu";
+import { logOut } from "../store/authSlice";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
   const [role] = useRole();
+  const dispatch = useDispatch();
   console.log(role);
+  const signOutUser = async () => {
+    try {
+      await dispatch(logOut()).unwrap();
+      toast.success("Successfully logged out");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Logout failed!");
+    }
+  };
+
   return (
     <>
       <div className="lg:flex lg:h-screen overflow-hidden ">
@@ -36,8 +50,8 @@ const Dashboard = () => {
 
             <div>
               {/* Sidebar Menus */}
-              {/* {role === "admin" && <AdminMenu />} */}
-              <AdminMenu />
+              {role === "admin" && <AdminMenu />}
+              {role === "seller" && <SellerMenu />}
               {/* {role === "tutor" && <TutorMenu />}
               {role === "student" && <StudentMenu />} */}
             </div>
@@ -47,7 +61,7 @@ const Dashboard = () => {
             <ul className="menu">
               <li>
                 <button
-                  //onClick={signOutUser}
+                  onClick={signOutUser}
                   className="flex items-center p-2 text-base font-bold"
                 >
                   Logout
