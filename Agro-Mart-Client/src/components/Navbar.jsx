@@ -7,10 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Sidebar from "./nav-sidebar/Sidebar";
 import { ThemeContext } from "../provider/ThemeProvider";
 import Theme from "./theme/Theme";
-import { FaShoppingCart } from "react-icons/fa";
 import { LuShoppingBag } from "react-icons/lu";
-import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
 
