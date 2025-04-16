@@ -61,6 +61,8 @@ async function run() {
       });
     };
 
+    
+
     //users related apis
     ///save user inn db
     app.post("/users", async (req, res) => {
@@ -79,16 +81,64 @@ async function run() {
       res.send(result);
     });
 
-    //get all user
-    app.get("/users", verifyToken, async (req, res) => {
-      const result = await usersCollection.find().toArray();
-      res.send(result);
+    //get users by limit and filter wise
+    app.get("/users", async (req, res) => {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const search = req.query.search || "";
+      const skip = (page - 1) * limit;
+    
+      const query = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { phone: { $regex: search, $options: "i" } },
+        ],
+      };
+    
+      const users = await usersCollection.find(query).skip(skip).limit(limit).toArray();
+      const total = await usersCollection.countDocuments(query);
+      
+      res.send({ total, users });
     });
-
+    
     app.get("/users/:uid", verifyToken, (req, res) => {
       const result = usersCollection.findOne();
       req.send(result);
     });
+
+    // Update user
+    app.patch("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedData = req.body;
+      const query = { _id: new ObjectId(id) };
+  
+      const updateDoc = {
+          $set: updatedData,
+      };
+  
+      try {
+          const result = await usersCollection.updateOne(query, updateDoc);
+          if (result.modifiedCount > 0) {
+              res.status(200).json({ message: "User updated successfully!", result });
+          } else {
+              res.status(404).json({ message: "User not found or no change made." });
+          }
+      } catch (error) {
+          console.error("Error updating user:", error);
+          res.status(500).json({ message: "Server error", error });
+      }
+    });
+
+    // Delete user
+    app.delete("/user/:id", verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    });
+
+
 
     // products related apis crud
     // products create
@@ -244,6 +294,8 @@ async function run() {
       res.send(result);
     });
 
+
+    // Payment
     // Payment Intent
     app.post("/create-payment-intent", verifyToken, async (req, res) => {
       const { totalAmount } = req.body;
@@ -269,6 +321,7 @@ async function run() {
       }
     });
 
+    // Save payment info
     app.post("/payments", verifyToken, async (req, res) => {
       try {
         const paymentInfo = req.body;
