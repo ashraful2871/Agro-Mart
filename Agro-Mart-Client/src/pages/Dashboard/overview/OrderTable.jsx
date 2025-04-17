@@ -148,23 +148,23 @@ const OrderTable = ({ filters }) => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <p className="text-sm text-base-content">
-          SHOWING {((currentPage - 1) * 8) + 1} - {Math.min(currentPage * 8, totalOrders)} OF {totalOrders}
-        </p>
-        <div className="join">
-          <button className="join-item btn btn-sm" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-            {"<"}
+      <p className="text-sm text-base-content">
+        SHOWING {((currentPage - 1) * 8) + 1} - {Math.min(currentPage * 8, totalOrders)} OF {totalOrders}
+      </p>
+      <div className="join">
+        <button className="join-item btn btn-sm" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+          {"<"}
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button key={i} onClick={() => setCurrentPage(i + 1)} className={`join-item btn btn-sm ${currentPage === i + 1 ? "btn-success" : ""}`}>
+            {i + 1}
           </button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button key={i} onClick={() => setCurrentPage(i + 1)} className={`join-item btn btn-sm ${currentPage === i + 1 ? "btn-success" : ""}`}>
-              {i + 1}
-            </button>
-          ))}
-          <button className="join-item btn btn-sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-            {">"}
-          </button>
-        </div>
+        ))}
+        <button className="join-item btn btn-sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+          {">"}
+        </button>
       </div>
+    </div>
 
       {/* Hidden printable component */}
       <div style={{ display: "none" }}>

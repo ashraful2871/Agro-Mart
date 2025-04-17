@@ -4,6 +4,7 @@ import OrderCards from "./OrderCards";
 import WeeklySalesChart from "./WeeklySalesChart";
 import BestSellingProductsChart from "./BestSellingProductsChart";
 import OrderTable from "./OrderTable";
+import RecentOrderTable from "./RecentOrderTable";
 
 const Overview = () => {
   return (
@@ -33,7 +34,8 @@ const Overview = () => {
         <h2 className=" text-xl font-bold">Recent Order</h2>
       </div>
       <div>
-        <OrderTable></OrderTable>
+        {/* <OrderTable></OrderTable> */}
+        <RecentOrderTable></RecentOrderTable>
       </div>
     </div>
   );
