@@ -94,7 +94,7 @@ const handleDelete = (id) => {
     <div className={`p-6 ${theme === "dark" ? "bg-[#111827]" : "bg-white"} shadow-md rounded-lg`}>
       <div className={`${theme === "dark" ? "bg-[#1F2937]" : "bg-white"} flex justify-between mb-4 py-8 px-5 rounded-lg`}>
         <div className="space-x-2">
-          <button className="btn btn-outline">Export</button>
+          <button  className="btn btn-outline">Export</button>
           <button className="btn btn-outline">Import</button>
         </div>
       </div>

@@ -157,7 +157,7 @@ const Orders = () => {
 
       {/* Orders Table */}
       <div className="mt-6">
-      <OrderTable filters={filters} />
+      <OrderTable filters={filters}/>
       </div>
     </div>
   );
