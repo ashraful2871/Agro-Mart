@@ -61,7 +61,7 @@ async function run() {
       });
     };
 
-    
+
 
     //users related apis
     ///save user inn db
@@ -458,6 +458,70 @@ async function run() {
       const result = await usersCollection.findOne(query);
       res.send({ role: result?.role });
     });
+
+    app.get('/admin-stats', async (req, res) => {
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+        const thisMonth = new Date().getMonth() + 1;
+        const thisYear = new Date().getFullYear();
+    
+        // Today Orders
+        const todayStats = await paymentCollection.aggregate([
+          { $match: { date: today } },
+          { $group: { _id: null, totalRevenue: { $sum: "$totalAmount" }, totalOrders: { $sum: 1 } } }
+        ]).toArray();
+    
+        console.log("Today stats raw:", todayStats); 
+    
+        // Yesterday Orders
+        const yesterdayStats = await paymentCollection.aggregate([
+          { $match: { date: yesterday } },
+          { $group: { _id: null, totalRevenue: { $sum: "$totalAmount" }, totalOrders: { $sum: 1 } } }
+        ]).toArray();
+    
+        // This Month Orders
+        const monthStats = await paymentCollection.aggregate([
+          {
+            $addFields: {
+              month: { $toInt: { $substr: ["$date", 5, 2] } },
+              year: { $toInt: { $substr: ["$date", 0, 4] } }
+            }
+          },
+          { $match: { month: thisMonth, year: thisYear } },
+          { $group: { _id: null, totalRevenue: { $sum: "$totalAmount" }, totalOrders: { $sum: 1 } } }
+        ]).toArray();
+    
+        // All Time Orders
+        const allStats = await paymentCollection.aggregate([
+          { $group: { _id: null, totalRevenue: { $sum: "$totalAmount" }, totalOrders: { $sum: 1 } } }
+        ]).toArray();
+    
+        res.send({
+          today: {
+            revenue: todayStats[0]?.totalRevenue || 0,
+            orders: todayStats[0]?.totalOrders || 0
+          },
+          yesterday: {
+            revenue: yesterdayStats[0]?.totalRevenue || 0,
+            orders: yesterdayStats[0]?.totalOrders || 0
+          },
+          thisMonth: {
+            revenue: monthStats[0]?.totalRevenue || 0,
+            orders: monthStats[0]?.totalOrders || 0
+          },
+          allTime: {
+            revenue: allStats[0]?.totalRevenue || 0,
+            orders: allStats[0]?.totalOrders || 0
+          }
+        });
+    
+      } catch (error) {
+        console.error("Error fetching admin stats:", error);
+        res.status(500).send({ message: "Error fetching admin stats", error });
+      }
+    });
+    
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
