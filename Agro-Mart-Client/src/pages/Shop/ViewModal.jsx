@@ -144,8 +144,8 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                   <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-sm `}>{description}</p>
 
                   {/* Quantity selector and buttons */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
-                    <div className="flex items-center gap-2 border rounded-full px-3 py-1">
+                  <div className=" grid grid-cols-1 md:grid-cols-2 sm:items-center gap-4 mt-4">
+                    {/* <div className="flex items-center gap-2 border rounded-full px-3 py-1">
                       <button
                         onClick={() => handleQuantity(quantity - 1)}
                         className="w-8 h-8 rounded-full bg-green-100 text-lg text-black"
@@ -166,7 +166,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                       >
                         +
                       </button>
-                    </div>
+                    </div> */}
 
                     <button
                       onClick={() => addCard(product)}
@@ -179,7 +179,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
                       onClick={() => addWish(product)}
                       className="p-2 bg-green-100 rounded-full"
                     >
-                      <AiOutlineHeart className="text-green-600 text-lg" />
+                      <AiOutlineHeart className="text-green-600 text-lg mx-auto" />
                     </button>
                   </div>
 

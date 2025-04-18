@@ -1,15 +1,20 @@
-import React, { useContext } from "react";
-import {
-  FaShoppingCart,
-  FaSyncAlt,
-  FaTruck,
-  FaCheckCircle,
-} from "react-icons/fa";
+import React, { useContext, useEffect, useState } from "react";
+import { FaShoppingCart, FaSyncAlt, FaTruck, FaCheckCircle,} from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { OrderContext } from "./OrderProvider";
 
 const OrderCards = () => {
   const { theme } = useContext(ThemeContext);
+  const [orderStats, setOrderStats] = useState(null);
+  const { orders } = useContext(OrderContext);
+
+  useEffect(() => {
+      fetch("http://localhost:5000/order-stats")
+          .then(res => res.json())
+          .then(data => setOrderStats(data));
+  }, []);
+
   const orderData = [
     {
       id: 1,
@@ -21,7 +26,7 @@ const OrderCards = () => {
         />
       ),
       title: "Total Order",
-      value: "864",
+      value: orderStats?.totalOrders || 0,
       bgColor: `${theme === "dark" ? "bg-orange-500" : "bg-orange-100"}`,
     },
     {
@@ -34,8 +39,8 @@ const OrderCards = () => {
         />
       ),
       title: "Orders Pending",
-      value: "270",
-      extra: "(204669.96)",
+      value: orderStats?.stats?.find(item => item._id === "Pending")?.totalOrders || 0,
+      extra: `($${orderStats?.stats?.find(item => item._id === "Pending")?.totalAmount || 0})`,
       extraClass: "text-red-500 ",
       bgColor: `${theme === "dark" ? "bg-blue-500" : "bg-blue-100"}`,
     },
@@ -49,7 +54,7 @@ const OrderCards = () => {
         />
       ),
       title: "Orders Processing",
-      value: "120",
+      value: orderStats?.stats?.find(item => item._id === "Processing")?.totalOrders || 0,
       bgColor: `${theme === "dark" ? "bg-teal-500" : "bg-teal-100"}`,
     },
     {
@@ -62,10 +67,11 @@ const OrderCards = () => {
         />
       ),
       title: "Orders Delivered",
-      value: "373",
+      value: orderStats?.stats?.find(item => item._id === "Delivered")?.totalOrders || 0,
       bgColor: `${theme === "dark" ? "bg-green-500" : "bg-green-100"}`,
     },
   ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {orderData.map((item) => (

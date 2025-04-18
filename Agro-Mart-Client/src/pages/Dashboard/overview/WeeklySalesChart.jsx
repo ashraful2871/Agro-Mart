@@ -1,14 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,} from "recharts";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 
 const salesData = [
@@ -23,6 +14,7 @@ const salesData = [
 const WeeklySalesChart = () => {
   const [activeTab, setActiveTab] = useState("Sales");
   const { theme } = useContext(ThemeContext);
+
   return (
     <div
       className={`${

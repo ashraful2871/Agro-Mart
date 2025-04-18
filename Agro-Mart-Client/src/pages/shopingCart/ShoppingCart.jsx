@@ -5,6 +5,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/loading/Loading";
 import useAuth from "../../hooks/useAuth";
 import PaymentModal from "../Payment/PaymentModal";
+import { NavLink } from "react-router-dom";
 
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
@@ -97,13 +98,13 @@ const ShoppingCart = () => {
                 />
               ))}
 
-              <div className="flex flex-col sm:flex-row justify-between mt-6 gap-4">
-                <button className="btn rounded-full w-full sm:w-auto">
-                  Return to shop
-                </button>
-                <button className="btn rounded-full w-full sm:w-auto">
+              <div className="flex justify-end mr-7 mt-6 gap-4">
+                <button className="btn rounded-full w-full sm:w-auto hidden">
                   Update Cart
                 </button>
+                <NavLink to="/shop" className="btn rounded-full w-full sm:w-auto ">
+                  Return to shop
+                </NavLink>
               </div>
             </div>
 

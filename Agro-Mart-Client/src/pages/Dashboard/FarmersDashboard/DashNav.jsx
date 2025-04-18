@@ -1,15 +1,31 @@
 import React from "react";
 import Drawer from "../drawer/Drawer";
 import Theme from "../../../components/theme/Theme";
+import { LuLogOut } from "react-icons/lu";
+import { logOut } from "../../../store/authSlice";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const DashNav = () => {
+  const dispatch = useDispatch();
+  const signOutUser = async () => {
+    try {
+      await dispatch(logOut()).unwrap();
+      toast.success("Successfully logged out");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Logout failed!");
+    }
+  };
+
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-100 shadow-sm px-4">
       <div className="flex-1">
         <Drawer></Drawer>
       </div>
       <Theme></Theme>
-      <div className="flex-none">
+      <div className="flex-none space-x-4">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
@@ -68,10 +84,16 @@ const DashNav = () => {
               </a>
             </li>
             <li>
-              <a>Settings</a>
+              <NavLink to="/settings" className="text-base font-bold">Settings</NavLink>
             </li>
             <li>
-              <a>Logout</a>
+              <button
+                onClick={signOutUser}
+                className="flex items-center p-2 text-base font-bold"
+              >
+                Logout
+                <LuLogOut />
+              </button>
             </li>
           </ul>
         </div>
