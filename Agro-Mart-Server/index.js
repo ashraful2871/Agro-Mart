@@ -254,6 +254,77 @@ async function run() {
       res.send(result);
     });
 
+    // Update cart item quantity with stock validation
+    app.patch("/update-cart-item/:id", verifyToken, async (req, res) => {
+      try {
+        const cartItemId = req.params.id;
+        const { quantity } = req.body;
+
+        // 1. Find the cart item
+        const cartItem = await cartCollection.findOne({
+          _id: new ObjectId(cartItemId),
+        });
+
+        if (!cartItem) {
+          return res.status(404).json({ error: "Cart item not found" });
+        }
+
+        // 2. Find the corresponding product to check stock
+        const product = await productCollection.findOne({
+          _id: new ObjectId(cartItem.productId),
+        });
+
+        if (!product) {
+          return res.status(404).json({ error: "Product not found" });
+        }
+
+        // 3. Calculate the quantity difference
+        const oldQuantity = cartItem.quantity || 1;
+        const quantityDifference = quantity - oldQuantity;
+
+        // 4. Validate if enough stock is available
+        if (
+          quantityDifference > 0 &&
+          quantityDifference > product.stockQuantity
+        ) {
+          return res.status(400).json({
+            error: `Only ${product.stockQuantity} items available in stock`,
+          });
+        }
+
+        // 5. Update the cart item quantity
+        const updateCartResult = await cartCollection.updateOne(
+          { _id: new ObjectId(cartItemId) },
+          { $set: { quantity: quantity } } // Update the quantity field, not stockQuantity
+        );
+
+        if (updateCartResult.modifiedCount === 0) {
+          return res
+            .status(400)
+            .json({ error: "Failed to update cart quantity" });
+        }
+
+        // 6. Update the product stock quantity if needed
+        if (quantityDifference !== 0) {
+          const newStockQuantity = product.stockQuantity - quantityDifference;
+          await productCollection.updateOne(
+            { _id: new ObjectId(cartItem.productId) },
+            { $set: { stockQuantity: newStockQuantity } }
+          );
+        }
+
+        // 7. Return success response
+        res.status(200).json({
+          message: "Quantity updated successfully",
+          updatedQuantity: quantity,
+          productId: cartItem.productId,
+        });
+      } catch (error) {
+        console.error("Error updating cart item:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
     app.get("/all-cart-items/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
       const query = { "userInfo.email": email };
