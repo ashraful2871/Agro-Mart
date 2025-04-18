@@ -123,10 +123,10 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         transactionId: paymentIntent.id,
         cartIds: cart.map((item) => item._id),
         productId: cart.map((item) => item.productId),
-        date: new Date().toLocaleDateString('en-CA'),
+        date: new Date().toLocaleDateString("en-CA"),
         invoiceNo: Math.floor(100000 + Math.random() * 900000),
       };
-      console.log(paymentInfo)
+      console.log(paymentInfo);
       try {
         const res = await axiosSecure.post("/payments", paymentInfo);
 
@@ -139,6 +139,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
             background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
             color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
           });
+          localStorage.removeItem("cartItems");
           navigate("/shop");
         } else {
           throw new Error("Payment record not saved");
@@ -150,7 +151,6 @@ const StripeCheckOutForm = ({ totalAmount }) => {
       }
     }
   };
-  
 
   return (
     <div className="bg-white rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden w-full max-w-4xl">
