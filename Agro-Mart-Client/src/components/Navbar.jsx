@@ -215,14 +215,6 @@ const Navbar = () => {
                 }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
               >
                 <Link
-                  to="/profile"
-                  className={`block px-4 py-2 text-base-content ${
-                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
-                  } `}
-                >
-                  Profile
-                </Link>
-                <Link
                   to={`${
                     role === "admin"
                       ? "/dashboard/overview"
@@ -234,6 +226,15 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Link>
+                <Link
+                  to="/dashboard/all-orders"
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  } `}
+                >
+                  WishList
+                </Link>
+
                 <button
                   onClick={signOutUser}
                   className={`block w-full text-left px-4 py-2 text-red-600 ${

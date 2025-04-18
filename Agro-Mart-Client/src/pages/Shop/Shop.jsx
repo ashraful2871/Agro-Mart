@@ -22,7 +22,7 @@ const Shop = () => {
   const [itemsPerPage] = useState(6);
 
   // Fetch products from the database
-  const { data: products, isLoading } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products", { sortBy, searchQuery, selectedCategory }],
     queryFn: async () => {
       const response = await axiosPublic.get(
@@ -37,8 +37,6 @@ const Shop = () => {
     // staleTime: 1000 * 60 * 5, // 5 minutes
     // retry: 3,
   });
-
-  // You can then use products, isLoading, and error in your component
 
   // Handle sorting
   const handleSortChange = (e) => {
@@ -67,14 +65,6 @@ const Shop = () => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  if (isLoading) {
-    return (
-      <div className="text-center text-xl">
-        <Loading></Loading>
-      </div>
-    );
-  }
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
@@ -319,9 +309,9 @@ const Shop = () => {
         </div>
 
         {/* Product Listing */}
-        <div className="w-full lg:w-3/4">
+        <div className="w-full lg:w-3/4 ">
           {/* Filters */}
-          <div className="my-5 flex justify-between">
+          <div className="my-5 flex justify-between ">
             <div className="hidden lg:block">
               <span className="text-xl font-semibold">
                 Showing {products.length} products
@@ -622,11 +612,18 @@ const Shop = () => {
           </div>
 
           {/* Products */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 rounded-br-3xl">
-            {products.map((product) => (
-              <ProductsCard product={product} key={product._id}></ProductsCard>
-            ))}
-          </div>
+          {isLoading ? (
+            <Loading></Loading>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 rounded-br-3xl">
+              {products.map((product) => (
+                <ProductsCard
+                  product={product}
+                  key={product._id}
+                ></ProductsCard>
+              ))}
+            </div>
+          )}
 
           {/* Pagination Controls */}
           <div className="flex justify-center mt-8">
