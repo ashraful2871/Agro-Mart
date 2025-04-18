@@ -6,10 +6,17 @@ import toast from "react-hot-toast";
 import { ThemeContext } from "../../provider/ThemeProvider";
 
 const CartItems = ({ cart, refetch, onCartUpdate }) => {
-  const { name, image, price, _id, stockQuantity } = cart;
+  const {
+    name,
+    image,
+    price,
+    _id,
+    stockQuantity,
+    quantity: initialQuantity,
+  } = cart;
   const axiosSecure = useAxiosSecure();
-  const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(price);
+  const [quantity, setQuantity] = useState(initialQuantity || 1); // Initialize with cart quantity
+  const [total, setTotal] = useState(price * (initialQuantity || 1));
   const { theme } = useContext(ThemeContext);
 
   // Function to calculate total and save in localStorage
@@ -30,7 +37,6 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
 
     if (onCartUpdate) {
       onCartUpdate();
-      // toast.success("Cart updated!");
     }
   };
 
@@ -50,7 +56,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
     }
   };
 
-  // Initialize total and quantity on mount from localStorage
+  // Initialize total and quantity on mount from localStorage or cartData
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     const savedItem = storedCart[_id];
@@ -61,7 +67,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
     } else {
       calculateAndStoreTotal(quantity);
     }
-  }, []);
+  }, [_id, quantity, price]);
 
   // Handle Delete Item
   const handleDelete = (_id) => {
@@ -89,14 +95,13 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
                 color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
               });
 
-              // Remove from localStorage as well
+              // Remove from localStorage
               const storedCart =
                 JSON.parse(localStorage.getItem("cartItems")) || {};
               delete storedCart[_id];
               localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
               refetch();
-
               if (onCartUpdate) {
                 onCartUpdate();
               }
@@ -127,7 +132,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
         <div className="flex justify-center items-center border rounded-full px-3 py-1 gap-2">
           <button
             onClick={() => handleQuantity(quantity - 1)}
-            className="w-2 h-2 md:w-10 md:h-10 "
+            className="w-2 h-2 md:w-10 md:h-10"
           >
             <FiMinus />
           </button>
@@ -145,7 +150,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
           </button>
         </div>
       </div>
-      <div className="w-1/5 text-center">${total}</div>
+      <div className="w-1/5 text-center">${total.toFixed(2)}</div>
       <div
         className="w-1/12 text-center text-base-content cursor-pointer"
         onClick={() => handleDelete(_id)}

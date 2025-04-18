@@ -26,8 +26,24 @@ const ShoppingCart = () => {
     },
   });
 
+  // Initialize localStorage and calculate subtotal when cartData changes
   useEffect(() => {
+    // Initialize localStorage with cartData
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    cartData.forEach((item) => {
+      if (!storedCart[item._id]) {
+        storedCart[item._id] = {
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity || 1, // Use quantity from cartData if available
+          total: (item.quantity || 1) * item.price,
+        };
+      }
+    });
+    localStorage.setItem("cartItems", JSON.stringify(storedCart));
+
+    // Calculate subtotal from storedCart
     const total = Object.values(storedCart).reduce(
       (sum, item) => sum + item.total,
       0
@@ -116,8 +132,8 @@ const ShoppingCart = () => {
           </div>
 
           {/* Coupon Section */}
-          <div className="grid grid-cols-12 ">
-            <div className="mt-10  border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8 ">
+          <div className="grid grid-cols-12">
+            <div className="mt-10 border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8">
               <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
