@@ -11,6 +11,7 @@ import SellerMenu from "../dashboard/saler-menue/SellerMenu";
 import { logOut } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import UserMenu from "../dashboard/user-menu/UserMenu";
 
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
@@ -52,6 +53,7 @@ const Dashboard = () => {
               {/* Sidebar Menus */}
               {role === "admin" && <AdminMenu />}
               {role === "seller" && <SellerMenu />}
+              <UserMenu></UserMenu>
               {/* {role === "tutor" && <TutorMenu />}
               {role === "student" && <StudentMenu />} */}
             </div>

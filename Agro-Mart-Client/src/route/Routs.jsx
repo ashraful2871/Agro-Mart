@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <Error></Error>,
+    // errorElement: <Error></Error>,
     children: [
       {
         path: "/",
@@ -67,10 +67,6 @@ export const router = createBrowserRouter([
         element: <SslCommerzePayment></SslCommerzePayment>,
       },
       {
-        path: "/wish-list",
-        element: <Wishlist></Wishlist>,
-      },
-      {
         path: "/about",
         element: <About></About>,
       },
@@ -100,6 +96,11 @@ export const router = createBrowserRouter([
       </Privet>
     ),
     children: [
+      //user rout
+      {
+        path: "wishlist",
+        element: <Wishlist></Wishlist>,
+      },
       // admin route
       {
         path: "overview",
