@@ -21,7 +21,6 @@ const Dashboard = () => {
     try {
       await dispatch(logOut()).unwrap();
       toast.success("Successfully logged out");
-      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message || "Logout failed!");

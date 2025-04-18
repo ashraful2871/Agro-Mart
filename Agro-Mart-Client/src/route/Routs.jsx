@@ -24,6 +24,8 @@ import BKashPayment from "../pages/Payment/bKashPayment";
 import NagadPayment from "../pages/Payment/NagadPayment";
 import SslCommerzePayment from "../pages/Payment/SslCommerzePayment";
 import CropDoctor from "../pages/CropDoctor/CropDoctor";
+import Settings from "../pages/Dashboard/Settings/Settings";
+import CouponSettings from "../pages/Dashboard/Settings/AdminSettings/CouponSettings";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -136,5 +138,15 @@ export const router = createBrowserRouter([
         element: <UpdateProduct></UpdateProduct>,
       },
     ],
+  },
+  {
+    path: "settings",
+    element: <Settings></Settings>,
+    children:[
+      {
+        path: "coupon-settings",
+        element: <CouponSettings></CouponSettings>
+      }
+    ]
   },
 ]);

@@ -92,7 +92,7 @@ const handleDelete = (id) => {
 
   return (
     <div className={`p-6 ${theme === "dark" ? "bg-[#111827]" : "bg-white"} shadow-md rounded-lg`}>
-      <div className={`${theme === "dark" ? "bg-[#1F2937]" : "bg-white"} flex justify-between mb-4 py-8 px-5 rounded-lg`}>
+      <div className={`${theme === "dark" ? "bg-[#1F2937]" : "bg-white"} mb-4 py-8 px-5 rounded-lg hidden`}>
         <div className="space-x-2">
           <button  className="btn btn-outline">Export</button>
           <button className="btn btn-outline">Import</button>
@@ -100,24 +100,25 @@ const handleDelete = (id) => {
       </div>
 
       <div className={`${theme === "dark" ? "bg-[#1F2937]" : "bg-white"} mb-4 grid grid-cols-6 gap-8 py-8 px-5 rounded-lg`}>
-        <input
-          type="text"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name/email/phone"
-          className="input input-bordered w-full col-span-4 py-7"
-        />
-        <button
-          onClick={() => { setFilterText(search); setPage(1); }}
-          className="btn btn-success bg-green-700 ml-2 text-white"
-        >
-          Filter
-        </button>
+      <input
+        type="text"
+        placeholder="Search by name/email/phone"
+        value={search}
+        onChange={(e) => {
+          const value = e.target.value;
+          setSearch(value);
+          const lastChar = value.slice(-1);
+
+          if (/^[a-zA-Z0-9]$/.test(lastChar) || value === "") {
+            setFilterText(value);
+            setPage(1);
+          }
+        }}
+        className="input input-bordered w-full col-span-4 py-7"
+      />
         <button
           onClick={() => { setSearch(""); setFilterText(""); setPage(1); }}
-          className="btn ml-2"
+          className="btn ml-2 col-span-2 h-full"
         >
           Reset
         </button>
