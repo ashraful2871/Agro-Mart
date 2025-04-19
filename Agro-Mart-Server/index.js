@@ -399,28 +399,80 @@ async function run() {
       }
     });
 
-    // Save payment info
     app.post("/payments", verifyToken, async (req, res) => {
       try {
         const paymentInfo = req.body;
-        const result = await paymentCollection.insertOne(paymentInfo);
-        const query = {
-          _id: {
-            $in: paymentInfo.cartIds.map((id) => new ObjectId(id)),
-          },
-        };
 
-        const deletedResult = await cartCollection.deleteMany(query);
-        res.send({
+        // 1. First check stock availability for all items
+        const products = await productCollection
+          .find({
+            _id: {
+              $in: paymentInfo.cartItems.map(
+                (item) => new ObjectId(item.productId)
+              ),
+            },
+          })
+          .toArray();
+
+        const stockErrors = [];
+        paymentInfo.cartItems.forEach((item) => {
+          const product = products.find(
+            (p) => p._id.toString() === item.productId
+          );
+          if (!product) {
+            stockErrors.push(`Product ${item.name} not found`);
+          } else if (product.stockQuantity < item.orderedQuantity) {
+            stockErrors.push(
+              `Not enough stock for ${item.name}. Available: ${product.stockQuantity}, Ordered: ${item.orderedQuantity}`
+            );
+          }
+        });
+
+        if (stockErrors.length > 0) {
+          return res.status(400).json({
+            success: false,
+            errors: stockErrors,
+          });
+        }
+
+        // 2. Update product quantities
+        const bulkUpdateOps = paymentInfo.cartItems.map((item) => ({
+          updateOne: {
+            filter: { _id: new ObjectId(item.productId) },
+            update: {
+              $inc: { stockQuantity: -item.orderedQuantity },
+              $set: { updatedAt: new Date() },
+            },
+          },
+        }));
+
+        await productCollection.bulkWrite(bulkUpdateOps);
+
+        // 3. Save payment information
+        const result = await paymentCollection.insertOne({
+          ...paymentInfo,
+          createdAt: new Date(),
+        });
+
+        // 4. Clear the user's cart
+        const deletedResult = await cartCollection.deleteMany({
+          _id: { $in: paymentInfo.cartIds.map((id) => new ObjectId(id)) },
+        });
+
+        res.status(200).json({
+          success: true,
           result,
           deletedResult,
         });
       } catch (err) {
-        console.error("Error saving payment:", err);
-        res.status(500).send({ error: "Failed to save payment" });
+        console.error("Error processing payment:", err);
+        res.status(500).json({
+          success: false,
+          error: "Failed to process payment",
+          details: err.message,
+        });
       }
     });
-
     // Update payment status
     app.patch("/orders/:id", async (req, res) => {
       const { id } = req.params;

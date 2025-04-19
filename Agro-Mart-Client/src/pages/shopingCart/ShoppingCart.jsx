@@ -23,13 +23,25 @@ const ShoppingCart = () => {
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
-      return data;
+      return data.map((item) => ({
+        ...item,
+        productId: item.productId,
+      }));
     },
   });
 
+  // Calculate subtotal from localStorage
+  const updateSubtotal = () => {
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    const total = Object.values(storedCart).reduce(
+      (sum, item) => sum + item.total,
+      0
+    );
+    setSubtotal(total);
+  };
+
   // Initialize localStorage and calculate subtotal when cartData changes
   useEffect(() => {
-    // Initialize localStorage with cartData
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     cartData.forEach((item) => {
       if (!storedCart[item._id]) {
@@ -37,19 +49,14 @@ const ShoppingCart = () => {
           _id: item._id,
           name: item.name,
           price: item.price,
-          quantity: item.quantity || 1, // Use quantity from cartData if available
+          quantity: item.quantity || 1,
           total: (item.quantity || 1) * item.price,
+          productId: item.productId,
         };
       }
     });
     localStorage.setItem("cartItems", JSON.stringify(storedCart));
-
-    // Calculate subtotal from storedCart
-    const total = Object.values(storedCart).reduce(
-      (sum, item) => sum + item.total,
-      0
-    );
-    setSubtotal(total);
+    updateSubtotal();
   }, [cartData]);
 
   if (isLoading) {
@@ -68,7 +75,6 @@ const ShoppingCart = () => {
             My Shopping Cart
           </h1>
 
-          {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Cart Items */}
             <div className="flex-1 border rounded-xl p-4 sm:p-6 overflow-x-auto">
@@ -80,29 +86,20 @@ const ShoppingCart = () => {
                 <span className="w-1/12"></span>
               </div>
 
-              {/* CartItems renders a row of each item */}
               {cartData?.map((cart) => (
                 <CartItems
                   key={cart._id}
                   cart={cart}
                   refetch={refetch}
-                  onCartUpdate={() => {
-                    const storedCart =
-                      JSON.parse(localStorage.getItem("cartItems")) || {};
-                    const total = Object.values(storedCart).reduce(
-                      (sum, item) => sum + item.total,
-                      0
-                    );
-                    setSubtotal(total);
-                  }}
+                  onCartUpdate={updateSubtotal}
                 />
               ))}
 
               <div className="flex justify-end mr-7 mt-6 gap-4">
-                <button className="btn rounded-full w-full sm:w-auto hidden">
-                  Update Cart
-                </button>
-                <NavLink to="/shop" className="btn rounded-full w-full sm:w-auto ">
+                <NavLink
+                  to="/shop"
+                  className="btn rounded-full w-full sm:w-auto"
+                >
                   Return to shop
                 </NavLink>
               </div>
@@ -149,11 +146,11 @@ const ShoppingCart = () => {
             </div>
           </div>
 
-          {/* Modal */}
           <PaymentModal
             isOpen={isModalOpen}
             closeModal={() => setIsModalOpen(false)}
             totalAmount={finalTotal}
+            cartItems={cartData}
           />
         </div>
       )}
