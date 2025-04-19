@@ -6,18 +6,16 @@ import toast from "react-hot-toast";
 import { ThemeContext } from "../../provider/ThemeProvider";
 
 const CartItems = ({ cart, refetch, onCartUpdate }) => {
-  const { name, image, price, _id, quantity: cartQuantity } = cart; // Extract quantity from cart if available
+  const { name, image, price, _id, productId } = cart;
   const axiosSecure = useAxiosSecure();
-  const [quantity, setQuantity] = useState(cartQuantity || 1); // Initialize with cart quantity or 1
-  const [total, setTotal] = useState(price * (cartQuantity || 1));
+  const [quantity, setQuantity] = useState(cart.quantity || 1);
+  const [total, setTotal] = useState(price * quantity);
   const { theme } = useContext(ThemeContext);
 
-  // Function to calculate total and save in localStorage
   const calculateAndStoreTotal = (qty) => {
     const calculatedTotal = qty * price;
     setTotal(calculatedTotal);
 
-    // Store this cart item in localStorage
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     storedCart[_id] = {
       _id,
@@ -25,6 +23,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
       price,
       quantity: qty,
       total: calculatedTotal,
+      productId,
     };
     localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
@@ -33,8 +32,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
     }
   };
 
-  // Handle Quantity Change
-  const handleQuantity = async (val) => {
+  const handleQuantity = (val) => {
     if (val < 1) {
       toast.error("Minimum quantity is 1");
       setQuantity(1);
@@ -42,34 +40,10 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
       return;
     }
 
-    // Optimistically update the quantity in the UI
-    const previousQuantity = quantity;
     setQuantity(val);
     calculateAndStoreTotal(val);
-
-    try {
-      // Send PATCH request to update quantity in the backend
-      const response = await axiosSecure.patch(
-        `/update-cart-item/${_id}`,
-        { quantity: val } // Send the new quantity value directly
-      );
-
-      if (response.status === 200) {
-        toast.success("Quantity updated successfully!");
-        refetch(); // Refetch cart data to ensure UI is in sync with backend
-      }
-    } catch (error) {
-      // Revert to previous quantity on error
-      setQuantity(previousQuantity);
-      calculateAndStoreTotal(previousQuantity);
-      console.error("Error updating quantity:", error);
-      const errorMessage =
-        error.response?.data?.error || "Failed to update quantity";
-      toast.error(errorMessage);
-    }
   };
 
-  // Initialize total and quantity on mount from localStorage or cart data
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     const savedItem = storedCart[_id];
@@ -77,15 +51,11 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
     if (savedItem) {
       setQuantity(savedItem.quantity);
       setTotal(savedItem.total);
-    } else if (cartQuantity) {
-      setQuantity(cartQuantity);
-      calculateAndStoreTotal(cartQuantity);
     } else {
       calculateAndStoreTotal(quantity);
     }
-  }, [_id, price, cartQuantity]);
+  }, [_id, price]);
 
-  // Handle Delete Item
   const handleDelete = (_id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -111,7 +81,6 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
                 color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
               });
 
-              // Remove from localStorage
               const storedCart =
                 JSON.parse(localStorage.getItem("cartItems")) || {};
               delete storedCart[_id];
