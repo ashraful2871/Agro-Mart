@@ -118,7 +118,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         email: user?.email || "anonymous",
         name: user?.name || "anonymous",
         totalAmount,
-        status: "Pending",
+        status: paymentIntent.status,
         method: "Stripe",
         transactionId: paymentIntent.id,
         cartIds: cart.map((item) => item._id),
@@ -126,7 +126,6 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         date: new Date().toLocaleDateString("en-CA"),
         invoiceNo: Math.floor(100000 + Math.random() * 900000),
       };
-      console.log(paymentInfo);
       try {
         const res = await axiosSecure.post("/payments", paymentInfo);
 

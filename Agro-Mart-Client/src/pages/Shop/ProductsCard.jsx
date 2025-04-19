@@ -41,6 +41,7 @@ const ProductsCard = ({ product }) => {
         name: user?.displayName,
         email: user?.email,
       },
+      addedAt: new Date(),
     };
     try {
       const { data } = await axiosSecure.post("/add-cart", {
