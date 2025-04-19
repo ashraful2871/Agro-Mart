@@ -86,13 +86,15 @@ async function run() {
       const search = req.query.search || "";
       const skip = (page - 1) * limit;
 
-      const query = {
-        $or: [
-          { name: { $regex: search, $options: "i" } },
-          { email: { $regex: search, $options: "i" } },
-          { phone: { $regex: search, $options: "i" } },
-        ],
-      };
+      const query = search
+        ? {
+            $or: [
+              { name: { $regex: search, $options: "i" } },
+              { email: { $regex: search, $options: "i" } },
+              { phone: { $regex: search, $options: "i" } },
+            ],
+          }
+        : {};
 
       const users = await usersCollection
         .find(query)
@@ -443,7 +445,7 @@ async function run() {
 
         // Optional Filters
         if (req.query.email) {
-          query.email = req.query.email;
+          query.email = { $regex: req.query.email, $options: "i" };
         }
 
         if (req.query.status) {
@@ -625,6 +627,32 @@ async function run() {
       } catch (error) {
         console.error("Error fetching admin stats:", error);
         res.status(500).send({ message: "Error fetching admin stats", error });
+      }
+    });
+
+    app.get("/order-stats", async (req, res) => {
+      try {
+        const stats = await paymentCollection
+          .aggregate([
+            {
+              $group: {
+                _id: "$status",
+                totalAmount: { $sum: "$totalAmount" },
+                totalOrders: { $sum: 1 },
+              },
+            },
+          ])
+          .toArray();
+
+        const totalOrders = await paymentCollection.countDocuments();
+
+        res.send({
+          totalOrders,
+          stats,
+        });
+      } catch (error) {
+        console.error("Error fetching order stats:", error);
+        res.status(500).send({ message: "Error fetching order stats", error });
       }
     });
 

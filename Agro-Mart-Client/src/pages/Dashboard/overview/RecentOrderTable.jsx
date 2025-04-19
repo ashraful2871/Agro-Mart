@@ -4,6 +4,7 @@ import { ThemeContext } from "../../../provider/ThemeProvider";
 import { useReactToPrint } from "react-to-print";
 import OrderInvoice from "./OrderInvoice";
 import toast from "react-hot-toast";
+import { OrderContext } from "./OrderProvider";
 
 const statusColors = {
     Pending: "badge-warning",
@@ -15,21 +16,8 @@ const RecentOrderTable = () => {
     const { theme } = useContext(ThemeContext);
     const [orderData, setOrderData] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const { orders, updateOrderStatus } = useContext(OrderContext);
     const componentRef = useRef();
-
-    const fetchOrders = async () => {
-        try {
-            const res = await fetch(`http://localhost:5000/orders?limit=10&sort=desc`);
-            const data = await res.json();
-            setOrderData(data.orders);
-        } catch (err) {
-            console.error("Failed to fetch orders:", err);
-        }
-    };
-
-    useEffect(() => {
-        fetchOrders();
-    }, []);
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -49,31 +37,18 @@ const RecentOrderTable = () => {
     }, [selectedOrder]);
 
     const handleStatusChange = async (id, newStatus) => {
-        try {
-            const res = await fetch(`http://localhost:5000/orders/${id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: newStatus }),
-            });
-
-            const result = await res.json();
-
-            if (result.modifiedCount > 0) {
-                setOrderData((prevOrders) =>
-                    prevOrders.map((order) =>
-                        order._id === id ? { ...order, status: newStatus } : order
-                    )
-                );
-                toast.success("Order status updated successfully!");
-                fetchOrders();
-            } else {
-                toast.error("Failed to update order status!");
-            }
-        } catch (error) {
-            console.error("Error updating status:", error);
-            alert("An error occurred while updating status.");
+        const success = await updateOrderStatus(id, newStatus);
+        if (success) {
+          toast.success("Order status updated successfully!");
+        } else {
+          toast.error("Failed to update order status!");
         }
-    };
+      };
+    
+      useEffect(() => {
+        console.log("Orders updated:", orders);
+      }, [orders]);
+
 
     return (
         <div className={`overflow-x-auto ${theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"} p-6 rounded-lg shadow-md`}>
@@ -91,7 +66,7 @@ const RecentOrderTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {orderData.map((order) => (
+                    {orders.map((order) => (
                         <tr key={order._id}>
                             <td className="font-semibold">{order.invoiceNo}</td>
                             <td>{order.date}</td>

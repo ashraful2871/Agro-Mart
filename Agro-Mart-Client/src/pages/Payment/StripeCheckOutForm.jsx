@@ -169,7 +169,7 @@ const StripeCheckOutForm = ({ totalAmount }) => {
         </h2>
 
         <div>
-          <label className="text-sm">Card Details</label>
+          <label className={`text-sm ${theme === "dark" ? "text-gray-600" : "text-gray-700"}`}>Card Details</label>
           <div className="border px-3 py-2 rounded-md">
             <CardElement
               options={{

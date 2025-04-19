@@ -4,7 +4,7 @@ import { Dialog } from "@mui/material";
 const UserViewModal = ({ isOpen, closeModal, user }) => {
   return (
     <Dialog open={isOpen} onClose={closeModal} fullWidth maxWidth="sm">
-      <div className="p-6 bg-base-100 rounded-lg text-center">
+      <div className="p-6 bg-base-100 rounded-lg text-center text-base-content">
         <h2 className="text-xl font-semibold mb-4">User Information</h2>
         {user && (
           <>
