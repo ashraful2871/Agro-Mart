@@ -6,18 +6,16 @@ import toast from "react-hot-toast";
 import { ThemeContext } from "../../provider/ThemeProvider";
 
 const CartItems = ({ cart, refetch, onCartUpdate }) => {
-  const { name, image, price, _id, stockQuantity } = cart;
+  const { name, image, price, _id, productId } = cart;
   const axiosSecure = useAxiosSecure();
-  const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(price);
+  const [quantity, setQuantity] = useState(cart.quantity || 1);
+  const [total, setTotal] = useState(price * quantity);
   const { theme } = useContext(ThemeContext);
 
-  // Function to calculate total and save in localStorage
   const calculateAndStoreTotal = (qty) => {
     const calculatedTotal = qty * price;
     setTotal(calculatedTotal);
 
-    // Store this cart item in localStorage
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     storedCart[_id] = {
       _id,
@@ -25,32 +23,27 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
       price,
       quantity: qty,
       total: calculatedTotal,
+      productId,
     };
     localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
     if (onCartUpdate) {
       onCartUpdate();
-      // toast.success("Cart updated!");
     }
   };
 
-  // Handle Quantity Change
   const handleQuantity = (val) => {
     if (val < 1) {
       toast.error("Minimum quantity is 1");
       setQuantity(1);
       calculateAndStoreTotal(1);
-    } else if (val > stockQuantity) {
-      toast.error("Exceeds available stock");
-      setQuantity(stockQuantity);
-      calculateAndStoreTotal(stockQuantity);
-    } else {
-      setQuantity(val);
-      calculateAndStoreTotal(val);
+      return;
     }
+
+    setQuantity(val);
+    calculateAndStoreTotal(val);
   };
 
-  // Initialize total and quantity on mount from localStorage
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     const savedItem = storedCart[_id];
@@ -61,9 +54,8 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
     } else {
       calculateAndStoreTotal(quantity);
     }
-  }, []);
+  }, [_id, price]);
 
-  // Handle Delete Item
   const handleDelete = (_id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -89,14 +81,12 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
                 color: `${theme === "dark" ? "#ffff" : " #1D232A"}`,
               });
 
-              // Remove from localStorage as well
               const storedCart =
                 JSON.parse(localStorage.getItem("cartItems")) || {};
               delete storedCart[_id];
               localStorage.setItem("cartItems", JSON.stringify(storedCart));
 
               refetch();
-
               if (onCartUpdate) {
                 onCartUpdate();
               }
@@ -127,14 +117,19 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
         <div className="flex justify-center items-center border rounded-full px-3 py-1 gap-2">
           <button
             onClick={() => handleQuantity(quantity - 1)}
-            className="w-2 h-2 md:w-10 md:h-10 "
+            className="w-2 h-2 md:w-10 md:h-10"
           >
             <FiMinus />
           </button>
           <input
             type="number"
             value={quantity}
-            onChange={(e) => handleQuantity(parseInt(e.target.value))}
+            onChange={(e) => {
+              const val = parseInt(e.target.value);
+              if (!isNaN(val)) {
+                handleQuantity(val);
+              }
+            }}
             className="w-2 md:w-10 text-center bg-transparent"
           />
           <button
