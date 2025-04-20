@@ -105,7 +105,37 @@ async function run() {
     
     app.get("/users/:uid", verifyToken, (req, res) => {
       const result = usersCollection.findOne();
-      req.send(result);
+      res.send(result);
+    });
+
+    app.get('/user/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+    
+    app.patch('/users/update-coupon-enabled', async (req, res) => {
+      const { couponEnabled } = req.body;
+    
+      try {
+        // Ensure couponEnabled is a boolean
+        if (typeof couponEnabled !== 'boolean') {
+          throw new Error('Invalid couponEnabled value');
+        }
+    
+        // Update the collection
+        const result = await usersCollection.updateMany({}, { $set: { couponEnabled } });
+        
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Coupon enabled status updated successfully!", modifiedCount: result.modifiedCount });
+        } else {
+          res.status(404).send({ message: "No users were updated." });
+        }
+      } catch (error) {
+        console.error("Error updating couponEnabled:", error);
+        res.status(500).send({ message: "Error updating couponEnabled", error: error.message });
+      }
     });
 
     // Update user
@@ -138,8 +168,8 @@ async function run() {
       const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
-
-
+    
+  
 
     // products related apis crud
     // products create
