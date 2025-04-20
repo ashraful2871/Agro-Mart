@@ -6,6 +6,7 @@ import { logOut } from "../../../store/authSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { IoSettingsSharp } from "react-icons/io5";
 
 const DashNav = () => {
   const dispatch = useDispatch();
@@ -79,20 +80,17 @@ const DashNav = () => {
           >
             <li>
               <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
+                <span className="flex gap-1 text-base font-bold"><span className="my-auto"><IoSettingsSharp /></span> Edit Profile</span>
+                {/* <span className="badge">New</span> */}
               </a>
-            </li>
-            <li>
-              <NavLink to="/settings" className="text-base font-bold">Settings</NavLink>
             </li>
             <li>
               <button
                 onClick={signOutUser}
-                className="flex items-center p-2 text-base font-bold"
+                className="flex items-center text-base font-bold"
               >
-                Logout
                 <LuLogOut />
+                Logout
               </button>
             </li>
           </ul>

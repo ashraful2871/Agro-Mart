@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { IoCart } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import ProductsCard from "./ProductsCard";
 import { ThemeContext } from "../../provider/ThemeProvider";
@@ -14,30 +12,26 @@ const Shop = () => {
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const axiosPublic = useAxiosPublic();
-  const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(8);
 
   // Fetch products from the database
-  const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", { sortBy, searchQuery, selectedCategory }],
+  const { data: productsData = {}, isLoading } = useQuery({
+    queryKey: ["products", { sortBy, searchQuery, selectedCategory, currentPage }],
     queryFn: async () => {
       const response = await axiosPublic.get(
-        `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}`
+        `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}&&page=${currentPage}&&limit=${itemsPerPage}`
       );
-      if (!Array.isArray(response.data)) {
-        throw new Error("Fetched data is not in the expected format.");
-      }
       return response.data;
     },
-    // Optional: you can add additional options like:
-    // staleTime: 1000 * 60 * 5, // 5 minutes
-    // retry: 3,
   });
-
+  
+  const products = productsData.products || [];
+  const totalPages = productsData.totalPages || 1;
+  
   // Handle sorting
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
@@ -54,14 +48,6 @@ const Shop = () => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-
-  const handleDetails = (id) => {
-    navigate(`/dashboard/product/${id}`);
-  };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -626,36 +612,35 @@ const Shop = () => {
           )}
 
           {/* Pagination Controls */}
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center mt-14">
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
+              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${theme === "dark" ? "disabled:bg-gray-700": " disabled:bg-gray-300 "}`}
             >
               Previous
             </button>
-            {Array.from(
-              { length: Math.ceil(products.length / itemsPerPage) },
-              (_, i) => (
-                <button
-                  key={i + 1}
-                  onClick={() => paginate(i + 1)}
-                  className={`px-4 py-2 mx-1 rounded-full ${
-                    currentPage === i + 1
-                      ? "bg-green-700 text-white"
-                      : "bg-gray-200 text-base-content"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
+          
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => paginate(i + 1)}
+                className={`px-4 py-2 mx-1 rounded-full text-base-content ${
+                  currentPage === i + 1
+                  ? "bg-green-700 text-white"
+                  : theme === "dark"
+                  ? "bg-gray-700 "
+                  : "bg-gray-300"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          
             <button
               onClick={() => paginate(currentPage + 1)}
-              disabled={
-                currentPage === Math.ceil(products.length / itemsPerPage)
-              }
-              className="px-4 py-2 bg-green-700 text-white rounded-full mx-1 disabled:bg-gray-300"
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${theme === "dark" ? "disabled:bg-gray-700": " disabled:bg-gray-300 "}`}
             >
               Next
             </button>

@@ -52,7 +52,8 @@ const Dashboard = () => {
               {/* Sidebar Menus */}
               {role === "admin" && <AdminMenu />}
               {role === "seller" && <SellerMenu />}
-              <UserMenu></UserMenu>
+              {role === "user" && <UserMenu />}
+              
               {/* {role === "tutor" && <TutorMenu />}
               {role === "student" && <StudentMenu />} */}
             </div>

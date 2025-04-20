@@ -98,6 +98,10 @@ export const router = createBrowserRouter([
       </Privet>
     ),
     children: [
+      {
+        path: "settings",
+        element: <Settings></Settings>,
+      },
       //user rout
       {
         path: "wishlist",
@@ -139,15 +143,5 @@ export const router = createBrowserRouter([
         element: <UpdateProduct></UpdateProduct>,
       },
     ],
-  },
-  {
-    path: "settings",
-    element: <Settings></Settings>,
-    children:[
-      {
-        path: "coupon-settings",
-        element: <CouponSettings></CouponSettings>
-      }
-    ]
   },
 ]);

@@ -108,7 +108,37 @@ async function run() {
 
     app.get("/users/:uid", verifyToken, (req, res) => {
       const result = usersCollection.findOne();
-      req.send(result);
+      res.send(result);
+    });
+
+    app.get('/user/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+    
+    app.patch('/users/update-coupon-enabled', async (req, res) => {
+      const { couponEnabled } = req.body;
+    
+      try {
+        // Ensure couponEnabled is a boolean
+        if (typeof couponEnabled !== 'boolean') {
+          throw new Error('Invalid couponEnabled value');
+        }
+    
+        // Update the collection
+        const result = await usersCollection.updateMany({}, { $set: { couponEnabled } });
+        
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Coupon enabled status updated successfully!", modifiedCount: result.modifiedCount });
+        } else {
+          res.status(404).send({ message: "No users were updated." });
+        }
+      } catch (error) {
+        console.error("Error updating couponEnabled:", error);
+        res.status(500).send({ message: "Error updating couponEnabled", error: error.message });
+      }
     });
 
     // Update user
@@ -145,10 +175,11 @@ async function run() {
       const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
+    
 
     // products related apis crud
     // products create
-    app.post("/products", verifyToken, async (req, res) => {
+    app.post("/products", async (req, res) => {
       const {
         name,
         category,
@@ -181,6 +212,11 @@ async function run() {
     app.get("/products", async (req, res) => {
       let filter = {};
       let sortByPrice = {};
+      // Pagination setup
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 6;
+      const skip = (page - 1) * limit;
+      
       if (req.query.sort && req.query.sort !== "default") {
         sortByPrice = { price: parseInt(req.query.sort) };
         console.log(sortByPrice);
@@ -188,7 +224,7 @@ async function run() {
       if (req.query.searchQuery) {
         filter.name = {
           $regex: req.query.searchQuery,
-          $options: "i", // Case-insensitive search
+          $options: "i",
         };
       }
       if (req.query.selectedCategory) {
@@ -197,11 +233,24 @@ async function run() {
           $options: "i",
         };
       }
-      const result = await productCollection
-        .find(filter)
-        .sort(sortByPrice)
-        .toArray();
-      res.send(result);
+      try {
+        const total = await productCollection.countDocuments(filter);
+        const products = await productCollection
+          .find(filter)
+          .sort(sortByPrice)
+          .skip(skip)
+          .limit(limit)
+          .toArray();
+    
+        res.send({
+          totalItems: total,
+          currentPage: page,
+          totalPages: Math.ceil(total / limit),
+          products,
+        });
+      } catch (error) {
+        res.status(500).send({ message: "Server Error", error });
+      }
     });
 
     // Update a product by ID

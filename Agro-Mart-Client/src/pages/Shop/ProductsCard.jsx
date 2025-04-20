@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IoCart } from "react-icons/io5";
 import {
   AiOutlineHeart,
   AiOutlineEye,
   AiOutlineSync,
   AiFillHeart,
 } from "react-icons/ai";
-import { FaShoppingCart } from "react-icons/fa";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -111,11 +108,11 @@ const ProductsCard = ({ product }) => {
     <div>
       <div className="bg-base-100 border shadow-lg rounded-2xl relative z-10 overflow-hidden">
         {/* Product Image */}
-        <div className="relative rounded-t-2xl overflow-hidden">
+        <div className="relative rounded-t-2xl overflow-hidden w-full h-44 bg-cover bg-center">
           <img
             src={image}
             alt={name}
-            className="w-full object-contain relative z-20"
+            className="w-full object-cover relative z-20 h-full "
           />
         </div>
 
@@ -147,12 +144,9 @@ const ProductsCard = ({ product }) => {
         <div className="mt-4 p-6 py-8 space-y-2 z-20 relative">
           <p className="text-gray-400 text-sm">{category}</p>
           <h2 className="font-semibold text-xl ">
-            <Link>
-              {" "}
               <span className="hover:text-green-600 inline-block transition-colors duration-300">
-                {name}
+                {name.length > 10 ? `${name.slice(0, 10)}...` : name}
               </span>
-            </Link>
           </h2>
           <p className="text-green-600 text-lg font-semibold">${price}</p>
         </div>
