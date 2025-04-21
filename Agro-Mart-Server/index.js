@@ -629,6 +629,39 @@ async function run() {
       }
     });
 
+    // Specific order details as CSV
+    app.get("/orders/:id/download", async (req, res) => {
+      const id = req.params.id;
+      try {
+        const order = await paymentCollection.findOne({ _id: new ObjectId(id) });
+        if (!order) {
+          return res.status(404).json({ message: "Order not found" });
+        }
+    
+        const orderData = [{
+          id: order?._id.toString(),
+          name: order?.name || "",
+          email: order?.email || "",
+          status: order?.status || "",
+          totalAmount: order.totalAmount || "",
+          method: order?.method || "",
+          transactionId: order?.transactionId || "",
+          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+          invoiceNo: order?.invoiceNo || "",
+        }];
+    
+        const json2csv = new Parser();
+        const csv = json2csv.parse(orderData);
+    
+        res.header("Content-Type", "text/csv; charset=utf-8");
+        res.attachment(`order_${order.invoiceNo}.csv`);
+        res.send("\uFEFF" + csv);
+      } catch (error) {
+        console.error("Error generating CSV:", error);
+        res.status(500).json({ message: "Failed to download order" });
+      }
+    });
+
     //user role management
     app.get("/user/role/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
