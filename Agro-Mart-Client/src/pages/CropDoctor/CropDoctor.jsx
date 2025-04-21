@@ -244,10 +244,10 @@ function CropDoctor() {
             type="checkbox"
             checked={useRoboflow}
             onChange={() => setUseRoboflow(!useRoboflow)}
-            className="form-checkbox h-5 w-5 text-green-600"
+            className="form-checkbox h-5 w-5 text-green-600 hidden"
           />
           <span
-            className={`ml-2 text-sm ${
+            className={`ml-2 text-sm hidden ${
               theme === "dark" ? "text-gray-300" : "text-gray-700"
             }`}
           >
