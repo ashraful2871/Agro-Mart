@@ -1,5 +1,6 @@
 import React from "react";
 import { FaShoppingCart, FaUsers } from "react-icons/fa";
+import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddBox, MdDashboardCustomize } from "react-icons/md";
 import { RiSettings2Fill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
@@ -18,6 +19,17 @@ const SellerMenu = () => {
             style={{ color: "", backgroundColor: "transparent" }}
           >
             <FaShoppingCart className="text-xl ml-2" /> Customer Orders
+          </NavLink>
+        </li>
+        <li className=" py-3">
+          <NavLink
+            to="/dashboard/crop-doctor"
+            className={({ isActive }) =>
+              isActive ? "text-green-600 border-l-4 border-green-600" : ""
+            }
+            style={{ color: "", backgroundColor: "transparent" }}
+          >
+            <FaUserDoctor className="text-xl ml-2" /> Crop Doctor
           </NavLink>
         </li>
         <li className="py-3">

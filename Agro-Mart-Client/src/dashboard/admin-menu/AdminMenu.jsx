@@ -11,7 +11,7 @@ const AdminMenu = () => {
     <div>
       <ul className="menu font-semibold text-base text-base-content">
         {" "}
-        <li className=" py-3">
+        <li className=" py-3 hidden">
           <NavLink
             to="/dashboard/crop-doctor"
             className={({ isActive }) =>
@@ -19,7 +19,7 @@ const AdminMenu = () => {
             }
             style={{ color: "", backgroundColor: "transparent" }}
           >
-            <FaUserDoctor className="text-xl ml-2"/> Crop Doctor
+            <FaUserDoctor className="text-xl ml-2" /> Crop Doctor
           </NavLink>
         </li>
         <li className=" py-3">
