@@ -49,22 +49,21 @@ const OrderTable = ({ filters }) => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     onAfterPrint: () => setSelectedOrder(null),
-  });  
-  
+  });
+
   const triggerPrint = (order) => {
     setSelectedOrder(order);
   };
-  
+
   useEffect(() => {
     if (!selectedOrder) return;
-  
+
     const waitForDomUpdate = setTimeout(() => {
       handlePrint();
     }, 300);
-  
+
     return () => clearTimeout(waitForDomUpdate);
   }, [selectedOrder]);
-  
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -75,9 +74,9 @@ const OrderTable = ({ filters }) => {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-  
+
       const result = await res.json();
-  
+
       if (result.modifiedCount > 0) {
         setOrderData((prevOrders) =>
           prevOrders.map((order) =>
@@ -94,14 +93,20 @@ const OrderTable = ({ filters }) => {
       alert("An error occurred while updating status.");
     }
   };
-  
-  
 
   return (
-    <div className={`overflow-x-auto ${theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"} p-6 rounded-lg shadow-md`}>
+    <div
+      className={`overflow-x-auto ${
+        theme === "dark" ? "bg-[#1F2937]" : "bg-base-100"
+      } p-6 rounded-lg shadow-md`}
+    >
       <table className="table w-full">
         <thead>
-          <tr className={`${theme === "dark" ? "bg-base-100" : "bg-gray-100"} text-base-content`}>
+          <tr
+            className={`${
+              theme === "dark" ? "bg-base-100" : "bg-gray-100"
+            } text-base-content`}
+          >
             <th>INVOICE NO</th>
             <th>ORDER TIME</th>
             <th>CUSTOMER EMAIL</th>
@@ -129,7 +134,9 @@ const OrderTable = ({ filters }) => {
                 <select
                   className="select select-bordered select-sm"
                   value={order.status}
-                  onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                  onChange={(e) =>
+                    handleStatusChange(order._id, e.target.value)
+                  }
                 >
                   <option>Pending</option>
                   <option>Delivered</option>
@@ -137,9 +144,12 @@ const OrderTable = ({ filters }) => {
                 </select>
               </td>
               <td>
-              <button onClick={() => triggerPrint(order)} className="btn btn-ghost btn-sm">
-                <FaPrint size={16} />
-              </button>
+                <button
+                  onClick={() => triggerPrint(order)}
+                  className="btn btn-ghost btn-sm"
+                >
+                  <FaPrint size={16} />
+                </button>
               </td>
             </tr>
           ))}
@@ -148,27 +158,48 @@ const OrderTable = ({ filters }) => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-      <p className="text-sm text-base-content">
-        SHOWING {((currentPage - 1) * 8) + 1} - {Math.min(currentPage * 8, totalOrders)} OF {totalOrders}
-      </p>
-      <div className="join">
-        <button className="join-item btn btn-sm" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-          {"<"}
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button key={i} onClick={() => setCurrentPage(i + 1)} className={`join-item btn btn-sm ${currentPage === i + 1 ? "btn-success" : ""}`}>
-            {i + 1}
+        <p className="text-sm text-base-content">
+          SHOWING {(currentPage - 1) * 8 + 1} -{" "}
+          {Math.min(currentPage * 8, totalOrders)} OF {totalOrders}
+        </p>
+        <div className="join">
+          <button
+            className="join-item btn btn-sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          >
+            {"<"}
           </button>
-        ))}
-        <button className="join-item btn btn-sm" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-          {">"}
-        </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`join-item btn btn-sm ${
+                currentPage === i + 1 ? "btn-success" : ""
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            className="join-item btn btn-sm"
+            disabled={currentPage === totalPages}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+          >
+            {">"}
+          </button>
+        </div>
       </div>
-    </div>
 
       {/* Hidden printable component */}
       <div style={{ display: "none" }}>
-        {selectedOrder && <div ref={componentRef}><OrderInvoice order={selectedOrder} /></div>}
+        {selectedOrder && (
+          <div ref={componentRef}>
+            <OrderInvoice order={selectedOrder} />
+          </div>
+        )}
       </div>
     </div>
   );
