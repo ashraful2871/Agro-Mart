@@ -522,6 +522,7 @@ async function run() {
         });
       }
     });
+
     // Update payment status
     app.patch("/orders/:id", async (req, res) => {
       const { id } = req.params;
@@ -598,29 +599,30 @@ async function run() {
     app.get("/orders/download", async (req, res) => {
       try {
         const orders = await paymentCollection.find().toArray();
-
+    
         if (!orders.length) {
           return res.status(404).send({ message: "No orders found" });
         }
-
-        const flattenedOrders = orders.map((order) => ({
-          id: order._id.toString(),
-          name: order.name || "",
-          email: order.email || "",
-          status: order.status || "",
-          totalAmount: order.totalAmount || "",
-          method: order.method || "",
-          transactionId: order.transactionId || "",
-          date: order.date || "",
-          invoiceNo: order.invoiceNo || "",
+    
+        const flattenedOrders = orders?.map((order) => ({
+          id: order?._id.toString(),
+          name: order?.name || "",
+          email: order?.email || "",
+          status: order?.status || "",
+          totalAmount: order?.totalAmount || "",
+          method: order?.method || "",
+          transactionId: order?.transactionId || "",
+          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+          invoiceNo: order?.invoiceNo || "",
         }));
-
+    
         const json2csv = new Parser();
         const csv = json2csv.parse(flattenedOrders);
-
-        res.header("Content-Type", "text/csv");
+    
+        // Add BOM for proper CSV rendering
+        res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment("orders.csv");
-        res.send(csv);
+        res.send("\uFEFF" + csv);  // Adding BOM here before sending the CSV data
       } catch (err) {
         console.error("Error generating CSV:", err);
         res.status(500).json({ message: "Failed to download orders" });
