@@ -64,7 +64,9 @@ const WeeklySalesChart = () => {
                       theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
                     }`}
                   >
-                    <p className="font-semibold">Date: {label}</p>
+                    <p className="font-semibold">
+                      Date: {new Date(label).toISOString().split('T')[0]}
+                    </p>
                     <p>Value: {payload[0].value}</p>
                   </div>
                 );

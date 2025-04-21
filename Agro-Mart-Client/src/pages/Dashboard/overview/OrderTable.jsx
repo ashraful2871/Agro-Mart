@@ -63,7 +63,21 @@ const OrderTable = ({ filters }) => {
     }, 300);
   
     return () => clearTimeout(waitForDomUpdate);
-  }, [selectedOrder]);
+  }, [selectedOrder]);  
+
+  const handleDownloadOrder = async (orderId, invoiceNo) => {
+    try {
+      const res = await fetch(`http://localhost:5000/orders/${orderId}/download`);
+      const blob = await res.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `order_${invoiceNo}.csv`;
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+  
   
 
   const handleStatusChange = async (id, newStatus) => {
@@ -137,7 +151,7 @@ const OrderTable = ({ filters }) => {
                 </select>
               </td>
               <td>
-              <button onClick={() => triggerPrint(order)} className="btn btn-ghost btn-sm">
+              <button onClick={() => handleDownloadOrder(order._id, order.invoiceNo)} className="btn btn-ghost btn-sm">
                 <FaPrint size={16} />
               </button>
               </td>
@@ -165,11 +179,6 @@ const OrderTable = ({ filters }) => {
         </button>
       </div>
     </div>
-
-      {/* Hidden printable component */}
-      <div style={{ display: "none" }}>
-        {selectedOrder && <div ref={componentRef}><OrderInvoice order={selectedOrder} /></div>}
-      </div>
     </div>
   );
 };

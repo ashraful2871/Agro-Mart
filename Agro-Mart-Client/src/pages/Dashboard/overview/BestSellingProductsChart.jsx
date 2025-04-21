@@ -11,7 +11,7 @@ const BestSellingProductsChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/best-selling-products");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/best-selling-products`);
         const result = await res.json();
         console.log("Fetched Result:", result);
 
