@@ -539,7 +539,7 @@ async function run() {
     app.get("/orders", async (req, res) => {
       try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 8;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
         const query = {};
@@ -658,7 +658,7 @@ async function run() {
           ])
           .toArray();
 
-        console.log("Today stats raw:", todayStats);
+        // console.log("Today stats raw:", todayStats);
 
         // Yesterday Orders
         const yesterdayStats = await paymentCollection
@@ -756,6 +756,73 @@ async function run() {
         res.status(500).send({ message: "Error fetching order stats", error });
       }
     });
+
+    app.get("/weekly-sales", async (req, res) => {
+      try {
+        const result = await paymentCollection.aggregate([
+          {
+            $group: {
+              _id: "$date",
+              sales: { $sum: "$totalAmount" },
+              orders: { $sum: 1 }
+            }
+          },
+          { $sort: { _id: 1 } }
+        ]).toArray();
+    
+        // Format the data for frontend
+        const formattedData = result.map(item => ({
+          date: item._id,
+          sales: item.sales,
+          orders: item.orders
+        }));
+    
+        res.json(formattedData);
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+        res.status(500).json({ message: "Failed to fetch sales data" });
+      }
+    });    
+
+    app.get('/best-selling-products', async (req, res) => {
+      try {
+        const bestSellingProducts = await paymentCollection.aggregate([
+          { $unwind: "$productId" },
+          {
+            $group: {
+              _id: "$productId",
+              totalOrderCount: { $sum: 1 }
+            }
+          },
+          {
+            $addFields: {
+              _id: { $toObjectId: "$_id" }
+            }
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productDetails"
+            }
+          },
+          { $unwind: "$productDetails" },
+          {
+            $project: {
+              name: "$productDetails.name",
+              totalOrderCount: 1
+            }
+          },
+          { $sort: { totalOrderCount: -1 } }
+        ]).toArray();
+    
+        res.json(bestSellingProducts);
+      } catch (error) {
+        console.error('Error fetching best-selling products:', error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });           
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
