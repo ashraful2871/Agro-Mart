@@ -539,7 +539,7 @@ async function run() {
     app.get("/orders", async (req, res) => {
       try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 8;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
         const query = {};
@@ -756,6 +756,33 @@ async function run() {
         res.status(500).send({ message: "Error fetching order stats", error });
       }
     });
+
+    app.get("/weekly-sales", async (req, res) => {
+      try {
+        const result = await paymentCollection.aggregate([
+          {
+            $group: {
+              _id: "$date",
+              sales: { $sum: "$totalAmount" },
+              orders: { $sum: 1 }
+            }
+          },
+          { $sort: { _id: 1 } }
+        ]).toArray();
+    
+        // Format the data for frontend
+        const formattedData = result.map(item => ({
+          date: item._id,
+          sales: item.sales,
+          orders: item.orders
+        }));
+    
+        res.json(formattedData);
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+        res.status(500).json({ message: "Failed to fetch sales data" });
+      }
+    });    
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
