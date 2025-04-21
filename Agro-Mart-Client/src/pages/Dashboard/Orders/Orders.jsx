@@ -39,14 +39,19 @@ const Orders = () => {
       const res = await fetch("http://localhost:5000/orders/download");
       const blob = await res.blob();
   
+      // Check if the response is valid
+      if (!blob || blob.size === 0) {
+        throw new Error("File is empty or failed to fetch.");
+      }
+  
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "orders.csv"; 
+      link.download = "orders.csv";
       link.click();
     } catch (error) {
       console.error("Download failed:", error);
     }
-  };
+  };  
   
   
 

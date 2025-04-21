@@ -108,7 +108,37 @@ async function run() {
 
     app.get("/users/:uid", verifyToken, (req, res) => {
       const result = usersCollection.findOne();
-      req.send(result);
+      res.send(result);
+    });
+
+    app.get('/user/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+    
+    app.patch('/users/update-coupon-enabled', async (req, res) => {
+      const { couponEnabled } = req.body;
+    
+      try {
+        // Ensure couponEnabled is a boolean
+        if (typeof couponEnabled !== 'boolean') {
+          throw new Error('Invalid couponEnabled value');
+        }
+    
+        // Update the collection
+        const result = await usersCollection.updateMany({}, { $set: { couponEnabled } });
+        
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Coupon enabled status updated successfully!", modifiedCount: result.modifiedCount });
+        } else {
+          res.status(404).send({ message: "No users were updated." });
+        }
+      } catch (error) {
+        console.error("Error updating couponEnabled:", error);
+        res.status(500).send({ message: "Error updating couponEnabled", error: error.message });
+      }
     });
 
     // Update user
@@ -145,10 +175,11 @@ async function run() {
       const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
+    
 
     // products related apis crud
     // products create
-    app.post("/products", verifyToken, async (req, res) => {
+    app.post("/products", async (req, res) => {
       const {
         name,
         category,
@@ -181,6 +212,11 @@ async function run() {
     app.get("/products", async (req, res) => {
       let filter = {};
       let sortByPrice = {};
+      // Pagination setup
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 6;
+      const skip = (page - 1) * limit;
+      
       if (req.query.sort && req.query.sort !== "default") {
         sortByPrice = { price: parseInt(req.query.sort) };
         console.log(sortByPrice);
@@ -188,7 +224,7 @@ async function run() {
       if (req.query.searchQuery) {
         filter.name = {
           $regex: req.query.searchQuery,
-          $options: "i", // Case-insensitive search
+          $options: "i",
         };
       }
       if (req.query.selectedCategory) {
@@ -197,11 +233,24 @@ async function run() {
           $options: "i",
         };
       }
-      const result = await productCollection
-        .find(filter)
-        .sort(sortByPrice)
-        .toArray();
-      res.send(result);
+      try {
+        const total = await productCollection.countDocuments(filter);
+        const products = await productCollection
+          .find(filter)
+          .sort(sortByPrice)
+          .skip(skip)
+          .limit(limit)
+          .toArray();
+    
+        res.send({
+          totalItems: total,
+          currentPage: page,
+          totalPages: Math.ceil(total / limit),
+          products,
+        });
+      } catch (error) {
+        res.status(500).send({ message: "Server Error", error });
+      }
     });
 
     // Update a product by ID
@@ -473,6 +522,7 @@ async function run() {
         });
       }
     });
+
     // Update payment status
     app.patch("/orders/:id", async (req, res) => {
       const { id } = req.params;
@@ -490,7 +540,7 @@ async function run() {
     app.get("/orders", async (req, res) => {
       try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 8;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
         const query = {};
@@ -549,32 +599,66 @@ async function run() {
     app.get("/orders/download", async (req, res) => {
       try {
         const orders = await paymentCollection.find().toArray();
-
+    
         if (!orders.length) {
           return res.status(404).send({ message: "No orders found" });
         }
-
-        const flattenedOrders = orders.map((order) => ({
-          id: order._id.toString(),
-          name: order.name || "",
-          email: order.email || "",
-          status: order.status || "",
-          totalAmount: order.totalAmount || "",
-          method: order.method || "",
-          transactionId: order.transactionId || "",
-          date: order.date || "",
-          invoiceNo: order.invoiceNo || "",
+    
+        const flattenedOrders = orders?.map((order) => ({
+          id: order?._id.toString(),
+          name: order?.name || "",
+          email: order?.email || "",
+          status: order?.status || "",
+          totalAmount: order?.totalAmount || "",
+          method: order?.method || "",
+          transactionId: order?.transactionId || "",
+          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+          invoiceNo: order?.invoiceNo || "",
         }));
-
+    
         const json2csv = new Parser();
         const csv = json2csv.parse(flattenedOrders);
-
-        res.header("Content-Type", "text/csv");
+    
+        // Add BOM for proper CSV rendering
+        res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment("orders.csv");
-        res.send(csv);
+        res.send("\uFEFF" + csv);  // Adding BOM here before sending the CSV data
       } catch (err) {
         console.error("Error generating CSV:", err);
         res.status(500).json({ message: "Failed to download orders" });
+      }
+    });
+
+    // Specific order details as CSV
+    app.get("/orders/:id/download", async (req, res) => {
+      const id = req.params.id;
+      try {
+        const order = await paymentCollection.findOne({ _id: new ObjectId(id) });
+        if (!order) {
+          return res.status(404).json({ message: "Order not found" });
+        }
+    
+        const orderData = [{
+          id: order?._id.toString(),
+          name: order?.name || "",
+          email: order?.email || "",
+          status: order?.status || "",
+          totalAmount: order.totalAmount || "",
+          method: order?.method || "",
+          transactionId: order?.transactionId || "",
+          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+          invoiceNo: order?.invoiceNo || "",
+        }];
+    
+        const json2csv = new Parser();
+        const csv = json2csv.parse(orderData);
+    
+        res.header("Content-Type", "text/csv; charset=utf-8");
+        res.attachment(`order_${order.invoiceNo}.csv`);
+        res.send("\uFEFF" + csv);
+      } catch (error) {
+        console.error("Error generating CSV:", error);
+        res.status(500).json({ message: "Failed to download order" });
       }
     });
 
@@ -609,7 +693,7 @@ async function run() {
           ])
           .toArray();
 
-        console.log("Today stats raw:", todayStats);
+        // console.log("Today stats raw:", todayStats);
 
         // Yesterday Orders
         const yesterdayStats = await paymentCollection
@@ -707,6 +791,73 @@ async function run() {
         res.status(500).send({ message: "Error fetching order stats", error });
       }
     });
+
+    app.get("/weekly-sales", async (req, res) => {
+      try {
+        const result = await paymentCollection.aggregate([
+          {
+            $group: {
+              _id: "$date",
+              sales: { $sum: "$totalAmount" },
+              orders: { $sum: 1 }
+            }
+          },
+          { $sort: { _id: 1 } }
+        ]).toArray();
+    
+        // Format the data for frontend
+        const formattedData = result.map(item => ({
+          date: item._id,
+          sales: item.sales,
+          orders: item.orders
+        }));
+    
+        res.json(formattedData);
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+        res.status(500).json({ message: "Failed to fetch sales data" });
+      }
+    });    
+
+    app.get('/best-selling-products', async (req, res) => {
+      try {
+        const bestSellingProducts = await paymentCollection.aggregate([
+          { $unwind: "$productId" },
+          {
+            $group: {
+              _id: "$productId",
+              totalOrderCount: { $sum: 1 }
+            }
+          },
+          {
+            $addFields: {
+              _id: { $toObjectId: "$_id" }
+            }
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productDetails"
+            }
+          },
+          { $unwind: "$productDetails" },
+          {
+            $project: {
+              name: "$productDetails.name",
+              totalOrderCount: 1
+            }
+          },
+          { $sort: { totalOrderCount: -1 } }
+        ]).toArray();
+    
+        res.json(bestSellingProducts);
+      } catch (error) {
+        console.error('Error fetching best-selling products:', error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });           
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");

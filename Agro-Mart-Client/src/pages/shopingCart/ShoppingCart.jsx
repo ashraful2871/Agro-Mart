@@ -59,6 +59,16 @@ const ShoppingCart = () => {
     updateSubtotal();
   }, [cartData]);
 
+  const { data } = useQuery({
+      queryKey: ["users"],
+      queryFn: async () => {
+        const { data } = await axiosSecure.get(`/users`);
+        return data;
+      },
+  });
+  
+  const users = data?.users || [];
+
   if (isLoading) {
     return <Loading />;
   }
@@ -129,23 +139,28 @@ const ShoppingCart = () => {
             </div>
           </div>
 
-          {/* Coupon Section */}
-          <div className="grid grid-cols-12">
-            <div className="mt-10 border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8">
-              <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="text"
-                  placeholder="Enter code"
-                  className="input input-bordered rounded-full w-full sm:w-64"
-                />
-                <button className="btn bg-black text-white rounded-full w-full sm:w-auto">
-                  Apply Coupon
-                </button>
+          {/* Coupon Section - Only visible if couponEnabled is true */}
+          {users.couponEnabled === true && (
+            <>
+              <div className="grid grid-cols-12">
+                <div className="mt-10 border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8">
+                  <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <input
+                      type="text"
+                      placeholder="Enter code"
+                      className="input input-bordered rounded-full w-full sm:w-64"
+                    />
+                    <button className="btn bg-black text-white rounded-full w-full sm:w-auto">
+                      Apply Coupon
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
+            </>
+          )}
+          
+          {/* Modal */}
           <PaymentModal
             isOpen={isModalOpen}
             closeModal={() => setIsModalOpen(false)}

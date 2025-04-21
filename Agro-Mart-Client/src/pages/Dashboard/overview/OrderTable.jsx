@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaPrint } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { useReactToPrint } from "react-to-print";
-import OrderInvoice from "./OrderInvoice";
 import toast from "react-hot-toast";
 
 const statusColors = {
@@ -64,6 +63,21 @@ const OrderTable = ({ filters }) => {
 
     return () => clearTimeout(waitForDomUpdate);
   }, [selectedOrder]);
+
+  const handleDownloadOrder = async (orderId, invoiceNo) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/orders/${orderId}/download`
+      );
+      const blob = await res.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `order_${invoiceNo}.csv`;
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -145,7 +159,9 @@ const OrderTable = ({ filters }) => {
               </td>
               <td>
                 <button
-                  onClick={() => triggerPrint(order)}
+                  onClick={() =>
+                    handleDownloadOrder(order._id, order.invoiceNo)
+                  }
                   className="btn btn-ghost btn-sm"
                 >
                   <FaPrint size={16} />
@@ -191,15 +207,6 @@ const OrderTable = ({ filters }) => {
             {">"}
           </button>
         </div>
-      </div>
-
-      {/* Hidden printable component */}
-      <div style={{ display: "none" }}>
-        {selectedOrder && (
-          <div ref={componentRef}>
-            <OrderInvoice order={selectedOrder} />
-          </div>
-        )}
       </div>
     </div>
   );
