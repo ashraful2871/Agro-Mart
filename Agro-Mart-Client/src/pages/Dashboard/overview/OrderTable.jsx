@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaPrint } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { useReactToPrint } from "react-to-print";
-import OrderInvoice from "./OrderInvoice";
 import toast from "react-hot-toast";
 
 const statusColors = {

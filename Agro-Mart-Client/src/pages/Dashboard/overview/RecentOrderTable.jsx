@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaPrint } from "react-icons/fa";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { useReactToPrint } from "react-to-print";
-import OrderInvoice from "./OrderInvoice";
 import toast from "react-hot-toast";
 import { OrderContext } from "./OrderProvider";
 
@@ -14,7 +13,6 @@ const statusColors = {
 
 const RecentOrderTable = () => {
     const { theme } = useContext(ThemeContext);
-    const [orderData, setOrderData] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const { orders, updateOrderStatus } = useContext(OrderContext);
     const componentRef = useRef();
@@ -30,11 +28,26 @@ const RecentOrderTable = () => {
 
     useEffect(() => {
         if (!selectedOrder) return;
+      
         const waitForDomUpdate = setTimeout(() => {
-            handlePrint();
+          handlePrint();
         }, 300);
+      
         return () => clearTimeout(waitForDomUpdate);
-    }, [selectedOrder]);
+      }, [selectedOrder]);  
+    
+      const handleDownloadOrder = async (orderId, invoiceNo) => {
+        try {
+          const res = await fetch(`http://localhost:5000/orders/${orderId}/download`);
+          const blob = await res.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `order_${invoiceNo}.csv`;
+          link.click();
+        } catch (error) {
+          console.error("Download failed:", error);
+        }
+      };
 
     const handleStatusChange = async (id, newStatus) => {
         const success = await updateOrderStatus(id, newStatus);
@@ -90,7 +103,7 @@ const RecentOrderTable = () => {
                                 </select>
                             </td>
                             <td>
-                                <button onClick={() => triggerPrint(order)} className="btn btn-ghost btn-sm">
+                                <button onClick={() => handleDownloadOrder(order._id, order.invoiceNo)} className="btn btn-ghost btn-sm">
                                     <FaPrint size={16} />
                                 </button>
                             </td>
@@ -98,13 +111,6 @@ const RecentOrderTable = () => {
                     ))}
                 </tbody>
             </table>
-
-            {/* Hidden Invoice Component for Print */}
-            {selectedOrder && (
-                <div style={{ display: "none" }}>
-                    <OrderInvoice ref={componentRef} order={selectedOrder} />
-                </div>
-            )}
         </div>
     );
 };
