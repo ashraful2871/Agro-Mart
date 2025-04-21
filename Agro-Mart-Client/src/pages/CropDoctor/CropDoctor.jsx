@@ -256,7 +256,7 @@ function CropDoctor() {
         </label>
         <p
           className={`${
-            theme === "dark" ? "text-gray-300" : "text-gray-700"
+            theme === "dark" ? "text-gray-300 " : "text-gray-700"
           } mt-2`}
         >
           Specific plant parts like leaves, stems, roots, and fruits should be
