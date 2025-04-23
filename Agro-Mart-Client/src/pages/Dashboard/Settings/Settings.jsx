@@ -4,6 +4,7 @@ import { ThemeContext } from "../../../provider/ThemeProvider";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "../../../components/loading/Loading";
 
 const Settings = () => {
   const { theme } = useContext(ThemeContext);
@@ -15,9 +16,9 @@ const Settings = () => {
     const response = await axiosSecure.get(`/user?email=${email}`);
     return response.data;
   };
-  
+
   const { data: userData, isLoading } = useQuery({
-    queryKey: ['user', user?.email],
+    queryKey: ["user", user?.email],
     queryFn: () => fetchUserByEmail(user.email),
     enabled: !!user?.email,
   });
@@ -45,20 +46,22 @@ const Settings = () => {
   //     alert("Failed to update settings!");
   //   }
   // };
-  
+
   const handleCouponChange = async (e) => {
     const { checked } = e.target;
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      couponEnabled: checked
+      couponEnabled: checked,
     }));
-  
-    console.log("Sending couponEnabled value:", checked); 
-  
+
+    console.log("Sending couponEnabled value:", checked);
+
     try {
-      const res = await axiosSecure.patch('/users/update-coupon-enabled', { couponEnabled: checked });
+      const res = await axiosSecure.patch("/users/update-coupon-enabled", {
+        couponEnabled: checked,
+      });
       console.log("Response from server:", res.data);
-  
+
       if (res.data.modifiedCount > 0) {
         alert("All users' couponEnabled updated successfully!");
       } else {
@@ -69,18 +72,35 @@ const Settings = () => {
       alert("Failed to update couponEnabled for all users.");
     }
   };
-  
 
-  if (isLoading || !settings) return <div>Loading...</div>;
+  if (isLoading || !settings)
+    return (
+      <div>
+        <Loading></Loading>
+      </div>
+    );
 
   return (
     <div className="p-6 min-h-screen text-base-content">
-      <h1 className={`my-6 text-2xl font-bold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Settings</h1>
+      <h1
+        className={`my-6 text-2xl font-bold ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}
+      >
+        Settings
+      </h1>
 
-      <div className={`p-6 rounded-xl ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
+      <div
+        className={`p-6 rounded-xl ${
+          theme === "dark" ? "bg-gray-800" : "bg-white"
+        }`}
+      >
         <div className="flex justify-between mb-4">
           <div className="text-xl font-bold mt-auto mb-2 flex gap-2">
-            <span className="my-auto"><IoSettingsSharp /></span> Settings
+            <span className="my-auto">
+              <IoSettingsSharp />
+            </span>{" "}
+            Settings
           </div>
           <button
             // onClick={handleSubmit}
