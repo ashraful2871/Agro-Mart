@@ -20,7 +20,10 @@ const Shop = () => {
 
   // Fetch products from the database
   const { data: productsData = {}, isLoading } = useQuery({
-    queryKey: ["products", { sortBy, searchQuery, selectedCategory, currentPage }],
+    queryKey: [
+      "products",
+      { sortBy, searchQuery, selectedCategory, currentPage },
+    ],
     queryFn: async () => {
       const response = await axiosPublic.get(
         `/products?sort=${sortBy}&&searchQuery=${searchQuery}&&selectedCategory=${selectedCategory}&&page=${currentPage}&&limit=${itemsPerPage}`
@@ -28,10 +31,10 @@ const Shop = () => {
       return response.data;
     },
   });
-  
+
   const products = productsData.products || [];
   const totalPages = productsData.totalPages || 1;
-  
+
   // Handle sorting
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
@@ -616,31 +619,39 @@ const Shop = () => {
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${theme === "dark" ? "disabled:bg-gray-700": " disabled:bg-gray-300 "}`}
+              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${
+                theme === "dark"
+                  ? "disabled:bg-gray-700"
+                  : " disabled:bg-gray-300 "
+              }`}
             >
               Previous
             </button>
-          
+
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i + 1}
                 onClick={() => paginate(i + 1)}
                 className={`px-4 py-2 mx-1 rounded-full text-base-content ${
                   currentPage === i + 1
-                  ? "bg-green-700 text-white"
-                  : theme === "dark"
-                  ? "bg-gray-700 "
-                  : "bg-gray-300"
+                    ? "bg-green-700 text-white"
+                    : theme === "dark"
+                    ? "bg-gray-700 "
+                    : "bg-gray-300"
                 }`}
               >
                 {i + 1}
               </button>
             ))}
-          
+
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${theme === "dark" ? "disabled:bg-gray-700": " disabled:bg-gray-300 "}`}
+              className={`px-4 py-2 bg-green-700 text-base-content rounded-full mx-1 ${
+                theme === "dark"
+                  ? "disabled:bg-gray-700"
+                  : " disabled:bg-gray-300 "
+              }`}
             >
               Next
             </button>

@@ -7,16 +7,20 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { ThemeContext } from "../provider/ThemeProvider";
+import ButtonLoading from "../components/loading/button-loading/ButtonLoading";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
-  console.log(showConfirmPassword);
+  const [type, setType] = useState("");
+
   const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("name");
@@ -27,14 +31,17 @@ const SignUp = () => {
     // console.log(formInfo);
     if (!password || !confirmPassword) {
       toast.error("password and confirm password are required");
+      setLoading(false);
       return;
     }
     if (password !== confirmPassword) {
       toast.error("password and confirm password are dose not match");
+      setLoading(false);
       return;
     }
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long!");
+      setLoading(false);
       return;
     }
     try {
@@ -59,16 +66,18 @@ const SignUp = () => {
             email,
             photo: "https://i.ibb.co.com/7tR89ZTR/user.png",
             uid: result.user.uid,
-            role: "user",
+            role: type,
           };
           await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
         } catch (error) {
           console.log(error);
+          setLoading(false);
         }
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message || "Sign up failed!");
+      setLoading(false);
     }
   };
 
@@ -145,6 +154,25 @@ const SignUp = () => {
                 required
               />
             </div>
+            {/* select account typ */}
+            <div className="mb-4">
+              <label className="block text-base-content">
+                Select Account Type
+              </label>
+              <select
+                name="accountType"
+                onChange={(e) => setType(e.target.value)}
+                value={type}
+                className="select w-full select-success"
+                required
+              >
+                <option value="" disabled>
+                  Select Account Type
+                </option>
+                <option value="customer">Customer</option>
+                <option value="farmer">Farmer</option>
+              </select>
+            </div>
 
             {/* Password */}
             <div
@@ -205,7 +233,7 @@ const SignUp = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 text-lg rounded-lg hover:bg-green-700 transition"
             >
-              Sign Up
+              {loading ? <ButtonLoading></ButtonLoading> : "Sign Up"}
             </button>
           </form>
 
