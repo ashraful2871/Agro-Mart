@@ -24,6 +24,7 @@ const SignUp = () => {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirm_password");
     const formInfo = { name, email, password, confirmPassword };
+    // console.log(formInfo);
     if (!password || !confirmPassword) {
       toast.error("password and confirm password are required");
       return;
@@ -36,8 +37,6 @@ const SignUp = () => {
       toast.error("Password must be at least 6 characters long!");
       return;
     }
-    console.log(formInfo);
-    return;
     try {
       // Dispatch signUpUser with all needed data
       const result = await dispatch(
@@ -163,7 +162,7 @@ const SignUp = () => {
               <button
                 onClick={() => setShowPassword(!showPassword)}
                 type="button"
-                className="absolute top-10 right-5"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
               >
                 {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
               </button>
@@ -175,7 +174,7 @@ const SignUp = () => {
               </label>
               <input
                 type={`${showConfirmPassword ? "text" : "password"}`}
-                name="password"
+                name="confirm_password"
                 placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
@@ -183,10 +182,22 @@ const SignUp = () => {
               <button
                 onClick={() => setConfirmShowPassword(!showConfirmPassword)}
                 type="button"
-                className="absolute top-10 right-5"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
               >
                 {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
               </button>
+            </div>
+            <div className="flex justify-between items-center ">
+              <div className="mb-4">
+                <label className="fieldset-label text-base-content">
+                  <input
+                    type="checkbox"
+                    required
+                    className="checkbox checkbox-success  checked:bg-green-600 checked:text-white text-base-content "
+                  />
+                  Accept trams & condition
+                </label>
+              </div>
             </div>
 
             {/* Sign Up Button */}
