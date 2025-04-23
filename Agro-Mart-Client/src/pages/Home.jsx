@@ -46,7 +46,6 @@ const Home = () => {
         <div>
           <ReviewDisplay></ReviewDisplay>
         </div>
-
       </div>
     </div>
   );

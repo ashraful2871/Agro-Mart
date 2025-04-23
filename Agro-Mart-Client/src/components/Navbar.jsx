@@ -206,7 +206,7 @@ const Navbar = () => {
                     role="button"
                     className="btn btn-ghost btn-circle avatar"
                   >
-                    <div className="w-10 rounded-full bg-gray-300">
+                    <div className="w-10 rounded-full border-2 border-green-600 bg-gray-300">
                       <img
                         referrerPolicy="no-referrer"
                         src={

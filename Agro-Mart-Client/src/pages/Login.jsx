@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { ThemeContext } from "../provider/ThemeProvider";
+import ButtonLoading from "../components/loading/button-loading/ButtonLoading";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ const Login = () => {
   }, [dispatch]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setIsLoading(true);
+    e.preventDefault();
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
@@ -47,6 +48,7 @@ const Login = () => {
       toast.error(errorMessage, {
         duration: errorMessage.includes("locked") ? 8000 : 4000,
       });
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +56,6 @@ const Login = () => {
 
   const handleContinueGoogle = async () => {
     try {
-      setIsLoading(true);
       const result = await dispatch(googleLogin()).unwrap();
       const user = result?.user;
 
@@ -71,8 +72,6 @@ const Login = () => {
       }
     } catch (error) {
       toast.error("Google login failed!");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -158,7 +157,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 text-lg rounded-lg hover:bg-green-700 transition"
             >
-              {isLoading ? "Loading..." : "Sign in"}
+              {isLoading ? <ButtonLoading></ButtonLoading> : "Sign in"}
             </button>
           </form>
 
