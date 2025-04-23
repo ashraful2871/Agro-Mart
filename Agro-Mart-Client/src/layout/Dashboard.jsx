@@ -11,6 +11,7 @@ import SellerMenu from "../dashboard/saler-menue/SellerMenu";
 import { logOut } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import UserMenu from "../dashboard/user-menu/UserMenu";
 
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
@@ -21,7 +22,6 @@ const Dashboard = () => {
     try {
       await dispatch(logOut()).unwrap();
       toast.success("Successfully logged out");
-      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message || "Logout failed!");
@@ -52,6 +52,8 @@ const Dashboard = () => {
               {/* Sidebar Menus */}
               {role === "admin" && <AdminMenu />}
               {role === "seller" && <SellerMenu />}
+              {role === "user" && <UserMenu />}
+              
               {/* {role === "tutor" && <TutorMenu />}
               {role === "student" && <StudentMenu />} */}
             </div>

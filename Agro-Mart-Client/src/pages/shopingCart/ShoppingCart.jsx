@@ -5,6 +5,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/loading/Loading";
 import useAuth from "../../hooks/useAuth";
 import PaymentModal from "../Payment/PaymentModal";
+import { NavLink } from "react-router-dom";
 
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
@@ -22,18 +23,51 @@ const ShoppingCart = () => {
     queryKey: ["all-cart", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/all-cart-items/${user?.email}`);
-      return data;
+      return data.map((item) => ({
+        ...item,
+        productId: item.productId,
+      }));
     },
   });
 
-  useEffect(() => {
+  // Calculate subtotal from localStorage
+  const updateSubtotal = () => {
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
     const total = Object.values(storedCart).reduce(
       (sum, item) => sum + item.total,
       0
     );
     setSubtotal(total);
+  };
+
+  // Initialize localStorage and calculate subtotal when cartData changes
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || {};
+    cartData.forEach((item) => {
+      if (!storedCart[item._id]) {
+        storedCart[item._id] = {
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity || 1,
+          total: (item.quantity || 1) * item.price,
+          productId: item.productId,
+        };
+      }
+    });
+    localStorage.setItem("cartItems", JSON.stringify(storedCart));
+    updateSubtotal();
   }, [cartData]);
+
+  const { data } = useQuery({
+      queryKey: ["users"],
+      queryFn: async () => {
+        const { data } = await axiosSecure.get(`/users`);
+        return data;
+      },
+  });
+  
+  const users = data?.users || [];
 
   if (isLoading) {
     return <Loading />;
@@ -51,7 +85,6 @@ const ShoppingCart = () => {
             My Shopping Cart
           </h1>
 
-          {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Cart Items */}
             <div className="flex-1 border rounded-xl p-4 sm:p-6 overflow-x-auto">
@@ -63,31 +96,22 @@ const ShoppingCart = () => {
                 <span className="w-1/12"></span>
               </div>
 
-              {/* CartItems renders a row of each item */}
               {cartData?.map((cart) => (
                 <CartItems
                   key={cart._id}
                   cart={cart}
                   refetch={refetch}
-                  onCartUpdate={() => {
-                    const storedCart =
-                      JSON.parse(localStorage.getItem("cartItems")) || {};
-                    const total = Object.values(storedCart).reduce(
-                      (sum, item) => sum + item.total,
-                      0
-                    );
-                    setSubtotal(total);
-                  }}
+                  onCartUpdate={updateSubtotal}
                 />
               ))}
 
-              <div className="flex flex-col sm:flex-row justify-between mt-6 gap-4">
-                <button className="btn rounded-full w-full sm:w-auto">
+              <div className="flex justify-end mr-7 mt-6 gap-4">
+                <NavLink
+                  to="/shop"
+                  className="btn rounded-full w-full sm:w-auto"
+                >
                   Return to shop
-                </button>
-                <button className="btn rounded-full w-full sm:w-auto">
-                  Update Cart
-                </button>
+                </NavLink>
               </div>
             </div>
 
@@ -115,28 +139,33 @@ const ShoppingCart = () => {
             </div>
           </div>
 
-          {/* Coupon Section */}
-          <div className="grid grid-cols-12 ">
-            <div className="mt-10  border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8 ">
-              <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="text"
-                  placeholder="Enter code"
-                  className="input input-bordered rounded-full w-full sm:w-64"
-                />
-                <button className="btn bg-black text-white rounded-full w-full sm:w-auto">
-                  Apply Coupon
-                </button>
+          {/* Coupon Section - Only visible if couponEnabled is true */}
+          {users.couponEnabled === true && (
+            <>
+              <div className="grid grid-cols-12">
+                <div className="mt-10 border rounded-xl p-4 sm:p-6 col-span-12 md:col-span-8">
+                  <h3 className="text-lg font-semibold mb-4">Coupon Code</h3>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <input
+                      type="text"
+                      placeholder="Enter code"
+                      className="input input-bordered rounded-full w-full sm:w-64"
+                    />
+                    <button className="btn bg-black text-white rounded-full w-full sm:w-auto">
+                      Apply Coupon
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
+            </>
+          )}
+          
           {/* Modal */}
           <PaymentModal
             isOpen={isModalOpen}
             closeModal={() => setIsModalOpen(false)}
             totalAmount={finalTotal}
+            cartItems={cartData}
           />
         </div>
       )}

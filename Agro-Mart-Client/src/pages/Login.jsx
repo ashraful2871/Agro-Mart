@@ -4,13 +4,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { googleLogin, signInUser, clearError } from "../store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { ThemeContext } from "../provider/ThemeProvider";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
   const { error } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
@@ -95,6 +96,7 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
+            {/* email */}
             <div className="mb-4">
               <label className="block text-base-content">Email</label>
               <input
@@ -106,15 +108,23 @@ const Login = () => {
               />
             </div>
 
-            <div className="mb-4">
+            {/* password */}
+            <div className="mb-4 relative">
               <label className="block text-base-content">Password</label>
               <input
-                type="password"
+                type={`${showPassword ? "text" : "password"}`}
                 name="password"
-                placeholder="Enter your pin"
+                placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
               />
+              <button
+                onClick={() => setShowPassword(!showPassword)}
+                type="button"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
+              >
+                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
             </div>
             <div className="flex justify-between items-center ">
               <div className="mb-4">

@@ -10,6 +10,7 @@ import Theme from "./theme/Theme";
 import { LuShoppingBag } from "react-icons/lu";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -163,11 +164,31 @@ const Navbar = () => {
                 <LuShoppingBag className="text-3xl"></LuShoppingBag>
               </NavLink>
             </div>
-            {user && (
-              <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-                {cart.length}
-              </div>
-            )}
+
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cart.length}
+            </div>
+          </div>
+          <div className="relative mt-2 ">
+            <div>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-green-700"
+                    : isHomePage
+                    ? `${theme === "dark" ? "text-white" : "text-black"}`
+                    : ""
+                }
+                style={{ color: "", backgroundColor: "transparent" }}
+                to="/shopping-cart"
+              >
+                <FaRegHeart className="text-3xl" />
+              </NavLink>
+            </div>
+
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cart.length}
+            </div>
           </div>
 
           {/* toggle theme */}
@@ -215,14 +236,6 @@ const Navbar = () => {
                 }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
               >
                 <Link
-                  to="/profile"
-                  className={`block px-4 py-2 text-base-content ${
-                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
-                  } `}
-                >
-                  Profile
-                </Link>
-                <Link
                   to={`${
                     role === "admin"
                       ? "/dashboard/overview"
@@ -234,6 +247,15 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Link>
+                <Link
+                  to="/dashboard/all-orders"
+                  className={`block px-4 py-2 text-base-content ${
+                    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  } `}
+                >
+                  WishList
+                </Link>
+
                 <button
                   onClick={signOutUser}
                   className={`block w-full text-left px-4 py-2 text-red-600 ${
@@ -251,7 +273,13 @@ const Navbar = () => {
         ) : (
           <>
             <div className="dropdown dropdown-end">
-              <div
+              <Link to="/login">
+                {" "}
+                <button className="btn bg-green-600 text-white text-base rounded-lg">
+                  Login
+                </button>
+              </Link>
+              {/* <div
                 tabIndex={0}
                 role="button"
                 className="btn btn-ghost btn-circle avatar"
@@ -262,18 +290,18 @@ const Navbar = () => {
                     alt="User"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
             <div
               className={`text-base-content dropdown dropdown-end text-lg  font-syne`}
             >
-              <span className="mr-2">
+              {/* <span className="mr-2">
                 <Link to="/login">Login</Link>
               </span>
               /{" "}
               <span>
                 <Link to="/register">Register</Link>
-              </span>
+              </span> */}
             </div>
           </>
         )}

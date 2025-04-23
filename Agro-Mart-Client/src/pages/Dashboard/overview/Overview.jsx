@@ -3,11 +3,11 @@ import SalesCards from "./SalesCards";
 import OrderCards from "./OrderCards";
 import WeeklySalesChart from "./WeeklySalesChart";
 import BestSellingProductsChart from "./BestSellingProductsChart";
-import OrderTable from "./OrderTable";
+import RecentOrderTable from "./RecentOrderTable";
 
 const Overview = () => {
   return (
-    <div className="space-y-8 mt-8 mb-32">
+      <div className="space-y-8 mt-8 mb-32">
       <div
       ///className="border-2 border-red-500"
       >
@@ -33,7 +33,8 @@ const Overview = () => {
         <h2 className=" text-xl font-bold">Recent Order</h2>
       </div>
       <div>
-        <OrderTable></OrderTable>
+        {/* <OrderTable></OrderTable> */}
+        <RecentOrderTable></RecentOrderTable>
       </div>
     </div>
   );

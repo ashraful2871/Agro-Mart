@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Dialog } from '@mui/material';
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { ThemeContext } from '../../../provider/ThemeProvider';
 
 const UserUpdateModal = ({ isOpen, closeModal, user, refetch }) => {
     const axiosSecure = useAxiosSecure();
+    const theme = useContext(ThemeContext);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -59,8 +61,8 @@ const UserUpdateModal = ({ isOpen, closeModal, user, refetch }) => {
 
     return (
         <Dialog open={isOpen} onClose={closeModal} fullWidth maxWidth="sm">
-            <div className="p-6 bg-base-100 rounded-lg">
-                <h2 className="text-xl font-semibold mb-4">Update User Information</h2>
+            <div className={`p-6 bg-base-100 rounded-lg shadow-md text-base-content`}>
+                <h2 className={`text-xl font-semibold mb-4 `}>Update User Information</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block mb-1">Name</label>

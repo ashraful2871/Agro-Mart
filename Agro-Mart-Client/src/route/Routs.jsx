@@ -24,11 +24,13 @@ import BKashPayment from "../pages/Payment/bKashPayment";
 import NagadPayment from "../pages/Payment/NagadPayment";
 import SslCommerzePayment from "../pages/Payment/SslCommerzePayment";
 import CropDoctor from "../pages/CropDoctor/CropDoctor";
+import Settings from "../pages/Dashboard/Settings/Settings";
+import CouponSettings from "../pages/Dashboard/Settings/AdminSettings/CouponSettings";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <Error></Error>,
+    // errorElement: <Error></Error>,
     children: [
       {
         path: "/",
@@ -67,10 +69,6 @@ export const router = createBrowserRouter([
         element: <SslCommerzePayment></SslCommerzePayment>,
       },
       {
-        path: "/wish-list",
-        element: <Wishlist></Wishlist>,
-      },
-      {
         path: "/about",
         element: <About></About>,
       },
@@ -100,6 +98,15 @@ export const router = createBrowserRouter([
       </Privet>
     ),
     children: [
+      {
+        path: "settings",
+        element: <Settings></Settings>,
+      },
+      //user rout
+      {
+        path: "wishlist",
+        element: <Wishlist></Wishlist>,
+      },
       // admin route
       {
         path: "overview",

@@ -10,6 +10,7 @@ import AuthObserver from "./auth/AuthObserver.jsx";
 import { Toaster } from "react-hot-toast";
 import { StyledEngineProvider } from "@mui/material";
 import ThemeProvider from "./provider/ThemeProvider.jsx";
+import OrderProvider from "./pages/Dashboard/overview/OrderProvider.jsx";
 // import emailjs from "@emailjs/browser";
 
 const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
+      <OrderProvider>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <StyledEngineProvider injectFirst>
@@ -27,6 +29,7 @@ createRoot(document.getElementById("root")).render(
           <AuthObserver></AuthObserver>
         </QueryClientProvider>
       </Provider>
+      </OrderProvider>
     </ThemeProvider>
   </StrictMode>
 );

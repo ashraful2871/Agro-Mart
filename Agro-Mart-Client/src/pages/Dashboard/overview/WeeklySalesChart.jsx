@@ -1,28 +1,25 @@
-import React, { useContext, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import React, { useContext, useEffect, useState } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,} from "recharts";
 import { ThemeContext } from "../../../provider/ThemeProvider";
-
-const salesData = [
-  { date: "2025-03-16", sales: 1, orders: 1 },
-  { date: "2025-03-17", sales: 2, orders: 2 },
-  { date: "2025-03-18", sales: 1.5, orders: 2 },
-  { date: "2025-03-19", sales: 0.5, orders: 1 },
-  { date: "2025-03-21", sales: 1.3, orders: 2 },
-  { date: "2025-03-22", sales: 0.9, orders: 3 },
-];
 
 const WeeklySalesChart = () => {
   const [activeTab, setActiveTab] = useState("Sales");
   const { theme } = useContext(ThemeContext);
+  const [salesData, setSalesData] = useState([]);
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/weekly-sales`);
+        const data = await res.json();
+        setSalesData(data);
+      } catch (error) {
+        console.error("Failed to fetch sales data:", error);
+      }
+    };
+    fetchSalesData();
+  }, []);
+
   return (
     <div
       className={`${
@@ -41,7 +38,7 @@ const WeeklySalesChart = () => {
         >
           Sales
         </button>
-        <button
+        {/* <button
           className={`pb-2 font-semibold ${
             activeTab === "Orders"
               ? "text-orange-600 border-b-2 border-orange-600"
@@ -50,7 +47,7 @@ const WeeklySalesChart = () => {
           onClick={() => setActiveTab("Orders")}
         >
           Orders
-        </button>
+        </button> */}
       </div>
 
       <ResponsiveContainer width="100%" height={300}>
@@ -58,6 +55,25 @@ const WeeklySalesChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
+          <Tooltip 
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div
+                    className={`p-2 rounded shadow ${
+                      theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+                    }`}
+                  >
+                    <p className="font-semibold">
+                      Date: {new Date(label).toISOString().split('T')[0]}
+                    </p>
+                    <p>Value: {payload[0].value}</p>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
           <Tooltip />
           <Legend />
           {activeTab === "Sales" && (
@@ -69,7 +85,7 @@ const WeeklySalesChart = () => {
               dot={{ r: 5 }}
             />
           )}
-          {activeTab === "Orders" && (
+          {/* {activeTab === "Orders" && (
             <Line
               type="monotone"
               dataKey="orders"
@@ -77,7 +93,7 @@ const WeeklySalesChart = () => {
               strokeWidth={2}
               dot={{ r: 5 }}
             />
-          )}
+          )} */}
         </LineChart>
       </ResponsiveContainer>
     </div>
