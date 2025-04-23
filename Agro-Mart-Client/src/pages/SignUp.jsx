@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { googleLogin, signUpUser } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { ThemeContext } from "../provider/ThemeProvider";
-
-const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
-const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
+  console.log(showConfirmPassword);
   const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
@@ -21,33 +21,32 @@ const SignUp = () => {
     const formData = new FormData(e.target);
     const name = formData.get("name");
     const email = formData.get("email");
-    const image = formData.get("image");
     const password = formData.get("password");
-
-    let imageUrl = "";
-    if (image) {
-      const imageFormData = new FormData();
-      imageFormData.append("image", image);
-      try {
-        const response = await axios.post(image_upload_api, imageFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        if (response.data.success) {
-          imageUrl = response.data.data.display_url;
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("Image upload failed");
-        return;
-      }
+    const confirmPassword = formData.get("confirm_password");
+    const formInfo = { name, email, password, confirmPassword };
+    if (!password || !confirmPassword) {
+      toast.error("password and confirm password are required");
+      return;
     }
-
+    if (password !== confirmPassword) {
+      toast.error("password and confirm password are dose not match");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long!");
+      return;
+    }
+    console.log(formInfo);
+    return;
     try {
       // Dispatch signUpUser with all needed data
       const result = await dispatch(
-        signUpUser({ email, password, name, photo: imageUrl })
+        signUpUser({
+          email,
+          password,
+          name,
+          photo: "https://i.ibb.co.com/7tR89ZTR/user.png",
+        })
       ).unwrap();
 
       if (result?.user) {
@@ -59,7 +58,7 @@ const SignUp = () => {
           const userInfo = {
             name,
             email,
-            photo: imageUrl,
+            photo: "https://i.ibb.co.com/7tR89ZTR/user.png",
             uid: result.user.uid,
             role: "user",
           };
@@ -148,27 +147,46 @@ const SignUp = () => {
               />
             </div>
 
-            {/* Photo */}
-            <div className="mb-4">
-              <label className="block text-base-content">Photo</label>
-              <input
-                type="file"
-                name="image"
-                required
-                className="file-input w-full file-input-success border rounded-lg focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-
             {/* Password */}
-            <div className="mb-4">
+            <div
+              className="mb-4 relative
+            "
+            >
               <label className="block text-base-content">Password</label>
               <input
-                type="password"
+                type={`${showPassword ? "text" : "password"}`}
                 name="password"
                 placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
               />
+              <button
+                onClick={() => setShowPassword(!showPassword)}
+                type="button"
+                className="absolute top-10 right-5"
+              >
+                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
+            </div>
+            {/* confirm password */}
+            <div className="mb-4 relative">
+              <label className="block text-base-content">
+                Confirm Password
+              </label>
+              <input
+                type={`${showConfirmPassword ? "text" : "password"}`}
+                name="password"
+                placeholder="Enter your password"
+                className="w-full py-6 border rounded-lg input input-success"
+                required
+              />
+              <button
+                onClick={() => setConfirmShowPassword(!showConfirmPassword)}
+                type="button"
+                className="absolute top-10 right-5"
+              >
+                {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
             </div>
 
             {/* Sign Up Button */}
