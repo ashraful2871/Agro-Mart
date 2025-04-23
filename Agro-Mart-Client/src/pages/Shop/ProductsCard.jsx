@@ -144,9 +144,9 @@ const ProductsCard = ({ product }) => {
         <div className="mt-4 p-6 py-8 space-y-2 z-20 relative">
           <p className="text-gray-400 text-sm">{category}</p>
           <h2 className="font-semibold text-xl ">
-              <span className="hover:text-green-600 inline-block transition-colors duration-300">
-                {name.length > 10 ? `${name.slice(0, 10)}...` : name}
-              </span>
+            <span className="hover:text-green-600 inline-block transition-colors duration-300">
+              {name.length > 10 ? `${name.slice(0, 10)}...` : name}
+            </span>
           </h2>
           <p className="text-green-600 text-lg font-semibold">${price}</p>
         </div>
