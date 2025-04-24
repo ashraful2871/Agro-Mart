@@ -26,18 +26,19 @@ const Slider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const slides = [
-    {
-      img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
-      title: ["Celebrate Eid with", "Fresh Organic Produce"],
-      subtitle:
-        "Experience the joy of Eid with our sustainably grown products.",
-      isEid: true,
-    },
-    {
-      img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
-      type: "timer",
-      timerDate: "2025-04-20T00:00:00",
-    },
+           // Eid Special Slide (Optional)
+    // {
+    //   img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
+    //   title: ["Celebrate Eid with", "Fresh Organic Produce"],
+    //   subtitle:
+    //     "Experience the joy of Eid with our sustainably grown products.",
+    //   isEid: true,
+    // },
+    // {
+    //   img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
+    //   type: "timer",
+    //   timerDate: "2025-04-20T00:00:00",
+    // },
     {
       img: "https://i.ibb.co/7x62M20F/footer-bg-1.png",
       title: ["High Quality Fresh", "Organic Foods"],

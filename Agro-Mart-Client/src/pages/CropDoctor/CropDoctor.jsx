@@ -224,177 +224,193 @@ function CropDoctor() {
   };
 
   return (
-    <div
-      className={`${
-        theme === "dark" ? "bg-gray-800" : "bg-white"
-      } max-w-lg mx-auto p-6 border rounded-lg shadow-lg`}
-    >
-      <h2
+    <div className="p-6">
+    <div className="mb-8">
+      <h1 className={`${ theme === "dark" ? "text-green-400" : "text-green-700"} text-4xl font-extrabold mb-6 text-center`}>
+        🌱 আপনার ফসলের স্বাস্থ্য যাচাই করুন, দ্রুত এবং সহজে
+      </h1>
+      <p
         className={`${
-          theme === "dark" ? "text-green-400" : "text-green-700"
-        } text-2xl font-bold mb-6 text-center`}
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        } text-lg text-center mb-8`}
       >
-        🌱 Crop Doctor
-      </h2>
+        এই প্ল্যাটফর্মের মাধ্যমে আপনি আপনার ফসলের রোগ শনাক্ত করতে পারবেন এবং
+        দ্রুত সঠিক চিকিৎসার পরামর্শ পেতে পারবেন।
+      </p>
+      
+    </div>
+    <div
+  className={`${
+    theme === "dark" ? "bg-gray-800" : "bg-white"
+  } max-w-lg mx-auto p-6 border rounded-lg shadow-lg`}
+>
+  <h2
+    className={`${
+      theme === "dark" ? "text-green-400" : "text-green-700"
+    } text-2xl font-bold mb-6 text-center`}
+  >
+    🌱 ক্রপ ডক্টর
+  </h2>
 
-      {/* Method toggle */}
-      <div className="mb-6">
-        <label className="inline-flex items-center">
-          <input
-            type="checkbox"
-            checked={useRoboflow}
-            onChange={() => setUseRoboflow(!useRoboflow)}
-            className="form-checkbox h-5 w-5 text-green-600"
-          />
-          <span
-            className={`ml-2 text-sm ${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
-            }`}
-          >
-            Use <strong>Roboflow</strong> (instead of Plant.id)
-          </span>
-        </label>
-        <p
+  {/* পদ্ধতি নির্বাচন */}
+  <div className="mb-6">
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        checked={useRoboflow}
+        onChange={() => setUseRoboflow(!useRoboflow)}
+        className="form-checkbox h-5 w-5 text-green-600"
+      />
+      <span
+        className={`ml-2 text-sm ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}
+      >
+        <strong>রোবোফ্লো</strong> ব্যবহার করুন (Plant.id এর পরিবর্তে)
+      </span>
+    </label>
+    <p
+      className={`${
+        theme === "dark" ? "text-gray-300" : "text-gray-700"
+      } mt-2`}
+    >
+      গাছের পাতার ছবি, কাণ্ড, মূল বা ফলের ছবি তুলুন — তাতে রোগ শনাক্তকরণ আরও সহজ ও নির্ভুল হবে।
+    </p>
+  </div>
+
+  {/* ছবি আপলোড */}
+  <div className="mb-6">
+    <label
+      className={`${
+        theme === "dark" ? "text-gray-300" : "text-gray-700"
+      } block mb-2 text-sm font-medium`}
+    >
+      ফসলের ছবি আপলোড করুন
+    </label>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleFileChange}
+      className={`block w-full text-sm
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-md file:border-0
+        file:text-sm file:font-semibold
+        ${
+          theme === "dark"
+            ? "text-gray-300 file:bg-green-600 file:text-white hover:file:bg-green-700"
+            : "text-gray-700 file:bg-green-700 file:text-white hover:file:bg-green-600"
+        }`}
+      disabled={loading}
+    />
+  </div>
+
+  {/* লোডিং */}
+  {loading && (
+    <div className="flex items-center justify-center p-4 bg-gray-100 rounded-lg">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+      <span
+        className={`ml-3 ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}
+      >
+        আপনার ফসল বিশ্লেষণ করা হচ্ছে...
+      </span>
+    </div>
+  )}
+
+  {/* এরর মেসেজ */}
+  {error && (
+    <div className="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
+      <strong>ত্রুটি:</strong> {error}
+    </div>
+  )}
+
+  {/* আপলোডকৃত ছবি */}
+  {image && (
+    <div className="mb-6">
+      <h3
+        className={`${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        } text-sm font-medium mb-2`}
+      >
+        আপলোডকৃত ছবি
+      </h3>
+      <img
+        src={image}
+        alt="Uploaded crop"
+        className="max-h-64 w-full object-contain rounded border border-gray-200"
+      />
+    </div>
+  )}
+
+  {/* Plant.id ফলাফল */}
+  {result && (
+    <div
+      className={`p-6 border rounded-lg ${
+        theme === "dark"
+          ? "bg-gray-900"
+          : result.isHealthy
+          ? "bg-green-50"
+          : "bg-red-50"
+      }`}
+    >
+      <h3
+        className={`${
+          theme === "dark" ? "text-green-600" : "text-green-700"
+        } text-lg font-bold mb-4`}
+      >
+        {result.isHealthy ? "✅ ফসল সুস্থ আছে" : "⚠️ রোগ শনাক্ত হয়েছে"}
+      </h3>
+      <p className="font-semibold mb-2 text-purple-700">
+        রোগের নাম: {result.disease}
+      </p>
+      <p
+        className={`${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        } mb-4`}
+      >
+        বিস্তারিত: {result.description}
+      </p>
+      <div className="mt-4">
+        <h4
           className={`${
-            theme === "dark" ? "text-gray-300" : "text-gray-700"
-          } mt-2`}
+            theme === "dark" ? "text-green-600" : "text-green-700"
+          } font-semibold mb-2`}
         >
-          Specific plant parts like leaves, stems, roots, and fruits should be
-          targeted for early and accurate disease detection.
-        </p>
-      </div>
-
-      {/* File input */}
-      <div className="mb-6">
-        <label
-          className={`${
-            theme === "dark" ? "text-gray-300" : "text-gray-700"
-          } block mb-2 text-sm font-medium`}
-        >
-          Upload Crop Image
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className={`block w-full text-sm
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-md file:border-0
-            file:text-sm file:font-semibold
-            ${
-              theme === "dark"
-                ? "text-gray-300 file:bg-green-600 file:text-white hover:file:bg-green-700"
-                : "text-gray-700 file:bg-green-700 file:text-white hover:file:bg-green-600"
-            }`}
-          disabled={loading}
-        />
-      </div>
-
-      {/* Loading */}
-      {loading && (
-        <div className="flex items-center justify-center p-4 bg-gray-100 rounded-lg">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-          <span
-            className={`ml-3 ${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
-            }`}
-          >
-            Analyzing your crop image...
-          </span>
-        </div>
-      )}
-
-      {/* Error */}
-      {error && (
-        <div className="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
-          <strong>Error:</strong> {error}
-        </div>
-      )}
-
-      {image && (
-        <div className="mb-6">
-          <h3
-            className={`${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
-            } text-sm font-medium mb-2`}
-          >
-            Uploaded Image
-          </h3>
-          <img
-            src={image}
-            alt="Uploaded crop"
-            className="max-h-64 w-full object-contain rounded border border-gray-200"
-          />
-        </div>
-      )}
-
-      {/* Plant.id Result */}
-      {result && (
+          সুপারিশকৃত চিকিৎসা:
+        </h4>
         <div
-          className={`p-6 border rounded-lg ${
-            theme === "dark"
-              ? "bg-gray-900"
-              : result.isHealthy
-              ? "bg-green-50"
-              : "bg-red-50"
-          }`}
+          className={`${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          } p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner`}
         >
-          <h3
-            className={`${
-              theme === "dark" ? "text-green-600" : "text-green-700"
-            } text-lg font-bold mb-4`}
-          >
-            {result.isHealthy ? "✅ Healthy Plant" : "⚠️ Disease Detected"}
-          </h3>
-          <p className="font-semibold mb-2 text-purple-700">
-            Diagnosis: {result.disease}
-          </p>
-          <p
-            className={`${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
-            } mb-4`}
-          >
-            {result.description}
-          </p>
-          <div className="mt-4">
-            <h4
-              className={`${
-                theme === "dark" ? "text-green-600" : "text-green-700"
-              } font-semibold mb-2`}
-            >
-              Recommended Treatment:
-            </h4>
-            <div
-              className={`${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              } p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner`}
-            >
-              {result.treatment}
-            </div>
-          </div>
+          {result.treatment}
         </div>
-      )}
+      </div>
+    </div>
+  )}
 
-      {/* Roboflow Result */}
-      {roboflowResult && (
-        <div className="p-6 border rounded-lg bg-yellow-50 mt-6">
-          <h3 className="text-lg font-bold text-yellow-800 mb-4">
-            🌿 Roboflow Result
-          </h3>
-          <p className="text-gray-700 mb-2">Label: {roboflowResult.label}</p>
-          <p className="text-gray-700 mb-4">
-            Confidence: {(roboflowResult.confidence * 100).toFixed(2)}%
-          </p>
-          <div>
-            <h4 className="font-semibold text-yellow-800 mb-2">
-              Recommended Treatment:
-            </h4>
-            <div className="bg-white p-4 rounded-lg text-sm shadow-inner">
-              {roboflowResult.treatment}
-            </div>
-          </div>
+  {/* রোবোফ্লো ফলাফল */}
+  {roboflowResult && (
+    <div className="p-6 border rounded-lg bg-yellow-50 mt-6">
+      <h3 className="text-lg font-bold text-yellow-800 mb-4">
+        🌿 রোবোফ্লো বিশ্লেষণ
+      </h3>
+      <p className="text-gray-700 mb-2">লেবেল: {roboflowResult.label}</p>
+      <p className="text-gray-700 mb-4">
+        আত্মবিশ্বাসের মাত্রা: {(roboflowResult.confidence * 100).toFixed(2)}%
+      </p>
+      <div>
+        <h4 className="font-semibold text-yellow-800 mb-2">
+          সুপারিশকৃত চিকিৎসা:
+        </h4>
+        <div className="bg-white p-4 rounded-lg text-sm shadow-inner">
+          {roboflowResult.treatment}
         </div>
-      )}
+      </div>
+    </div>
+  )}
+    </div>
     </div>
   );
 }

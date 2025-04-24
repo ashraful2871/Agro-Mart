@@ -10,6 +10,7 @@ import Theme from "./theme/Theme";
 import { LuShoppingBag } from "react-icons/lu";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -21,6 +22,16 @@ const Navbar = () => {
   const [cart] = useCart();
   const isHomePage = location.pathname === "/";
   console.log(user);
+
+  let dashboardLink = "/dashboard";
+
+  if (role === "admin") {
+    dashboardLink = "/dashboard/overview";
+  } else if (role === "seller") {
+    dashboardLink = "/dashboard";
+  } else if (role === "user") {
+    dashboardLink = "/dashboard/wishlist";
+  }
 
   const links = (
     <>
@@ -160,7 +171,7 @@ const Navbar = () => {
                 style={{ color: "", backgroundColor: "transparent" }}
                 to="/shopping-cart"
               >
-                <LuShoppingBag className="text-3xl"></LuShoppingBag>
+                <AiOutlineShoppingCart  className="text-3xl"></AiOutlineShoppingCart>
               </NavLink>
             </div>
             {user && (
@@ -215,11 +226,7 @@ const Navbar = () => {
                 }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
               >
                 <Link
-                  to={`${
-                    role === "admin"
-                      ? "/dashboard/overview"
-                      : "/dashboard/all-orders"
-                  }`}
+                  to={dashboardLink}
                   className={`block px-4 py-2 text-base-content ${
                     theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
                   }`}

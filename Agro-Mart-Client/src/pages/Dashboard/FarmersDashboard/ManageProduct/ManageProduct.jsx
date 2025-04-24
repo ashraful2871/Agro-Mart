@@ -40,6 +40,14 @@ const ManageProduct = () => {
     return <Loading></Loading>;
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="text-center mt-2 text-red-500">
+        No products available. Please add some products.
+      </div>
+    )
+  }
+
   if (error) {
     return (
       <div className="text-red-500 text-center mt-2">
