@@ -110,13 +110,6 @@ async function run() {
       const result = usersCollection.findOne();
       res.send(result);
     });
-
-    app.get('/user/:email', async (req, res) => {
-      const email = req.params.email;
-      const query = { email };
-      const result = await usersCollection.findOne(query);
-      res.send(result);
-    });
     
     app.patch('/users/update-coupon-enabled', async (req, res) => {
       const { couponEnabled } = req.body;
@@ -167,6 +160,28 @@ async function run() {
         res.status(500).json({ message: "Server error", error });
       }
     });
+
+    // Update user role
+    app.put("/user/role/:email", async (req, res) => {
+      const { email } = req.params;
+      const { role } = req.body;
+    
+      try {
+        const result = await usersCollection.updateOne(
+          { email },
+          { $set: { role } }
+        );
+    
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Role updated", role });
+        } else {
+          res.status(400).send({ message: "No changes made" });
+        }
+      } catch (err) {
+        res.status(500).send({ message: "Update failed", error: err.message });
+      }
+    });
+    
 
     // Delete user
     app.delete("/user/:id", verifyToken, async (req, res) => {
@@ -594,6 +609,19 @@ async function run() {
         res.status(500).json({ message: "Failed to fetch orders" });
       }
     });
+
+    app.get("/orders/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log("Received email:", email);
+      try {
+        const query = { email: email };
+        const result = await paymentCollection.find(query).toArray();
+        console.log("Fetched orders:", result);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Server Error", error });
+      }
+    });    
 
     // Download orders as CSV
     app.get("/orders/download", async (req, res) => {
