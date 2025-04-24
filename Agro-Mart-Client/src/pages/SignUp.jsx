@@ -1,53 +1,58 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { googleLogin, signUpUser } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { ThemeContext } from "../provider/ThemeProvider";
-
-const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
-const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+import ButtonLoading from "../components/loading/button-loading/ButtonLoading";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
+  const [type, setType] = useState("");
+
   const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("name");
     const email = formData.get("email");
-    const image = formData.get("image");
     const password = formData.get("password");
-
-    let imageUrl = "";
-    if (image) {
-      const imageFormData = new FormData();
-      imageFormData.append("image", image);
-      try {
-        const response = await axios.post(image_upload_api, imageFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        if (response.data.success) {
-          imageUrl = response.data.data.display_url;
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("Image upload failed");
-        return;
-      }
+    const confirmPassword = formData.get("confirm_password");
+    const formInfo = { name, email, password, confirmPassword };
+    // console.log(formInfo);
+    if (!password || !confirmPassword) {
+      toast.error("password and confirm password are required");
+      setLoading(false);
+      return;
     }
-
+    if (password !== confirmPassword) {
+      toast.error("password and confirm password are dose not match");
+      setLoading(false);
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long!");
+      setLoading(false);
+      return;
+    }
     try {
       // Dispatch signUpUser with all needed data
       const result = await dispatch(
-        signUpUser({ email, password, name, photo: imageUrl })
+        signUpUser({
+          email,
+          password,
+          name,
+          photo: "https://i.ibb.co.com/7tR89ZTR/user.png",
+        })
       ).unwrap();
 
       if (result?.user) {
@@ -59,18 +64,20 @@ const SignUp = () => {
           const userInfo = {
             name,
             email,
-            photo: imageUrl,
+            photo: "https://i.ibb.co.com/7tR89ZTR/user.png",
             uid: result.user.uid,
-            role: "user",
+            role: type,
           };
           await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
         } catch (error) {
           console.log(error);
+          setLoading(false);
         }
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message || "Sign up failed!");
+      setLoading(false);
     }
   };
 
@@ -147,28 +154,78 @@ const SignUp = () => {
                 required
               />
             </div>
-
-            {/* Photo */}
+            {/* select account typ */}
             <div className="mb-4">
-              <label className="block text-base-content">Photo</label>
-              <input
-                type="file"
-                name="image"
+              <label className="block text-base-content">
+                Select Account Type
+              </label>
+              <select
+                name="accountType"
+                onChange={(e) => setType(e.target.value)}
+                value={type}
+                className="select w-full select-success"
                 required
-                className="file-input w-full file-input-success border rounded-lg focus:ring-2 focus:ring-green-500"
-              />
+              >
+                <option value="" disabled>
+                  Select Account Type
+                </option>
+                <option value="customer">Customer</option>
+                <option value="farmer">Farmer</option>
+              </select>
             </div>
 
             {/* Password */}
-            <div className="mb-4">
+            <div
+              className="mb-4 relative
+            "
+            >
               <label className="block text-base-content">Password</label>
               <input
-                type="password"
+                type={`${showPassword ? "text" : "password"}`}
                 name="password"
                 placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
               />
+              <button
+                onClick={() => setShowPassword(!showPassword)}
+                type="button"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
+              >
+                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
+            </div>
+            {/* confirm password */}
+            <div className="mb-4 relative">
+              <label className="block text-base-content">
+                Confirm Password
+              </label>
+              <input
+                type={`${showConfirmPassword ? "text" : "password"}`}
+                name="confirm_password"
+                placeholder="Enter your password"
+                className="w-full py-6 border rounded-lg input input-success"
+                required
+              />
+              <button
+                onClick={() => setConfirmShowPassword(!showConfirmPassword)}
+                type="button"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
+              >
+                {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
+            </div>
+            <div className="flex justify-between items-center ">
+              <div className="mb-4">
+                <label className="fieldset-label text-base-content">
+                  <input
+                    type="checkbox"
+                    required
+                    className="checkbox checkbox-success  checked:bg-green-600 checked:text-white text-base-content "
+                  />
+                  Accept trams & condition
+                </label>
+              </div>
             </div>
 
             {/* Sign Up Button */}
@@ -176,7 +233,7 @@ const SignUp = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 text-lg rounded-lg hover:bg-green-700 transition"
             >
-              Sign Up
+              {loading ? <ButtonLoading></ButtonLoading> : "Sign Up"}
             </button>
           </form>
 

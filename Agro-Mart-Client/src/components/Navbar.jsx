@@ -11,6 +11,7 @@ import { LuShoppingBag } from "react-icons/lu";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -174,11 +175,31 @@ const Navbar = () => {
                 <AiOutlineShoppingCart  className="text-3xl"></AiOutlineShoppingCart>
               </NavLink>
             </div>
-            {user && (
-              <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-                {cart.length}
-              </div>
-            )}
+
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cart.length}
+            </div>
+          </div>
+          <div className="relative mt-2 ">
+            <div>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-green-700"
+                    : isHomePage
+                    ? `${theme === "dark" ? "text-white" : "text-black"}`
+                    : ""
+                }
+                style={{ color: "", backgroundColor: "transparent" }}
+                to="/shopping-cart"
+              >
+                <FaRegHeart className="text-3xl" />
+              </NavLink>
+            </div>
+
+            <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
+              {cart.length}
+            </div>
           </div>
 
           {/* toggle theme */}
@@ -196,7 +217,7 @@ const Navbar = () => {
                     role="button"
                     className="btn btn-ghost btn-circle avatar"
                   >
-                    <div className="w-10 rounded-full bg-gray-300">
+                    <div className="w-10 rounded-full border-2 border-green-600 bg-gray-300">
                       <img
                         referrerPolicy="no-referrer"
                         src={
@@ -259,7 +280,13 @@ const Navbar = () => {
         ) : (
           <>
             <div className="dropdown dropdown-end">
-              <div
+              <Link to="/login">
+                {" "}
+                <button className="btn bg-green-600 text-white text-base rounded-lg">
+                  Login
+                </button>
+              </Link>
+              {/* <div
                 tabIndex={0}
                 role="button"
                 className="btn btn-ghost btn-circle avatar"
@@ -270,18 +297,18 @@ const Navbar = () => {
                     alt="User"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
             <div
               className={`text-base-content dropdown dropdown-end text-lg  font-syne`}
             >
-              <span className="mr-2">
+              {/* <span className="mr-2">
                 <Link to="/login">Login</Link>
               </span>
               /{" "}
               <span>
                 <Link to="/register">Register</Link>
-              </span>
+              </span> */}
             </div>
           </>
         )}

@@ -4,13 +4,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { googleLogin, signInUser, clearError } from "../store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { ThemeContext } from "../provider/ThemeProvider";
+import ButtonLoading from "../components/loading/button-loading/ButtonLoading";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
   const { error } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
@@ -20,8 +22,8 @@ const Login = () => {
   }, [dispatch]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setIsLoading(true);
+    e.preventDefault();
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
@@ -46,6 +48,7 @@ const Login = () => {
       toast.error(errorMessage, {
         duration: errorMessage.includes("locked") ? 8000 : 4000,
       });
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +56,6 @@ const Login = () => {
 
   const handleContinueGoogle = async () => {
     try {
-      setIsLoading(true);
       const result = await dispatch(googleLogin()).unwrap();
       const user = result?.user;
 
@@ -70,8 +72,6 @@ const Login = () => {
       }
     } catch (error) {
       toast.error("Google login failed!");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -95,6 +95,7 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
+            {/* email */}
             <div className="mb-4">
               <label className="block text-base-content">Email</label>
               <input
@@ -106,15 +107,23 @@ const Login = () => {
               />
             </div>
 
-            <div className="mb-4">
+            {/* password */}
+            <div className="mb-4 relative">
               <label className="block text-base-content">Password</label>
               <input
-                type="password"
+                type={`${showPassword ? "text" : "password"}`}
                 name="password"
-                placeholder="Enter your pin"
+                placeholder="Enter your password"
                 className="w-full py-6 border rounded-lg input input-success"
                 required
               />
+              <button
+                onClick={() => setShowPassword(!showPassword)}
+                type="button"
+                className="absolute top-10 right-5 text-xl font-extrabold text-green-600"
+              >
+                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+              </button>
             </div>
             <div className="flex justify-between items-center ">
               <div className="mb-4">
@@ -148,7 +157,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-green-600 text-white py-3 text-lg rounded-lg hover:bg-green-700 transition"
             >
-              {isLoading ? "Loading..." : "Sign in"}
+              {isLoading ? <ButtonLoading></ButtonLoading> : "Sign in"}
             </button>
           </form>
 

@@ -110,27 +110,43 @@ async function run() {
       const result = usersCollection.findOne();
       res.send(result);
     });
-    
-    app.patch('/users/update-coupon-enabled', async (req, res) => {
+
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.patch("/users/update-coupon-enabled", async (req, res) => {
       const { couponEnabled } = req.body;
-    
+
       try {
         // Ensure couponEnabled is a boolean
-        if (typeof couponEnabled !== 'boolean') {
-          throw new Error('Invalid couponEnabled value');
+        if (typeof couponEnabled !== "boolean") {
+          throw new Error("Invalid couponEnabled value");
         }
-    
+
         // Update the collection
-        const result = await usersCollection.updateMany({}, { $set: { couponEnabled } });
-        
+        const result = await usersCollection.updateMany(
+          {},
+          { $set: { couponEnabled } }
+        );
+
         if (result.modifiedCount > 0) {
-          res.send({ message: "Coupon enabled status updated successfully!", modifiedCount: result.modifiedCount });
+          res.send({
+            message: "Coupon enabled status updated successfully!",
+            modifiedCount: result.modifiedCount,
+          });
         } else {
           res.status(404).send({ message: "No users were updated." });
         }
       } catch (error) {
         console.error("Error updating couponEnabled:", error);
-        res.status(500).send({ message: "Error updating couponEnabled", error: error.message });
+        res.status(500).send({
+          message: "Error updating couponEnabled",
+          error: error.message,
+        });
       }
     });
 
@@ -190,7 +206,6 @@ async function run() {
       const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
-    
 
     // products related apis crud
     // products create
@@ -231,7 +246,7 @@ async function run() {
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 6;
       const skip = (page - 1) * limit;
-      
+
       if (req.query.sort && req.query.sort !== "default") {
         sortByPrice = { price: parseInt(req.query.sort) };
         console.log(sortByPrice);
@@ -256,7 +271,7 @@ async function run() {
           .skip(skip)
           .limit(limit)
           .toArray();
-    
+
         res.send({
           totalItems: total,
           currentPage: page,
@@ -627,11 +642,11 @@ async function run() {
     app.get("/orders/download", async (req, res) => {
       try {
         const orders = await paymentCollection.find().toArray();
-    
+
         if (!orders.length) {
           return res.status(404).send({ message: "No orders found" });
         }
-    
+
         const flattenedOrders = orders?.map((order) => ({
           id: order?._id.toString(),
           name: order?.name || "",
@@ -643,14 +658,14 @@ async function run() {
           date: order?.date ? new Date(order.date).toLocaleDateString() : "",
           invoiceNo: order?.invoiceNo || "",
         }));
-    
+
         const json2csv = new Parser();
         const csv = json2csv.parse(flattenedOrders);
-    
+
         // Add BOM for proper CSV rendering
         res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment("orders.csv");
-        res.send("\uFEFF" + csv);  // Adding BOM here before sending the CSV data
+        res.send("\uFEFF" + csv); // Adding BOM here before sending the CSV data
       } catch (err) {
         console.error("Error generating CSV:", err);
         res.status(500).json({ message: "Failed to download orders" });
@@ -661,26 +676,30 @@ async function run() {
     app.get("/orders/:id/download", async (req, res) => {
       const id = req.params.id;
       try {
-        const order = await paymentCollection.findOne({ _id: new ObjectId(id) });
+        const order = await paymentCollection.findOne({
+          _id: new ObjectId(id),
+        });
         if (!order) {
           return res.status(404).json({ message: "Order not found" });
         }
-    
-        const orderData = [{
-          id: order?._id.toString(),
-          name: order?.name || "",
-          email: order?.email || "",
-          status: order?.status || "",
-          totalAmount: order.totalAmount || "",
-          method: order?.method || "",
-          transactionId: order?.transactionId || "",
-          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
-          invoiceNo: order?.invoiceNo || "",
-        }];
-    
+
+        const orderData = [
+          {
+            id: order?._id.toString(),
+            name: order?.name || "",
+            email: order?.email || "",
+            status: order?.status || "",
+            totalAmount: order.totalAmount || "",
+            method: order?.method || "",
+            transactionId: order?.transactionId || "",
+            date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+            invoiceNo: order?.invoiceNo || "",
+          },
+        ];
+
         const json2csv = new Parser();
         const csv = json2csv.parse(orderData);
-    
+
         res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment(`order_${order.invoiceNo}.csv`);
         res.send("\uFEFF" + csv);
@@ -822,70 +841,74 @@ async function run() {
 
     app.get("/weekly-sales", async (req, res) => {
       try {
-        const result = await paymentCollection.aggregate([
-          {
-            $group: {
-              _id: "$date",
-              sales: { $sum: "$totalAmount" },
-              orders: { $sum: 1 }
-            }
-          },
-          { $sort: { _id: 1 } }
-        ]).toArray();
-    
+        const result = await paymentCollection
+          .aggregate([
+            {
+              $group: {
+                _id: "$date",
+                sales: { $sum: "$totalAmount" },
+                orders: { $sum: 1 },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+          .toArray();
+
         // Format the data for frontend
-        const formattedData = result.map(item => ({
+        const formattedData = result.map((item) => ({
           date: item._id,
           sales: item.sales,
-          orders: item.orders
+          orders: item.orders,
         }));
-    
+
         res.json(formattedData);
       } catch (error) {
         console.error("Error fetching sales data:", error);
         res.status(500).json({ message: "Failed to fetch sales data" });
       }
-    });    
+    });
 
-    app.get('/best-selling-products', async (req, res) => {
+    app.get("/best-selling-products", async (req, res) => {
       try {
-        const bestSellingProducts = await paymentCollection.aggregate([
-          { $unwind: "$productId" },
-          {
-            $group: {
-              _id: "$productId",
-              totalOrderCount: { $sum: 1 }
-            }
-          },
-          {
-            $addFields: {
-              _id: { $toObjectId: "$_id" }
-            }
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "productDetails"
-            }
-          },
-          { $unwind: "$productDetails" },
-          {
-            $project: {
-              name: "$productDetails.name",
-              totalOrderCount: 1
-            }
-          },
-          { $sort: { totalOrderCount: -1 } }
-        ]).toArray();
-    
+        const bestSellingProducts = await paymentCollection
+          .aggregate([
+            { $unwind: "$productId" },
+            {
+              $group: {
+                _id: "$productId",
+                totalOrderCount: { $sum: 1 },
+              },
+            },
+            {
+              $addFields: {
+                _id: { $toObjectId: "$_id" },
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "_id",
+                as: "productDetails",
+              },
+            },
+            { $unwind: "$productDetails" },
+            {
+              $project: {
+                name: "$productDetails.name",
+                totalOrderCount: 1,
+              },
+            },
+            { $sort: { totalOrderCount: -1 } },
+          ])
+          .toArray();
+
         res.json(bestSellingProducts);
       } catch (error) {
-        console.error('Error fetching best-selling products:', error);
+        console.error("Error fetching best-selling products:", error);
         res.status(500).json({ message: "Server error" });
       }
-    });           
+    });
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");

@@ -7,7 +7,8 @@ import "swiper/css/autoplay";
 import "./slider.css";
 import { EffectFade, Autoplay } from "swiper/modules";
 import CountdownTimer from "./CountdownTimer";
-
+import { Link } from "react-router-dom";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 const textVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
@@ -132,17 +133,23 @@ const Slider = () => {
                     {slide.subtitle}
                   </motion.p>
 
-                  <motion.button
-                    key={`button-${index}`}
-                    custom={slide.title.length + 1}
-                    variants={textVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="text-sm mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne"
-                  >
-                    Learn More →
-                  </motion.button>
+                  <Link to="/about">
+                    {" "}
+                    <motion.button
+                      key={`button-${index}`}
+                      custom={slide.title.length + 1}
+                      variants={textVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne flex items-center gap-1"
+                    >
+                      <span className="text-base"> Learn More</span>{" "}
+                      <span>
+                        <ArrowForwardOutlinedIcon fontSize="medium" />
+                      </span>
+                    </motion.button>
+                  </Link>
                 </AnimatePresence>
               )}
             </div>
