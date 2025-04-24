@@ -142,7 +142,7 @@ const WishListModal = ({ isOpen, closeModal }) => {
         {/* Footer Links */}
         <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <NavLink
-            to="/wish-list"
+            to="/dashboard/wishlist"
             className="text-base-content hover:text-green-700 underline uppercase text-base"
           >
             Open wishlist page

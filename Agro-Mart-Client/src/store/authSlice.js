@@ -280,9 +280,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.loading = false;
-      })
+      })      
       .addCase(signUpUser.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
@@ -292,9 +292,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signInUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.loading = false;
-      })
+      })      
       .addCase(signInUser.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
@@ -313,11 +313,8 @@ const authSlice = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         if (state.user) {
-          state.user.user = {
-            ...state.user.user,
-            displayName: action.payload.displayName,
-            photoURL: action.payload.photoURL,
-          };
+          state.user.displayName = action.payload.displayName;
+          state.user.photoURL = action.payload.photoURL;
         }
       })
       .addCase(InitializeAuthListener.fulfilled, (state) => {

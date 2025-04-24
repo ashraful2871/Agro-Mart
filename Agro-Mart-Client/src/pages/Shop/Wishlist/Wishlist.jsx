@@ -179,7 +179,8 @@ const Wishlist = () => {
       </div>
 
       {/* Wishlist Share Link */}
-      <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      {/* flex flex-col sm:flex-row */}
+      <div className="mt-10 items-start sm:items-center gap-4 hidden">
         <span className="font-medium">Wishlist link:</span>
         <input
           type="text"

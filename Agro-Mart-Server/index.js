@@ -177,6 +177,28 @@ async function run() {
       }
     });
 
+    // Update user role
+    app.put("/user/role/:email", async (req, res) => {
+      const { email } = req.params;
+      const { role } = req.body;
+    
+      try {
+        const result = await usersCollection.updateOne(
+          { email },
+          { $set: { role } }
+        );
+    
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Role updated", role });
+        } else {
+          res.status(400).send({ message: "No changes made" });
+        }
+      } catch (err) {
+        res.status(500).send({ message: "Update failed", error: err.message });
+      }
+    });
+    
+
     // Delete user
     app.delete("/user/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
@@ -602,6 +624,19 @@ async function run() {
         res.status(500).json({ message: "Failed to fetch orders" });
       }
     });
+
+    app.get("/orders/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log("Received email:", email);
+      try {
+        const query = { email: email };
+        const result = await paymentCollection.find(query).toArray();
+        console.log("Fetched orders:", result);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Server Error", error });
+      }
+    });    
 
     // Download orders as CSV
     app.get("/orders/download", async (req, res) => {
