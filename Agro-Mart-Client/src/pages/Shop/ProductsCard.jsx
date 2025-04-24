@@ -5,7 +5,7 @@ import {
   AiOutlineSync,
   AiFillHeart,
 } from "react-icons/ai";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -157,7 +157,7 @@ const ProductsCard = ({ product }) => {
           onClick={() => addCard(product)}
           className="absolute bottom-4 right-4 bg-green-700 hover:bg-yellow-400 hover:text-black text-white  p-3 rounded-full shadow-lg z-30 transition-colors duration-300"
         >
-          <ShoppingCartOutlinedIcon className="text-3xl " />
+          <AddShoppingCartIcon className="text-3xl " />
         </button>
 
         {/* Cart Modal */}
