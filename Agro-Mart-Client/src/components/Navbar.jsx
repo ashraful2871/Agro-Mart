@@ -191,7 +191,7 @@ const Navbar = () => {
                     : ""
                 }
                 style={{ color: "", backgroundColor: "transparent" }}
-                to="/shopping-cart"
+                to="/dashboard/wishlist"
               >
                 <FaRegHeart className="text-3xl" />
               </NavLink>
