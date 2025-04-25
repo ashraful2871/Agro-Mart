@@ -172,7 +172,7 @@ const Navbar = () => {
                 style={{ color: "", backgroundColor: "transparent" }}
                 to="/shopping-cart"
               >
-                <AiOutlineShoppingCart  className="text-3xl"></AiOutlineShoppingCart>
+                <AiOutlineShoppingCart className="text-3xl"></AiOutlineShoppingCart>
               </NavLink>
             </div>
 

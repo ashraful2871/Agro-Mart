@@ -7,24 +7,12 @@ import WhyChooseUs from "./Home/WhyChooseUs/WhyChooseUs";
 import ParallaxSection from "./Home/ParallaxSection/ParallaxSection";
 import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 import Service from "./Home/Service/Service";
-import WeatherCard from "./Weather/WeatherCard";
 
 const Home = () => {
   return (
     <div className="space-y-7 ">
-
-      {/* Slider and Weather Section */}
-      <div className="relative">
-        {/* slider div */}
-        <div>
+      <div className="">
         <Slider></Slider>
-        </div>
-  
-        {/* weather div */}
-        <div className="absolute top-20 left-0 p-4 z-10">
-        {/* <h1 className="text-2xl font-bold">Agro Mart 🧑‍🌾</h1> */}
-        <WeatherCard />
-         </div>
       </div>
 
       <div className="p-2">
@@ -34,7 +22,7 @@ const Home = () => {
         </div>
 
         {/* Our Services section */}
-        <div>
+        <div className="">
           <Service></Service>
         </div>
 

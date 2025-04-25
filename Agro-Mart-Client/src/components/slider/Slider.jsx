@@ -27,19 +27,18 @@ const Slider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const slides = [
-           // Eid Special Slide (Optional)
-    // {
-    //   img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
-    //   title: ["Celebrate Eid with", "Fresh Organic Produce"],
-    //   subtitle:
-    //     "Experience the joy of Eid with our sustainably grown products.",
-    //   isEid: true,
-    // },
-    // {
-    //   img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
-    //   type: "timer",
-    //   timerDate: "2025-04-20T00:00:00",
-    // },
+    {
+      img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
+      title: ["Celebrate Eid with", "Fresh Organic Produce"],
+      subtitle:
+        "Experience the joy of Eid with our sustainably grown products.",
+      isEid: true,
+    },
+    {
+      img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
+      type: "timer",
+      timerDate: "2025-04-20T00:00:00",
+    },
     {
       img: "https://i.ibb.co/7x62M20F/footer-bg-1.png",
       title: ["High Quality Fresh", "Organic Foods"],
@@ -69,7 +68,7 @@ const Slider = () => {
       autoplay={{ delay: 5000, disableOnInteraction: false }}
       speed={1000}
       modules={[EffectFade, Autoplay]}
-      className="h-[550px] md:h-96 lg:h-[770px] -mt-3"
+      className="h-[550px] md:h-96 lg:h-[770px]"
       onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
     >
       {slides.map((slide, index) => (
