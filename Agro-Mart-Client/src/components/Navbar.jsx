@@ -22,7 +22,7 @@ const Navbar = () => {
   const [role] = useRole();
   const [cart] = useCart();
   const isHomePage = location.pathname === "/";
-  console.log(user);
+  console.log("nav", user);
 
   let dashboardLink = "/dashboard";
 
