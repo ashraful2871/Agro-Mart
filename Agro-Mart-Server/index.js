@@ -5,10 +5,16 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 const { Parser } = require("json2csv");
-
+const SSLCommerzPayment = require("sslcommerz-lts");
+const { v4: uuidv4 } = require("uuid");
 //middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const store_id = process.env.STORE_ID;
+const store_passwd = process.env.STORE_PASSWORD;
+const is_live = process.env.IS_LIVE === "true";
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -181,13 +187,13 @@ async function run() {
     app.put("/user/role/:email", async (req, res) => {
       const { email } = req.params;
       const { role } = req.body;
-    
+
       try {
         const result = await usersCollection.updateOne(
           { email },
           { $set: { role } }
         );
-    
+
         if (result.modifiedCount > 0) {
           res.send({ message: "Role updated", role });
         } else {
@@ -197,7 +203,6 @@ async function run() {
         res.status(500).send({ message: "Update failed", error: err.message });
       }
     });
-    
 
     // Delete user
     app.delete("/user/:id", verifyToken, async (req, res) => {
@@ -636,7 +641,7 @@ async function run() {
       } catch (error) {
         res.status(500).send({ message: "Server Error", error });
       }
-    });    
+    });
 
     // Download orders as CSV
     app.get("/orders/download", async (req, res) => {
@@ -908,6 +913,74 @@ async function run() {
         console.error("Error fetching best-selling products:", error);
         res.status(500).json({ message: "Server error" });
       }
+    });
+
+    //sslcommarze
+    app.post("/init-payment", async (req, res) => {
+      const { totalAmount, cartItems } = req.body;
+      const tran_id = uuidv4(); // Unique transaction ID
+
+      const data = {
+        total_amount: totalAmount,
+        currency: "BDT", // Change to your currency
+        tran_id: tran_id,
+        success_url: "http://localhost:5000/payment/success",
+        fail_url: "http://localhost:5000/payment/fail",
+        cancel_url: "http://localhost:5000/payment/cancel",
+        ipn_url: "http://localhost:5000/payment/ipn",
+        shipping_method: "NO",
+        product_name: cartItems.map((item) => item.name).join(", "),
+        product_category: "general",
+        product_profile: "general",
+        cus_name: "Customer Name", // Replace with dynamic data if available
+        cus_email: "customer@example.com",
+        cus_add1: "Dhaka",
+        cus_city: "Dhaka",
+        cus_country: "Bangladesh",
+        cus_phone: "01711111111",
+        ship_name: "Customer Name",
+        ship_add1: "Dhaka",
+        ship_city: "Dhaka",
+        ship_country: "Bangladesh",
+        ship_postcode: "1000",
+      };
+
+      try {
+        const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+        const apiResponse = await sslcz.init(data);
+        res.json({ GatewayPageURL: apiResponse.GatewayPageURL, tran_id });
+      } catch (error) {
+        console.error("Error initializing payment:", error);
+        res.status(500).json({ error: "Failed to initialize payment" });
+      }
+    });
+
+    // Handle success callback
+    app.post("/payment/success", async (req, res) => {
+      const { tran_id, status } = req.body;
+      if (status === "VALID") {
+        // Update your database or perform actions here
+        res.redirect("http://localhost:5173/payment/success"); // Redirect to frontend success page
+      } else {
+        res.redirect("http://localhost:5173/payment/fail");
+      }
+    });
+
+    // Handle failure callback
+    app.post("/payment/fail", (req, res) => {
+      res.redirect("http://localhost:5173/payment/fail");
+    });
+
+    // Handle cancel callback
+    app.post("/payment/cancel", (req, res) => {
+      res.redirect("http://localhost:5173/payment/cancel");
+    });
+
+    // Handle IPN (Instant Payment Notification)
+    app.post("/payment/ipn", (req, res) => {
+      console.log("IPN received:", req.body);
+      // Update database based on IPN data
+      res.status(200).send("IPN received");
     });
 
     app.get("/", async (req, res) => {
