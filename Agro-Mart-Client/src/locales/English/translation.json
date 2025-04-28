@@ -171,5 +171,36 @@
       "doctor": "Crop Doctor",
       "weather": "Weather"
     }
+  },
+  "profile": {
+    "welcome": "Welcome, {{name}}!",
+    "role_not_found": "Role Not Found",
+    "no_name_provided": "No Name Provided",
+    "no_email_provided": "No email provided",
+    "edit_profile": "Edit Profile",
+    "apply_farmer": "Apply for Became a Farmer",
+    "loading": "Loading...",
+    "user_not_found": "User not found!",
+    "swal": {
+      "title": "Do you want to become a farmer?",
+      "text": "This action will update your role to 'farmer'.",
+      "confirm": "Yes, I want to be a farmer",
+      "cancel": "Cancel",
+      "success_title": "Success!",
+      "success_text": "You are now a farmer!",
+      "failed_title": "Failed!",
+      "failed_text": "Could not update role.",
+      "error_title": "Error!",
+      "error_text": "Something went wrong."
+    },
+    "modal": {
+      "title": "Update Profile",
+      "name_label": "Name",
+      "email_label": "Email",
+      "cancel": "Cancel",
+      "update": "Update",
+      "toast_success": "Profile updated successfully!",
+      "toast_error": "Update failed: {{error}}"
+    }
   }
 }
