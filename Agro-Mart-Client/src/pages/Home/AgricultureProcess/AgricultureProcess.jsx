@@ -50,24 +50,19 @@ const AgricultureProcess = () => {
         {/* Right Side Content */}
         <div className="xl:w-1/2 h-full flex items-center">
           <div className="text-center xl:text-left w-full">
-<<<<<<< HEAD
+            {/* <h1 className="text-3xl font-bold mt-6">{t('welcome')}</h1> */}
             <h3
               className={`${
                 theme === "dark" ? "text-green-600" : "text-green-700"
               } font-bold uppercase text-sm`}
             >
-              Work Process
-=======
-          {/* <h1 className="text-3xl font-bold mt-6">{t('welcome')}</h1> */}
-            <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} font-bold uppercase text-sm`}>
               {t("agriculture.workProcess")}
->>>>>>> 94667e3652d55c59e3eeccf3c54091d1be776f2f
             </h3>
             <h2 className="text-3xl md:text-4xl font-bold text-base-content mt-2">
-            {t("agriculture.agricultureProcess")}
+              {t("agriculture.agricultureProcess")}
             </h2>
             <p className="mt-4 text-base-content text-sm md:text-base">
-            {t("agriculture.description")}
+              {t("agriculture.description")}
             </p>
 
             {/* Experience Badge */}
@@ -80,19 +75,19 @@ const AgricultureProcess = () => {
                 />
               </div>
               <div>
-<<<<<<< HEAD
                 <h3
                   className={`${
                     theme === "dark" ? "text-green-600" : "text-green-700"
                   } text-3xl font-bold`}
+                  font-bold
                 >
-                  250+
+                  {" "}
+                  <LocalizedNumber number={experienceNumber} />+{" "}
                 </h3>
-                <p className="text-base-content">Years of experience</p>
-=======
-                <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-3xl font-bold`} font-bold> <LocalizedNumber number={experienceNumber} />+ </h3>
-                <p className="text-base-content"> {t("agriculture.yearsExperience")}</p>
->>>>>>> 94667e3652d55c59e3eeccf3c54091d1be776f2f
+                <p className="text-base-content">
+                  {" "}
+                  {t("agriculture.yearsExperience")}
+                </p>
               </div>
             </div>
 
