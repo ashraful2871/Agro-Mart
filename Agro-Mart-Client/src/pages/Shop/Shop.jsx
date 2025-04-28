@@ -4,6 +4,7 @@ import Loading from "../../components/loading/Loading";
 import ProductsCard from "./ProductsCard";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -13,6 +14,7 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const axiosPublic = useAxiosPublic();
   const { theme } = useContext(ThemeContext);
+  const {t} = useTranslation();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +63,7 @@ const Shop = () => {
 
   return (
     <div className="py-10">
-      <h1 className="text-3xl font-bold mb-5 text-center">Product Listing</h1>
+      <h1 className="text-3xl font-bold mb-5 text-center"> {t('shop.title')} </h1>
 
       <div className="flex gap-7 w-11/12 mx-auto">
         {/* Left Sidebar for large screens */}
@@ -72,10 +74,10 @@ const Shop = () => {
               theme === "dark" ? "bg-black" : "bg-base-100"
             }  p-4 rounded-xl mb-5`}
           >
-            <h3 className="text-xl font-bold mb-4">Search</h3>
+            <h3 className="text-xl font-bold mb-4">{t('shop.search')}</h3>
             <input
               type="text"
-              placeholder="Search products by name..."
+              placeholder= {t('shop.searchPlaceholder')}
               value={searchQuery}
               onChange={handleSearchChange}
               className="p-2 border border-gray-300 rounded-full w-full mb-5"
@@ -88,13 +90,13 @@ const Shop = () => {
               theme === "dark" ? "bg-black" : "bg-base-100"
             }  p-4 rounded-xl mb-5`}
           >
-            <h3 className="text-xl font-semibold mb-3">Categories</h3>
+            <h3 className="text-xl font-semibold mb-3">{t('shop.categories.title')}</h3>
             <ul className="space-y-2">
               <li
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("")}
               >
-                <div>All Categories</div>
+                <div>{t('shop.categories.all')}</div>
                 <div>({products.length})</div>
               </li>
               <div className="divider"></div>
@@ -102,7 +104,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Seeds & Plants")}
               >
-                <div>Seeds & Plants</div>
+                <div>{t('shop.categories.Seeds&Plants')}</div>
                 <div>
                   (
                   {
@@ -117,7 +119,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Farming Equipment")}
               >
-                <div>Farming Equipment</div>
+                <div>{t('shop.categories.FarmingEquipment')}</div>
                 <div>
                   (
                   {
@@ -132,7 +134,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fertilizers & Pesticides")}
               >
-                <div>Fertilizers & Pesticides</div>
+                <div>{t('shop.categories.fertilizers')}</div>
                 <div>
                   (
                   {
@@ -148,7 +150,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Agricultural Tools")}
               >
-                <div>Agricultural Tools</div>
+                <div>{t('shop.categories.tools')}</div>
                 <div>
                   (
                   {
@@ -163,7 +165,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Vegetables")}
               >
-                <div>Vegetables</div>
+                <div>{t('shop.categories.Vegetables')}</div>
                 <div>
                   ({products.filter((p) => p.category === "Vegetables").length})
                 </div>
@@ -173,7 +175,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fruits")}
               >
-                <div>Fruits</div>
+                <div>{t('shop.categories.fruits')}</div>
                 <div>
                   ({products.filter((p) => p.category === "Fruits").length})
                 </div>
@@ -183,7 +185,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Fresh Fish & Seafood")}
               >
-                <div>Fresh Fish & Seafood</div>
+                <div>{t('shop.categories.fish')}</div>
                 <div>
                   (
                   {
@@ -199,7 +201,7 @@ const Shop = () => {
                 className="text-base-content flex justify-between cursor-pointer hover:text-green-700 transition-colors duration-300"
                 onClick={() => handleCategoryClick("Dairy & Milk Products")}
               >
-                <div>Dairy & Milk Products</div>
+                <div>{t('shop.categories.dairy')}</div>
                 <div>
                   (
                   {
@@ -219,7 +221,7 @@ const Shop = () => {
               theme === "dark" ? "bg-black" : "bg-base-100"
             } p-4 rounded-xl mb-5`}
           >
-            <h3 className="text-xl font-semibold mb-3">Tags</h3>
+            <h3 className="text-xl font-semibold mb-3">{t('shop.tags.title')}</h3>
             <div className="flex flex-wrap gap-2">
               <span
                 className={`${
@@ -228,7 +230,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Agriculture
+                {t('shop.tags.Agriculture')}
               </span>
               <span
                 className={`${
@@ -237,7 +239,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Dairy
+                {t('shop.tags.Dairy')}
               </span>
               <span
                 className={`${
@@ -246,7 +248,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Design
+                {t('shop.tags.Design')}
               </span>
               <span
                 className={`${
@@ -255,7 +257,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Garden
+                {t('shop.tags.Garden')}
               </span>
               <span
                 className={`${
@@ -264,7 +266,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Healthy
+                {t('shop.tags.Healthy')}
               </span>
               <span
                 className={`${
@@ -273,7 +275,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Landscaping
+                {t('shop.tags.Landscaping')}
               </span>
               <span
                 className={`${
@@ -282,7 +284,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Nature
+                {t('shop.tags.Natural')}
               </span>
               <span
                 className={`${
@@ -291,7 +293,7 @@ const Shop = () => {
                     : "bg-gray-200"
                 } hover:bg-green-700 transition-colors duration-300 text-base-content hover:text-white px-3 py-1 rounded-full`}
               >
-                Organic
+                {t('shop.tags.Organic')}
               </span>
             </div>
           </div>
@@ -303,7 +305,7 @@ const Shop = () => {
           <div className="my-5 flex justify-between ">
             <div className="hidden lg:block">
               <span className="text-xl font-semibold">
-                Showing {products.length} products
+                {t('shop.showing')} {products.length} {t('shop.products')}
               </span>
             </div>
 
@@ -320,7 +322,7 @@ const Shop = () => {
                   htmlFor="my-drawer-4"
                   className="btn bg-green-600 drawer-button"
                 >
-                  Filter
+                  {t('shop.filters')}
                 </label>
               </div>
 
@@ -338,10 +340,10 @@ const Shop = () => {
                       theme === "dark" ? "bg-black" : "bg-base-100"
                     }  p-4 rounded-xl mb-5`}
                   >
-                    <h3 className=" text-xl font-bold mb-4">Search</h3>
+                    <h3 className=" text-xl font-bold mb-4">{t('shop.search')}</h3>
                     <input
                       type="text"
-                      placeholder="Search products by name..."
+                      placeholder={t('shop.searchPlaceholder')}
                       value={searchQuery}
                       onChange={handleSearchChange}
                       className="p-2 border border-gray-300 rounded-full w-full mb-5"
@@ -354,13 +356,13 @@ const Shop = () => {
                       theme === "dark" ? "bg-black " : "bg-white"
                     } p-4 rounded-lg mb-5`}
                   >
-                    <h3 className="text-xl font-semibold mb-3">Categories</h3>
+                    <h3 className="text-xl font-semibold mb-3"> {t('shop.categories.title')} </h3>
                     <ul className="space-y-2">
                       <li
                         className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("")}
                       >
-                        <div>All Categories</div>
+                        <div>{t('shop.categories.all')}</div>
                         <div>({products.length})</div>
                       </li>
                       <div className="divider"></div>
@@ -368,7 +370,7 @@ const Shop = () => {
                         className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Seeds & Plants")}
                       >
-                        <div>Seeds & Plants</div>
+                        <div>{t('shop.categories.Seeds&Plants')}</div>
                         <div>
                           (
                           {
@@ -384,7 +386,7 @@ const Shop = () => {
                         className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Farming Equipment")}
                       >
-                        <div>Farming Equipment</div>
+                        <div>{t('shop.categories.FarmingEquipment')}</div>
                         <div>
                           (
                           {
@@ -402,7 +404,7 @@ const Shop = () => {
                           handleCategoryClick("Fertilizers & Pesticides")
                         }
                       >
-                        <div>Fertilizers & Pesticides</div>
+                        <div>{t('shop.categories.fertilizers')}</div>
                         <div>
                           (
                           {
@@ -420,7 +422,7 @@ const Shop = () => {
                           handleCategoryClick("Agricultural Tools")
                         }
                       >
-                        <div>Agricultural Tools</div>
+                        <div>{t('shop.categories.tools')}</div>
                         <div>
                           (
                           {
@@ -436,7 +438,7 @@ const Shop = () => {
                         className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Vegetables")}
                       >
-                        <div>Vegetables</div>
+                        <div>{t('shop.categories.Vegetables')}</div>
                         <div>
                           (
                           {
@@ -451,7 +453,7 @@ const Shop = () => {
                         className="text-base-content flex justify-between cursor-pointer hover:text-green-700"
                         onClick={() => handleCategoryClick("Fruits")}
                       >
-                        <div>Fruits</div>
+                        <div>{t('shop.categories.fruits')}</div>
                         <div>
                           (
                           {
@@ -468,7 +470,7 @@ const Shop = () => {
                           handleCategoryClick("Fresh Fish & Seafood")
                         }
                       >
-                        <div>Fresh Fish & Seafood</div>
+                        <div>{t('shop.categories.fish')}</div>
                         <div>
                           (
                           {
@@ -486,7 +488,7 @@ const Shop = () => {
                           handleCategoryClick("Dairy & Milk Products")
                         }
                       >
-                        <div>Dairy & Milk Products</div>
+                        <div>{t('shop.categories.dairy')}</div>
                         <div>
                           (
                           {
@@ -507,7 +509,7 @@ const Shop = () => {
                     } p-4 rounded-xl mb-5`}
                   >
                     <h3 className="text-black text-xl font-semibold mb-3">
-                      Tags
+                    {t('shop.tags.title')}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       <span
@@ -517,7 +519,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Agriculture
+                        {t('shop.tags.Agriculture')}
                       </span>
                       <span
                         className={`${
@@ -526,7 +528,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Dairy
+                        {t('shop.tags.Dairy')}
                       </span>
                       <span
                         className={`${
@@ -535,7 +537,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Design
+                        {t('shop.tags.Design')}
                       </span>
                       <span
                         className={`${
@@ -544,7 +546,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Garden
+                        {t('shop.tags.Garden')}
                       </span>
                       <span
                         className={`${
@@ -553,7 +555,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Healthy
+                        {t('shop.tags.Healthy')}
                       </span>
                       <span
                         className={`${
@@ -562,7 +564,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Landscaping
+                        {t('shop.tags.Landscaping')}
                       </span>
                       <span
                         className={`${
@@ -571,7 +573,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Nature
+                        {t('shop.tags.Natural')}
                       </span>
                       <span
                         className={`${
@@ -580,7 +582,7 @@ const Shop = () => {
                             : "bg-gray-200"
                         } hover:bg-green-700 text-base-content hover:text-white px-3 py-1 rounded-full`}
                       >
-                        Organic
+                        {t('shop.tags.Organic')}
                       </span>
                     </div>
                   </div>
@@ -593,9 +595,9 @@ const Shop = () => {
                 onChange={handleSortChange}
                 className="py-2 px-4 border border-gray-300 rounded-full"
               >
-                <option value="">Default sorting</option>
-                <option value={1}>Price: Low to High</option>
-                <option value={-1}>Price: High to Low</option>
+                <option value=""> {t('shop.sortOptions.default')} </option>
+                <option value={1}> {t('shop.sortOptions.priceLowToHigh')} </option>
+                <option value={-1}> {t('shop.sortOptions.priceHighToLow')} </option>
               </select>
             </div>
           </div>
@@ -625,7 +627,7 @@ const Shop = () => {
                   : " disabled:bg-gray-300 "
               }`}
             >
-              Previous
+              {t('shop.previous')}
             </button>
 
             {Array.from({ length: totalPages }, (_, i) => (
@@ -653,7 +655,7 @@ const Shop = () => {
                   : " disabled:bg-gray-300 "
               }`}
             >
-              Next
+              {t('shop.next')}
             </button>
           </div>
         </div>

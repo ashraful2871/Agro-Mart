@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,7 @@ const ContactForm = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -88,13 +89,13 @@ const ContactForm = () => {
         {/* Form Section */}
         <div className="card-body p-2 lg:w-1/2 ">
           <div className="text-center">
-            <h1 className="font-bold text-base-content">GET TO CONTACT US</h1>
+            <h1 className="font-bold text-base-content"> {t('contactForm.title')} </h1>
             <p
               className={`mt-4 text-4xl font-bold ${
                 theme === "dark" ? "text-green-500" : "text-green-600"
               }`}
             >
-              Send Your Message
+              {t('contactForm.subtitle')}
             </p>
           </div>
 
@@ -111,12 +112,12 @@ const ContactForm = () => {
               {/* Full Name */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  Full Name*
+                  {t('contactForm.name')}
                 </label>
                 <input
                   type="text"
                   name="from_name"
-                  placeholder="Full Name"
+                  placeholder={t('contactForm.namePlaceholder')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -127,12 +128,12 @@ const ContactForm = () => {
               {/* Email Address */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  Email Address*
+                  {t('contactForm.email')}
                 </label>
                 <input
                   type="email"
                   name="from_email"
-                  placeholder="Email Address"
+                  placeholder={t('contactForm.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -143,12 +144,12 @@ const ContactForm = () => {
               {/* Phone */}
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-base-content">
-                  Phone
+                  {t('contactForm.phone')}
                 </label>
                 <input
                   type="tel"
                   name="tel"
-                  placeholder="Phone"
+                  placeholder={t('contactForm.phone')}
                   value={tel}
                   onChange={(e) => setTel(e.target.value)}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
@@ -158,12 +159,12 @@ const ContactForm = () => {
               {/* Subject */}
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-base-content">
-                  Subject
+                  {t('contactForm.subject')}
                 </label>
                 <input
                   type="text"
                   name="subject"
-                  placeholder="Subject"
+                  placeholder= {t('contactForm.subjectPlaceholder')}
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   required
@@ -174,12 +175,12 @@ const ContactForm = () => {
               {/* Message */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  Message
+                  {t('contactForm.message')}
                 </label>
                 <textarea
                   rows="4"
                   name="message"
-                  placeholder="Write Message..."
+                  placeholder= {t('contactForm.messagePlaceholder')}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
@@ -197,7 +198,7 @@ const ContactForm = () => {
                   type="submit"
                   className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300"
                 >
-                  Send Message →
+                  {t('contactForm.submit')} →
                 </button>
               )}
             </form>
