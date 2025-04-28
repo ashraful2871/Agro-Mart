@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
+const tempCartStorage = new Map();
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -917,9 +917,15 @@ async function run() {
 
     //sslcommarze
     app.post("/init-payment", async (req, res) => {
-      const { totalAmount, cartItems } = req.body;
+      const { totalAmount, cartItems, cartIds, userInfo } = req.body;
+      console.log(totalAmount, cartItems, cartIds);
       const tran_id = uuidv4(); // Unique transaction ID
 
+      tempCartStorage.set(tran_id, {
+        cartItems,
+        cartIds,
+        email: userInfo.email,
+      });
       const data = {
         total_amount: totalAmount,
         currency: "BDT", // Change to your currency
@@ -932,8 +938,8 @@ async function run() {
         product_name: cartItems.map((item) => item.name).join(", "),
         product_category: "general",
         product_profile: "general",
-        cus_name: "Customer Name", // Replace with dynamic data if available
-        cus_email: "customer@example.com",
+        cus_name: userInfo?.name || "Customer Name", // Replace with dynamic data if available
+        cus_email: userInfo?.email,
         cus_add1: "Dhaka",
         cus_city: "Dhaka",
         cus_country: "Bangladesh",
@@ -957,11 +963,141 @@ async function run() {
 
     // Handle success callback
     app.post("/payment/success", async (req, res) => {
-      const { tran_id, status } = req.body;
-      if (status === "VALID") {
-        // Update your database or perform actions here
-        res.redirect("http://localhost:5173/payment/success"); // Redirect to frontend success page
-      } else {
+      const paymentIntent = req.body;
+
+      if (paymentIntent.status !== "VALID") {
+        return res.redirect("http://localhost:5173/payment/fail");
+      }
+
+      try {
+        // Retrieve cart data from temporary storage
+        const { cartItems, cartIds, email } = tempCartStorage.get(
+          paymentIntent.tran_id
+        ) || {
+          cartItems: [],
+          cartIds: [],
+          email: null,
+        };
+
+        console.log("Retrieved cartItems:", cartItems);
+        console.log("Retrieved cartIds:", cartIds);
+        console.log("User email:", email);
+
+        if (!email) {
+          console.error("Email not found in temporary storage");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Fetch user data
+        const user = await usersCollection.findOne({ email: email });
+        if (!user) {
+          console.error("User not found for email:", email);
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Validate cart items
+        if (!cartItems.length || !cartIds.length) {
+          console.error("No cart items or cart IDs found in temporary storage");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Validate product IDs
+        const productIds = cartItems
+          .map((item) => {
+            try {
+              return new ObjectId(item.productId);
+            } catch (err) {
+              console.error(`Invalid productId: ${item.productId}`);
+              return null;
+            }
+          })
+          .filter((id) => id !== null);
+
+        if (productIds.length !== cartItems.length) {
+          console.error("Some productIds are invalid");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Fetch product data
+        const products = await productCollection
+          .find({
+            _id: { $in: productIds },
+          })
+          .toArray();
+
+        console.log("Found products:", products);
+
+        // Check stock availability
+        const stockErrors = [];
+        cartItems.forEach((item) => {
+          const product = products.find(
+            (p) => p._id.toString() === item.productId
+          );
+          if (!product) {
+            stockErrors.push(`Product not found (ID: ${item.productId})`);
+          } else if (parseFloat(product.stockQuantity) < (item.quantity || 1)) {
+            stockErrors.push(
+              `Not enough stock for ${item.name}. Available: ${
+                product.stockQuantity
+              }, Ordered: ${item.quantity || 1}`
+            );
+          }
+        });
+
+        if (stockErrors.length > 0) {
+          console.error("Stock validation failed. Errors:", stockErrors);
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Prepare payment information
+        const paymentInfo = {
+          email: user.email,
+          name: user.name || "Unknown",
+          totalAmount: parseFloat(paymentIntent.amount),
+          status: paymentIntent.status,
+          method: paymentIntent.card_type || "Unknown",
+          transactionId: paymentIntent.tran_id,
+          cartIds: cartIds,
+          cartItems: cartItems.map((item) => ({
+            productId: item.productId,
+            orderedQuantity: item.quantity || 1,
+            price: parseFloat(item.price),
+            name: item.name,
+          })),
+          date: new Date().toISOString(),
+          invoiceNo: Math.floor(100000 + Math.random() * 900000).toString(),
+          createdAt: new Date(),
+        };
+
+        // Update product stock quantities
+        const bulkUpdateOps = cartItems.map((item) => ({
+          updateOne: {
+            filter: { _id: new ObjectId(item.productId) },
+            update: {
+              $inc: { stockQuantity: -(item.quantity || 1) },
+              $set: { updatedAt: new Date() },
+            },
+          },
+        }));
+
+        await productCollection.bulkWrite(bulkUpdateOps);
+
+        // Save payment information
+        await paymentCollection.insertOne(paymentInfo);
+
+        // Clear the user's cart
+        await cartCollection.deleteMany({
+          _id: { $in: cartIds.map((id) => new ObjectId(id)) },
+        });
+
+        // Clean up temporary storage
+        tempCartStorage.delete(paymentIntent.tran_id);
+
+        // console.log("Payment saved to database:", paymentInfo);
+
+        res.redirect("http://localhost:5173/payment/success");
+      } catch (error) {
+        console.error("Error processing payment:", error);
         res.redirect("http://localhost:5173/payment/fail");
       }
     });

@@ -3,6 +3,7 @@ import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
   const [agree, setAgree] = useState(false);
@@ -10,19 +11,27 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
   const [loading, setLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-
+  const user = useAuth();
   const handleProceed = async () => {
     if (!agree || !selectedPayment) return;
 
     if (selectedPayment === "sslcommerz") {
       setLoading(true);
       try {
+        const userInfo = {
+          name: user?.displayName,
+          email: user?.email,
+        };
+
         const response = await axios.post(
           "http://localhost:5000/init-payment",
           {
+            userInfo,
             totalAmount,
+            cartIds: cartItems.map((item) => item._id),
             cartItems: cartItems.map((item) => ({
-              name: item.name, // Adjust based on your cart item structure
+              productId: item.productId, // ✅ Important
+              name: item.name,
               price: item.price,
               quantity:
                 JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
@@ -33,7 +42,7 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
 
         const { GatewayPageURL } = response.data;
         if (GatewayPageURL) {
-          window.location.href = GatewayPageURL; // Redirect to SSLCommerz payment page
+          window.location.href = GatewayPageURL;
         } else {
           alert("Failed to initialize payment");
         }
