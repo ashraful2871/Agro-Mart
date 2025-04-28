@@ -1,24 +1,24 @@
 {
-    "slider": {
-      "celebrateEid": "Celebrate Eid with",
-      "freshOrganicProduce": "Fresh Organic Produce",
-      "experienceJoy": "Experience the joy of Eid with our sustainably grown products.",
-      "eidHotSales": "Eid Hot sales 🔥",
-      "highQuality": "High Quality Fresh",
-      "organicFoods": "Organic Foods",
-      "experienceTaste": "Experience the taste of nature with organic farm products.",
-      "organicFood": "Organic Food",
-      "delivery": "Delivery",
-      "ecoFriendlySustainable": "We ensure eco-friendly and sustainable agriculture.",
-      "ecoFriendly": "Eco-Friendly",
-      "agriculture": "Agriculture",
-      "cultivatingBest": "Cultivating nature’s best with responsible farming.",
-      "pureAgriculture": "Pure Agriculture",
-      "product": "Product",
-      "freshDirectFarm": "Providing fresh and organic food directly from farms.",
-      "learnMore": "Learn More"
-    },
-    "agriculture": {
+  "slider": {
+    "celebrateEid": "Celebrate Eid with",
+    "freshOrganicProduce": "Fresh Organic Produce",
+    "experienceJoy": "Experience the joy of Eid with our sustainably grown products.",
+    "eidHotSales": "Eid Hot sales 🔥",
+    "highQuality": "High Quality Fresh",
+    "organicFoods": "Organic Foods",
+    "experienceTaste": "Experience the taste of nature with organic farm products.",
+    "organicFood": "Organic Food",
+    "delivery": "Delivery",
+    "ecoFriendlySustainable": "We ensure eco-friendly and sustainable agriculture.",
+    "ecoFriendly": "Eco-Friendly",
+    "agriculture": "Agriculture",
+    "cultivatingBest": "Cultivating nature’s best with responsible farming.",
+    "pureAgriculture": "Pure Agriculture",
+    "product": "Product",
+    "freshDirectFarm": "Providing fresh and organic food directly from farms.",
+    "learnMore": "Learn More"
+  },
+  "agriculture": {
     "workProcess": "Work Process",
     "agricultureProcess": "The Agriculture Process",
     "description": "We take part in many key international agricultural exhibitions, which gives us the opportunity to find new partners, learn new trends in the development of the agricultural sector, share experiences, present our products and the latest innovations.",
@@ -79,7 +79,6 @@
 
     "weather_based_services": "Weather-Based Services",
     "weather_based_services_desc": "Get farming advice and alerts based on real-time weather forecasts."
-
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -116,51 +115,61 @@
     }
   },
   "parallax": {
-      "title": "What Makes Us Special?",
-      "description": "Agriculture & Eco Farming",
-      "buttonText": "Discover More",
-      "buttonLink": "/explore"
-    },
-    "testimonials": {
-        "title": "Our Testimonials",
-        "subTitle": "Hear What Our Global Clients Say About Us",
-        "testimonialsList": [
-          {
-            "name": "John Doe",
-            "position": "Farmer",
-            "location": "Dhaka, Bangladesh",
-            "testimonial": "The quality of the organic products from this farm is outstanding! It’s transformed my approach to sustainable farming.",
-            "image": "/images/testimonial1.jpg"
-          },
-          {
-            "name": "Jane Smith",
-            "position": "Agriculture Expert",
-            "location": "Chittagong, Bangladesh",
-            "testimonial": "I’ve been working with this team for years, and their commitment to quality and sustainability has never wavered. Truly impressive!",
-            "image": "/images/testimonial2.jpg"
-          },
-          {
-            "name": "Ali Rahman",
-            "position": "Customer",
-            "location": "Rajshahi, Bangladesh",
-            "testimonial": "I switched to their organic products, and I can see the difference in the taste and quality. Highly recommend!",
-            "image": "/images/testimonial3.jpg"
-          }
-        ]
-    },
-    "aboutUs":{
-        "projectName": "AGRO MART"
-    },
-    "aboutAgro": {
-        "title": "About Agro Mart",
-        "subtitle": "Your Trusted Partner in Sustainable Agriculture",
-        "description": "Agro Mart is a leading provider of organic and sustainable farming solutions. We are committed to promoting eco-friendly practices and delivering high-quality agricultural products.",
-        "agriculture": "Agriculture & Foods",
-        "agriculture_desc": "We specialize in modern farming techniques and food production, ensuring high-quality, organic products for global markets.",
-        "Vegetables" : "Vegetables & Fruits",
-        "vegetables_desc": "Our farms produce a wide variety of fresh, organic vegetables and fruits, grown with care and sustainability in mind.",
-        "mission": " By converting non-utilized lands into productive farms, we provide agricultural livelihoods for farmers, employ youth, and contribute to a greener, more sustainable future.",
-        "exploreMore": "Explore More",
-        "sign":"Co-Founder, Agro"
+    "title": "What Makes Us Special?",
+    "description": "Agriculture & Eco Farming",
+    "buttonText": "Discover More",
+    "buttonLink": "/explore"
+  },
+  "testimonials": {
+    "title": "Our Testimonials",
+    "subTitle": "Hear What Our Global Clients Say About Us",
+    "testimonialsList": [
+      {
+        "name": "John Doe",
+        "position": "Farmer",
+        "location": "Dhaka, Bangladesh",
+        "testimonial": "The quality of the organic products from this farm is outstanding! It’s transformed my approach to sustainable farming.",
+        "image": "/images/testimonial1.jpg"
+      },
+      {
+        "name": "Jane Smith",
+        "position": "Agriculture Expert",
+        "location": "Chittagong, Bangladesh",
+        "testimonial": "I’ve been working with this team for years, and their commitment to quality and sustainability has never wavered. Truly impressive!",
+        "image": "/images/testimonial2.jpg"
+      },
+      {
+        "name": "Ali Rahman",
+        "position": "Customer",
+        "location": "Rajshahi, Bangladesh",
+        "testimonial": "I switched to their organic products, and I can see the difference in the taste and quality. Highly recommend!",
+        "image": "/images/testimonial3.jpg"
+      }
+    ]
+  },
+  "aboutUs": {
+    "projectName": "AGRO MART"
+  },
+  "aboutAgro": {
+    "title": "About Agro Mart",
+    "subtitle": "Your Trusted Partner in Sustainable Agriculture",
+    "description": "Agro Mart is a leading provider of organic and sustainable farming solutions. We are committed to promoting eco-friendly practices and delivering high-quality agricultural products.",
+    "agriculture": "Agriculture & Foods",
+    "agriculture_desc": "We specialize in modern farming techniques and food production, ensuring high-quality, organic products for global markets.",
+    "Vegetables": "Vegetables & Fruits",
+    "vegetables_desc": "Our farms produce a wide variety of fresh, organic vegetables and fruits, grown with care and sustainability in mind.",
+    "mission": " By converting non-utilized lands into productive farms, we provide agricultural livelihoods for farmers, employ youth, and contribute to a greener, more sustainable future.",
+    "exploreMore": "Explore More",
+    "sign": "Co-Founder, Agro"
+  },
+  "dashboard": {
+    "seller": {
+      "my_profile": "My Profile",
+      "add_product": "Add Product",
+      "manage_product": "Manage Product",
+      "customer_orders": "Customer Orders",
+      "doctor": "Crop Doctor",
+      "weather": "Weather"
     }
   }
+}
