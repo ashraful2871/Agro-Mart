@@ -3,9 +3,12 @@ import { BiSupport } from "react-icons/bi";
 import { ImLocation } from "react-icons/im";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 const ContactInfo = () => {
   const { theme } = useContext(ThemeContext);
+  const {t} = useTranslation();
+
   return (
     <div className="py-20 grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center p-2">
       <div className="max-w-lg">
@@ -14,16 +17,13 @@ const ContactInfo = () => {
             theme === "dark" ? "text-green-500" : "text-green-700"
           } uppercase text-xs font-bold `}
         >
-          Contact Info
+          {t('contactInfo.title')}
         </h4>
         <h3 className="text-4xl  font-bold font-syne my-4">
-          Get in Touch
+        {t('contactInfo.subtitle')}
         </h3>
         <p className="text-sm ">
-          You can contact us through email, phone, or by filling out the form
-          below. We aim to respond to all inquiries as quickly as possible and
-          ensure your experience with us is seamless. Your communication is
-          important to us, and we look forward to connecting with you!
+        {t('contactInfo.description')}
         </p>
         <div className="">
           <div className="my-4 flex">
@@ -31,8 +31,8 @@ const ContactInfo = () => {
               <ImLocation />
             </div>
             <div>
-              <h2 className="font-bold text-lg">Location</h2>
-              <p>abc Dhaka Bangladesh</p>
+              <h2 className="font-bold text-lg">{t('contactInfo.location.title')}</h2>
+              <p>{t('contactInfo.location.address')}</p>
             </div>
           </div>
           <div className="flex">
@@ -40,8 +40,8 @@ const ContactInfo = () => {
               <MdOutlineMarkEmailRead />
             </div>
             <div>
-              <h2 className="font-bold text-lg">Email</h2>
-              <p>contact@gmail.com</p>
+              <h2 className="font-bold text-lg">{t('contactInfo.email.title')}</h2>
+              <p>{t('contactInfo.email.address')}</p>
             </div>
           </div>
           <div className="my-4 flex">
@@ -49,8 +49,8 @@ const ContactInfo = () => {
               <BiSupport />
             </div>
             <div>
-              <h2 className="font-bold text-lg">Support</h2>
-              <p>01712345678</p>
+              <h2 className="font-bold text-lg">{t('contactInfo.support.title')}</h2>
+              <p>{t('contactInfo.support.phone')}</p>
             </div>
           </div>
         </div>
@@ -76,9 +76,9 @@ const ContactInfo = () => {
 
         {/* Farm Info Card */}
         <div className="relative mt-48 space-y-2 py-6 px-8 bg-base-200 rounded-xl z-20 w-fit">
-          <h2 className="font-bold text-lg">Dhaka Farm</h2>
-          <p className="text-base-content">abc Dhaka Bangladesh</p>
-          <p className="font-bold text-base-content">01712345678</p>
+          <h2 className="font-bold text-lg">{t('contactInfo.farmCard.title')}</h2>
+          <p className="text-base-content">{t('contactInfo.farmCard.address')}</p>
+          <p className="font-bold text-base-content">{t('contactInfo.farmCard.phone')}</p>
         </div>
       </div>
     </div>
