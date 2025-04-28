@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ImageText = () => {
+  const {t} = useTranslation();
+
   return (
     <div
       style={{
@@ -16,7 +19,7 @@ const ImageText = () => {
       }}
     >
       <p className="font-syne text-5xl md:text-7xl xl:text-9xl my-10">
-        AGRO MART
+        {t('aboutUs.projectName')}
       </p>
     </div>
   );

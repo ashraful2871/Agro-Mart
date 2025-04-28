@@ -12,6 +12,7 @@ import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -193,7 +194,7 @@ const Navbar = () => {
                 style={{ color: "", backgroundColor: "transparent" }}
                 to="/dashboard/wishlist"
               >
-                <FaRegHeart className="text-3xl" />
+                <FiHeart className="text-3xl" />
               </NavLink>
             </div>
 

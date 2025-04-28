@@ -1,0 +1,166 @@
+{
+    "slider": {
+      "celebrateEid": "Celebrate Eid with",
+      "freshOrganicProduce": "Fresh Organic Produce",
+      "experienceJoy": "Experience the joy of Eid with our sustainably grown products.",
+      "eidHotSales": "Eid Hot sales 🔥",
+      "highQuality": "High Quality Fresh",
+      "organicFoods": "Organic Foods",
+      "experienceTaste": "Experience the taste of nature with organic farm products.",
+      "organicFood": "Organic Food",
+      "delivery": "Delivery",
+      "ecoFriendlySustainable": "We ensure eco-friendly and sustainable agriculture.",
+      "ecoFriendly": "Eco-Friendly",
+      "agriculture": "Agriculture",
+      "cultivatingBest": "Cultivating nature’s best with responsible farming.",
+      "pureAgriculture": "Pure Agriculture",
+      "product": "Product",
+      "freshDirectFarm": "Providing fresh and organic food directly from farms.",
+      "learnMore": "Learn More"
+    },
+    "agriculture": {
+    "workProcess": "Work Process",
+    "agricultureProcess": "The Agriculture Process",
+    "description": "We take part in many key international agricultural exhibitions, which gives us the opportunity to find new partners, learn new trends in the development of the agricultural sector, share experiences, present our products and the latest innovations.",
+    "scheduleExperience": "Schedule Your Experience",
+    "professionalAdvice": "Get Professional Advice",
+    "meetExperts": "Meet Our Expert People",
+    "getBestProducts": "Now Get A Best Products",
+    "priorityDescription": "When you work with us, you’ll see that absolute conditions is our priority.",
+    "yearsExperience": "Years of experience"
+  },
+  "service": {
+    "ourServices": "Our Services",
+    "whatWeProvide": "What We Provide",
+    "bestServices": "Best Services",
+    "nationalBestServicesAwards": "National Best Services Awards",
+    "rating": "Rating",
+    "forAgroService": "For Agro Service",
+    "service1": "Service 1",
+    "service2": "Service 2",
+    "service3": "Service 3",
+    "service4": "Service 4",
+    "service5": "Service 5",
+    "professionalAdvice": "Professional Advice",
+    "expertMeet": "Meet Experts",
+    "scheduleExperience": "Schedule Your Experience",
+    "getBestProducts": "Get The Best Products",
+    "priorityDescription": "When you work with us, you will see that perfect terms are our priority.",
+
+    "nutrition_solutions": "Nutrition Solutions",
+    "nutrition_solutions_desc": "We provide sustainable farming solutions tailored to your needs.",
+
+    "product_supplies": "Product Supplies",
+    "product_supplies_desc": "High-quality supplies to boost your agricultural productivity.",
+
+    "fresh_vegetables": "Fresh Vegetables",
+    "fresh_vegetables_desc": "Fresh, organic vegetables straight from the farm to your table.",
+
+    "organic_fruits": "Organic Fruits",
+    "organic_fruits_desc": "Enjoy a variety of delicious organic fruits, grown naturally.",
+
+    "dairy_products": "Dairy Products",
+    "dairy_products_desc": "Fresh and organic dairy products sourced directly from our farms.",
+
+    "poultry_products": "Poultry Products",
+    "poultry_products_desc": "Premium quality poultry products raised in eco-friendly farms.",
+
+    "crop_protection": "Crop Protection",
+    "crop_protection_desc": "Effective and sustainable crop protection services for higher yield.",
+
+    "soil_health_management": "Soil Health Management",
+    "soil_health_management_desc": "Optimize your soil's fertility and productivity with our expert services.",
+
+    "water_management": "Water Management",
+    "water_management_desc": "Sustainable and efficient water resource management for farming.",
+
+    "farm_mechanization": "Farm Mechanization",
+    "farm_mechanization_desc": "Modernize your farm with our latest mechanization solutions.",
+
+    "weather_based_services": "Weather-Based Services",
+    "weather_based_services_desc": "Get farming advice and alerts based on real-time weather forecasts."
+
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subTitle": "Do You Have Any Questions?",
+    "description": "Explore the frequently asked questions below for quick solutions to common inquiries. We’ve got you covered with helpful insights and support.",
+    "faqs": [
+      {
+        "question": "What are the best crops to grow in this region?",
+        "answer": "The best crops to grow depend on the climate and soil conditions. For this region, some suitable crops include wheat, corn, and soybeans."
+      },
+      {
+        "question": "How can we improve soil fertility?",
+        "answer": "Soil fertility can be improved through crop rotation, the use of organic fertilizers, and adding compost or manure to enrich the soil."
+      },
+      {
+        "question": "What are the benefits of sustainable farming practices?",
+        "answer": "Sustainable farming practices help preserve natural resources, reduce the carbon footprint, and ensure the long-term health of the ecosystem and the farm's productivity."
+      }
+    ]
+  },
+  "whyChooseUs": {
+    "title": "Why Choose Us",
+    "subtitle": "We Are Different From Other Farming",
+    "description": "Our farming methods are sustainable, eco-friendly, and designed to deliver the highest quality produce. We prioritize nature and health in everything we do.",
+    "sustainablePractices": "Sustainable Practices",
+    "sustainablePracticesDesc": "We use eco-friendly techniques to ensure the land remains fertile for future generations.",
+    "organicCertification": "Organic Certification",
+    "organicCertificationDesc": "All our products are certified organic, free from harmful chemicals and pesticides.",
+    "checkmarks": {
+      "natural": "100% Natural",
+      "locallySourced": "Locally Sourced",
+      "ecoFriendly": "Eco-Friendly",
+      "freshHealthy": "Fresh & Healthy"
+    }
+  },
+  "parallax": {
+      "title": "What Makes Us Special?",
+      "description": "Agriculture & Eco Farming",
+      "buttonText": "Discover More",
+      "buttonLink": "/explore"
+    },
+    "testimonials": {
+        "title": "Our Testimonials",
+        "subTitle": "Hear What Our Global Clients Say About Us",
+        "testimonialsList": [
+          {
+            "name": "John Doe",
+            "position": "Farmer",
+            "location": "Dhaka, Bangladesh",
+            "testimonial": "The quality of the organic products from this farm is outstanding! It’s transformed my approach to sustainable farming.",
+            "image": "/images/testimonial1.jpg"
+          },
+          {
+            "name": "Jane Smith",
+            "position": "Agriculture Expert",
+            "location": "Chittagong, Bangladesh",
+            "testimonial": "I’ve been working with this team for years, and their commitment to quality and sustainability has never wavered. Truly impressive!",
+            "image": "/images/testimonial2.jpg"
+          },
+          {
+            "name": "Ali Rahman",
+            "position": "Customer",
+            "location": "Rajshahi, Bangladesh",
+            "testimonial": "I switched to their organic products, and I can see the difference in the taste and quality. Highly recommend!",
+            "image": "/images/testimonial3.jpg"
+          }
+        ]
+    },
+    "aboutUs":{
+        "projectName": "AGRO MART"
+    },
+    "aboutAgro": {
+        "title": "About Agro Mart",
+        "subtitle": "Your Trusted Partner in Sustainable Agriculture",
+        "description": "Agro Mart is a leading provider of organic and sustainable farming solutions. We are committed to promoting eco-friendly practices and delivering high-quality agricultural products.",
+        "agriculture": "Agriculture & Foods",
+        "agriculture_desc": "We specialize in modern farming techniques and food production, ensuring high-quality, organic products for global markets.",
+        "Vegetables" : "Vegetables & Fruits",
+        "vegetables_desc": "Our farms produce a wide variety of fresh, organic vegetables and fruits, grown with care and sustainability in mind.",
+        "mission": " By converting non-utilized lands into productive farms, we provide agricultural livelihoods for farmers, employ youth, and contribute to a greener, more sustainable future.",
+        "exploreMore": "Explore More",
+        "sign":"Co-Founder, Agro"
+    }
+  }

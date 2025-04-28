@@ -3,9 +3,11 @@ import ServiceSlides from "./ServiceSlides";
 import { useContext } from "react";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import ServiceCard from "./services-card/ServiceCard";
+import { useTranslation } from "react-i18next";
 
 const Service = () => {
   const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 pt-20 lg:ml-10">
@@ -15,9 +17,9 @@ const Service = () => {
             theme === "dark" ? "text-green-600" : "text-green-700"
           } uppercase font-bold text-lg`}
         >
-          Our services
+          {t('service.ourServices')}
         </h4>
-        <h3 className="font-bold text-3xl">What We Provide</h3>
+        <h3 className="font-bold text-3xl">{t('service.whatWeProvide')}</h3>
         <div className="flex flex-col lg:flex-row space-x-4 items-start mx-auto">
           <div className="w-16 h-16 min-w-[4rem] rounded-full overflow-hidden mx-auto">
             <img
@@ -27,13 +29,13 @@ const Service = () => {
             />
           </div>
           <div className="lg:text-left">
-            <h4 className="font-bold">Best Services</h4>
+            <h4 className="font-bold">{t('service.bestServices')}</h4>
             <p
               className={`${
                 theme === "dark" ? "text-gray-300" : "text-gray-600"
               } text-base`}
             >
-              National Best Services Awards
+              {t('service.nationalBestServicesAwards')}
             </p>
             <p
               className={`${
@@ -43,7 +45,7 @@ const Service = () => {
               <span className="text-yellow-400">
                 <FaStar />
               </span>{" "}
-              5/5 For The Agro Service
+              {t('service.rating')} 5/5 {t('service.forAgroService')}
             </p>
           </div>
         </div>
