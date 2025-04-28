@@ -19,6 +19,26 @@
       "learnMore": "Learn More"
     },
     "agriculture": {
+  "slider": {
+    "celebrateEid": "Celebrate Eid with",
+    "freshOrganicProduce": "Fresh Organic Produce",
+    "experienceJoy": "Experience the joy of Eid with our sustainably grown products.",
+    "eidHotSales": "Eid Hot sales 🔥",
+    "highQuality": "High Quality Fresh",
+    "organicFoods": "Organic Foods",
+    "experienceTaste": "Experience the taste of nature with organic farm products.",
+    "organicFood": "Organic Food",
+    "delivery": "Delivery",
+    "ecoFriendlySustainable": "We ensure eco-friendly and sustainable agriculture.",
+    "ecoFriendly": "Eco-Friendly",
+    "agriculture": "Agriculture",
+    "cultivatingBest": "Cultivating nature’s best with responsible farming.",
+    "pureAgriculture": "Pure Agriculture",
+    "product": "Product",
+    "freshDirectFarm": "Providing fresh and organic food directly from farms.",
+    "learnMore": "Learn More"
+  },
+  "agriculture": {
     "workProcess": "Work Process",
     "agricultureProcess": "The Agriculture Process",
     "description": "We take part in many key international agricultural exhibitions, which gives us the opportunity to find new partners, learn new trends in the development of the agricultural sector, share experiences, present our products and the latest innovations.",
@@ -79,7 +99,6 @@
 
     "weather_based_services": "Weather-Based Services",
     "weather_based_services_desc": "Get farming advice and alerts based on real-time weather forecasts."
-
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -242,4 +261,135 @@
         "previous": "Previous",
         "next": "Next"
       }
+  },
+  "testimonials": {
+    "title": "Our Testimonials",
+    "subTitle": "Hear What Our Global Clients Say About Us",
+    "testimonialsList": [
+      {
+        "name": "John Doe",
+        "position": "Farmer",
+        "location": "Dhaka, Bangladesh",
+        "testimonial": "The quality of the organic products from this farm is outstanding! It’s transformed my approach to sustainable farming.",
+        "image": "/images/testimonial1.jpg"
+      },
+      {
+        "name": "Jane Smith",
+        "position": "Agriculture Expert",
+        "location": "Chittagong, Bangladesh",
+        "testimonial": "I’ve been working with this team for years, and their commitment to quality and sustainability has never wavered. Truly impressive!",
+        "image": "/images/testimonial2.jpg"
+      },
+      {
+        "name": "Ali Rahman",
+        "position": "Customer",
+        "location": "Rajshahi, Bangladesh",
+        "testimonial": "I switched to their organic products, and I can see the difference in the taste and quality. Highly recommend!",
+        "image": "/images/testimonial3.jpg"
+      }
+    ]
+  },
+  "aboutUs": {
+    "projectName": "AGRO MART"
+  },
+  "aboutAgro": {
+    "title": "About Agro Mart",
+    "subtitle": "Your Trusted Partner in Sustainable Agriculture",
+    "description": "Agro Mart is a leading provider of organic and sustainable farming solutions. We are committed to promoting eco-friendly practices and delivering high-quality agricultural products.",
+    "agriculture": "Agriculture & Foods",
+    "agriculture_desc": "We specialize in modern farming techniques and food production, ensuring high-quality, organic products for global markets.",
+    "Vegetables": "Vegetables & Fruits",
+    "vegetables_desc": "Our farms produce a wide variety of fresh, organic vegetables and fruits, grown with care and sustainability in mind.",
+    "mission": " By converting non-utilized lands into productive farms, we provide agricultural livelihoods for farmers, employ youth, and contribute to a greener, more sustainable future.",
+    "exploreMore": "Explore More",
+    "sign": "Co-Founder, Agro"
+  },
+  "dashboard": {
+    "seller": {
+      "my_profile": "My Profile",
+      "add_product": "Add Product",
+      "manage_product": "Manage Product",
+      "customer_orders": "Customer Orders",
+      "doctor": "Crop Doctor",
+      "weather": "Weather",
+      "add-product": {
+        "title": "Add Product",
+        "product_name_label": "Product Name",
+        "product_name_placeholder": "Product Name",
+        "category_label": "Category",
+        "category_placeholder": "Select a category",
+        "categories": {
+          "seeds_plants": "Seeds & Plants",
+          "farming_equipment": "Farming Equipment",
+          "fertilizers_pesticides": "Fertilizers & Pesticides",
+          "agricultural_tools": "Agricultural Tools",
+          "vegetables": "Vegetables",
+          "fruits": "Fruits",
+          "fish_seafood": "Fresh Fish & Seafood",
+          "dairy_milk": "Dairy & Milk Products"
+        },
+        "image_label": "Upload Image",
+        "price_label": "Price",
+        "price_placeholder": "Price",
+        "description_label": "Description",
+        "description_placeholder": "Product Description",
+        "stock_quantity_label": "Stock Quantity",
+        "stock_quantity_placeholder": "Stock Quantity",
+        "submit_button": "Add Product",
+        "toast_success": "Product successfully added!",
+        "toast_image_error": "Image upload failed",
+        "error": "An error occurred while adding the product."
+      },
+      "manage-product": {
+        "title": "Manage Products",
+        "no_products": "No products available. Please add some products.",
+        "fetch_error": "Failed to fetch products.",
+        "format_error": "Fetched data is not in the expected format.",
+        "try_again": "Please try again later.",
+        "update_button": "Update",
+        "delete_button": "Delete",
+        "swal": {
+          "confirm_title": "Are you sure?",
+          "confirm_text": "Do you want to delete this product?",
+          "confirm_button": "Yes, delete it!",
+          "cancel_button": "Cancel",
+          "success_title": "Deleted!",
+          "success_text": "The product has been deleted.",
+          "error_title": "Error!",
+          "error_text": "Something went wrong while deleting the product."
+        }
+      }
+    }
+  },
+  "profile": {
+    "welcome": "Welcome, {{name}}!",
+    "role_not_found": "Role Not Found",
+    "no_name_provided": "No Name Provided",
+    "no_email_provided": "No email provided",
+    "edit_profile": "Edit Profile",
+    "apply_farmer": "Apply for Became a Farmer",
+    "loading": "Loading...",
+    "user_not_found": "User not found!",
+    "swal": {
+      "title": "Do you want to become a farmer?",
+      "text": "This action will update your role to 'farmer'.",
+      "confirm": "Yes, I want to be a farmer",
+      "cancel": "Cancel",
+      "success_title": "Success!",
+      "success_text": "You are now a farmer!",
+      "failed_title": "Failed!",
+      "failed_text": "Could not update role.",
+      "error_title": "Error!",
+      "error_text": "Something went wrong."
+    },
+    "modal": {
+      "title": "Update Profile",
+      "name_label": "Name",
+      "email_label": "Email",
+      "cancel": "Cancel",
+      "update": "Update",
+      "toast_success": "Profile updated successfully!",
+      "toast_error": "Update failed: {{error}}"
+    }
   }
+}

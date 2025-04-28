@@ -12,11 +12,12 @@ import { logOut } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import UserMenu from "../dashboard/user-menu/UserMenu";
-
+import { useTranslation } from "react-i18next";
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
   const [role] = useRole();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   console.log(role);
   const signOutUser = async () => {
     try {
@@ -44,7 +45,7 @@ const Dashboard = () => {
                   src="https://i.ibb.co.com/0pKYrs73/agriMart.png"
                   alt="AgroMart"
                 />
-                Agro Mart
+                {t("aboutUs.projectName")}
               </Link>
             </div>
 
@@ -65,8 +66,7 @@ const Dashboard = () => {
                   onClick={signOutUser}
                   className="flex items-center p-2 text-base font-bold"
                 >
-                  Logout
-                  <LuLogOut />
+                  {t("dashboard.logout")} <LuLogOut />
                 </button>
               </li>
             </ul>
