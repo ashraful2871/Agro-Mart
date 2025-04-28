@@ -162,6 +162,47 @@
     "exploreMore": "Explore More",
     "sign": "Co-Founder, Agro"
   },
+  "shop": {
+    "title": "Product Listing",
+    "search": "Search",
+    "searchPlaceholder": "Search products by name...",
+    "categories": {
+      "title": "Categories",
+      "all": "All Categories",
+      "Seeds&Plants": "Seeds & Plants",
+      "FarmingEquipment": "Farming Equipment",
+      "fertilizers": "Fertilizers & Pesticides",
+      "tools": "Agricultural Tools",
+      "vegetables": "Vegetables",
+      "fruits": "Fruits",
+      "dairy": "Dairy Products",
+      "fish": "Fresh Fish & Seafood"
+    },
+    "tags": {
+      "title": "Tags",
+      "Agriculture": "Agriculture",
+      "Dairy": "Dairy",
+      "Design": "Design",
+      "Garden": "Garden",
+      "Healthy": "Healthy",
+      "Landscaping": "Landscaping",
+      "Organic": "Organic",
+      "Natural": "Natural"
+    },
+    "showing": "Showing",
+    "products": "Products",
+    "filter": "Filter",
+    "sortOptions": {
+      "default": "Default sorting",
+      "popularity": "Sort by popularity",
+      "rating": "Sort by average rating",
+      "latest": "Sort by latest",
+      "priceLowToHigh": "Price: Low to High",
+      "priceHighToLow": "Price: High to Low"
+    },
+    "previous": "Previous",
+    "next": "Next"
+  },
   "dashboard": {
     "seller": {
       "my_profile": "My Profile",
@@ -215,6 +256,32 @@
           "success_text": "The product has been deleted.",
           "error_title": "Error!",
           "error_text": "Something went wrong while deleting the product."
+        },
+        "customer-orders": {
+          "email_placeholder": "Search by Customer email",
+          "status_label": "Status",
+          "status_options": {
+            "pending": "Pending",
+            "delivered": "Delivered",
+            "processing": "Processing"
+          },
+          "order_limit_label": "Order Limits",
+          "order_limit_options": {
+            "10": "Last 10 days Orders",
+            "50": "Last 50 days Orders",
+            "100": "Last 100 days Orders"
+          },
+          "method_label": "Method",
+          "method_options": {
+            "stripe": "Stripe",
+            "card": "Card",
+            "online": "Online"
+          },
+          "start_date_label": "Start Date",
+          "end_date_label": "End Date",
+          "download_button": "Download All Orders",
+          "reset_button": "Reset",
+          "download_error": "Download failed: {{error}}"
         }
       }
     }

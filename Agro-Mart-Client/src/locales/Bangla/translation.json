@@ -162,6 +162,47 @@
     "exploreMore": "আরও দেখুন",
     "sign": "সহ-প্রতিষ্ঠাতা, অ্যাগ্রো"
   },
+  "shop": {
+    "title": "পণ্যের তালিকা",
+    "search": "অনুসন্ধান করুন",
+    "searchPlaceholder": "পণ্যের নাম দ্বারা অনুসন্ধান করুন...",
+    "categories": {
+      "title": "বিভাগসমূহ",
+      "all": "সকল বিভাগ",
+      "Seeds&Plants": "বীজ ও গাছপালা",
+      "FarmingEquipment": "কৃষি যন্ত্রপাতি",
+      "fertilizers": "সার ও কীটনাশক",
+      "tools": "কৃষি সরঞ্জাম",
+      "vegetables": "শাকসবজি",
+      "fruits": "ফলমূল",
+      "dairy": "দুগ্ধজাত পণ্য",
+      "fish": "তাজা মাছ ও সামুদ্রিক খাবার"
+    },
+    "tags": {
+      "title": "ট্যাগসমূহ",
+      "Agriculture": "কৃষি",
+      "Dairy": "দুগ্ধ",
+      "Design": "ডিজাইন",
+      "Garden": "বাগান",
+      "Healthy": "স্বাস্থ্যকর",
+      "Landscaping": "ভূদৃশ্য নির্মাণ",
+      "Organic": "জৈব",
+      "Natural": "প্রাকৃতিক"
+    },
+    "showing": "প্রদর্শিত হচ্ছে",
+    "products": "পণ্যসমূহ",
+    "filter": "ফিল্টার",
+    "sortOptions": {
+      "default": "ডিফল্ট ক্রম",
+      "popularity": "জনপ্রিয়তার ভিত্তিতে সাজান",
+      "rating": "গড় রেটিং অনুযায়ী সাজান",
+      "latest": "সর্বশেষ অনুযায়ী সাজান",
+      "priceLowToHigh": "দাম: কম থেকে বেশি",
+      "priceHighToLow": "দাম: বেশি থেকে কম"
+    },
+    "previous": "পূর্ববর্তী",
+    "next": "পরবর্তী"
+  },
   "dashboard": {
     "seller": {
       "my_profile": "আমার প্রোফাইল",
@@ -216,6 +257,32 @@
           "error_title": "ত্রুটি!",
           "error_text": "পণ্য মুছতে গিয়ে কিছু ভুল হয়েছে।"
         }
+      },
+      "customer-orders": {
+        "email_placeholder": "গ্রাহকের ইমেল দ্বারা অনুসন্ধান করুন",
+        "status_label": "স্থিতি",
+        "status_options": {
+          "pending": "মুলতুবি",
+          "delivered": "বিতরণ করা হয়েছে",
+          "processing": "প্রক্রিয়াকরণ"
+        },
+        "order_limit_label": "অর্ডার সীমা",
+        "order_limit_options": {
+          "10": "গত ১০ দিনের অর্ডার",
+          "50": "গত ৫০ দিনের অর্ডার",
+          "100": "গত ১০০ দিনের অর্ডার"
+        },
+        "method_label": "পদ্ধতি",
+        "method_options": {
+          "stripe": "স্ট্রাইপ",
+          "card": "কার্ড",
+          "online": "অনলাইন"
+        },
+        "start_date_label": "শুরুর তারিখ",
+        "end_date_label": "শেষের তারিখ",
+        "download_button": "সমস্ত অর্ডার ডাউনলোড করুন",
+        "reset_button": "রিসেট",
+        "download_error": "ডাউনলোড ব্যর্থ হয়েছে: {{error}}"
       }
     }
   },
