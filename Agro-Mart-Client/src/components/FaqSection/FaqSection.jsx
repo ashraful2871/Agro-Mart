@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import FaqSectionsImageOne from "../../assets/senior-hardworking-farmer-agronomist-soybean-field-checking-crops-before-harvest.jpg";
 import FaqSectionsImageTwo from "../../assets/positive-mature-man-carrying-basket-with-fresh-strawberries.jpg";
 import { ThemeContext } from "../../provider/ThemeProvider";
-
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
@@ -12,6 +11,7 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 
 // MUI styled components
 const Accordion = styled((props) => (
@@ -56,6 +56,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 const FaqSection = () => {
   const [expanded, setExpanded] = useState(false);
   const { theme } = useContext(ThemeContext);
+  const {t} = useTranslation();
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -63,19 +64,16 @@ const FaqSection = () => {
 
   const faqs = [
     {
-      question: "What are the best crops to grow in this region?",
-      answer:
-        "The best crops to grow depend on the climate and soil conditions. For this region, some suitable crops include wheat, corn, and soybeans.",
+      question: t('faq.faqs.0.question'),
+      answer: t('faq.faqs.0.answer'),
     },
     {
-      question: "How can we improve soil fertility?",
-      answer:
-        "Soil fertility can be improved through crop rotation, the use of organic fertilizers, and adding compost or manure to enrich the soil.",
+      question: t('faq.faqs.1.question'),
+      answer: t('faq.faqs.1.answer'),
     },
     {
-      question: "What are the benefits of sustainable farming practices?",
-      answer:
-        "Sustainable farming practices help preserve natural resources, reduce the carbon footprint, and ensure the long-term health of the ecosystem and the farm's productivity.",
+      question: t('faq.faqs.2.question'),
+      answer: t('faq.faqs.2.answer'),
     },
   ];
 
@@ -97,19 +95,17 @@ const FaqSection = () => {
                 theme === "dark" ? "text-green-600" : "text-green-700"
               } text-xl`}
             >
-              Frequently Asked Questions
+              {t('faq.title')}
             </h3>
             <h3
               className={`${
                 theme === "dark" ? "text-green-600" : "text-green-700"
               } text-xl md:text-5xl font-bold my-2 font-syne`}
             >
-              Do You Have Any Questions ?
+              {t('faq.subTitle')}
             </h3>
             <p>
-              Explore the frequently asked questions below for quick solutions
-              to common inquiries. We’ve got you covered with helpful insights
-              and support.
+              {t('faq.description')}
             </p>
           </div>
         </div>

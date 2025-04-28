@@ -80,5 +80,87 @@
     "weather_based_services": "Weather-Based Services",
     "weather_based_services_desc": "Get farming advice and alerts based on real-time weather forecasts."
 
-  }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subTitle": "Do You Have Any Questions?",
+    "description": "Explore the frequently asked questions below for quick solutions to common inquiries. We’ve got you covered with helpful insights and support.",
+    "faqs": [
+      {
+        "question": "What are the best crops to grow in this region?",
+        "answer": "The best crops to grow depend on the climate and soil conditions. For this region, some suitable crops include wheat, corn, and soybeans."
+      },
+      {
+        "question": "How can we improve soil fertility?",
+        "answer": "Soil fertility can be improved through crop rotation, the use of organic fertilizers, and adding compost or manure to enrich the soil."
+      },
+      {
+        "question": "What are the benefits of sustainable farming practices?",
+        "answer": "Sustainable farming practices help preserve natural resources, reduce the carbon footprint, and ensure the long-term health of the ecosystem and the farm's productivity."
+      }
+    ]
+  },
+  "whyChooseUs": {
+    "title": "Why Choose Us",
+    "subtitle": "We Are Different From Other Farming",
+    "description": "Our farming methods are sustainable, eco-friendly, and designed to deliver the highest quality produce. We prioritize nature and health in everything we do.",
+    "sustainablePractices": "Sustainable Practices",
+    "sustainablePracticesDesc": "We use eco-friendly techniques to ensure the land remains fertile for future generations.",
+    "organicCertification": "Organic Certification",
+    "organicCertificationDesc": "All our products are certified organic, free from harmful chemicals and pesticides.",
+    "checkmarks": {
+      "natural": "100% Natural",
+      "locallySourced": "Locally Sourced",
+      "ecoFriendly": "Eco-Friendly",
+      "freshHealthy": "Fresh & Healthy"
+    }
+  },
+  "parallax": {
+      "title": "What Makes Us Special?",
+      "description": "Agriculture & Eco Farming",
+      "buttonText": "Discover More",
+      "buttonLink": "/explore"
+    },
+    "testimonials": {
+        "title": "Our Testimonials",
+        "subTitle": "Hear What Our Global Clients Say About Us",
+        "testimonialsList": [
+          {
+            "name": "John Doe",
+            "position": "Farmer",
+            "location": "Dhaka, Bangladesh",
+            "testimonial": "The quality of the organic products from this farm is outstanding! It’s transformed my approach to sustainable farming.",
+            "image": "/images/testimonial1.jpg"
+          },
+          {
+            "name": "Jane Smith",
+            "position": "Agriculture Expert",
+            "location": "Chittagong, Bangladesh",
+            "testimonial": "I’ve been working with this team for years, and their commitment to quality and sustainability has never wavered. Truly impressive!",
+            "image": "/images/testimonial2.jpg"
+          },
+          {
+            "name": "Ali Rahman",
+            "position": "Customer",
+            "location": "Rajshahi, Bangladesh",
+            "testimonial": "I switched to their organic products, and I can see the difference in the taste and quality. Highly recommend!",
+            "image": "/images/testimonial3.jpg"
+          }
+        ]
+    },
+    "aboutUs":{
+        "projectName": "AGRO MART"
+    },
+    "aboutAgro": {
+        "title": "About Agro Mart",
+        "subtitle": "Your Trusted Partner in Sustainable Agriculture",
+        "description": "Agro Mart is a leading provider of organic and sustainable farming solutions. We are committed to promoting eco-friendly practices and delivering high-quality agricultural products.",
+        "agriculture": "Agriculture & Foods",
+        "agriculture_desc": "We specialize in modern farming techniques and food production, ensuring high-quality, organic products for global markets.",
+        "Vegetables" : "Vegetables & Fruits",
+        "vegetables_desc": "Our farms produce a wide variety of fresh, organic vegetables and fruits, grown with care and sustainability in mind.",
+        "mission": " By converting non-utilized lands into productive farms, we provide agricultural livelihoods for farmers, employ youth, and contribute to a greener, more sustainable future.",
+        "exploreMore": "Explore More",
+        "sign":"Co-Founder, Agro"
+    }
   }

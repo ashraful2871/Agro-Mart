@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 const AboutAgro = () => {
   const { theme } = useContext(ThemeContext);
+  const {t} = useTranslation();
+
   return (
     <div>
       <div
@@ -19,18 +22,15 @@ const AboutAgro = () => {
         <div className="max-w-full lg:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
           <div className="">
-            <h1 className="text-4xl font-bold text-green-700">ABOUT AGRO</h1>
+            <h1 className="text-4xl font-bold text-green-700"> {t('aboutAgro.title')} </h1>
             <p className="mt-4 text-5xl font-bold text-base-content">
-              Organic & Healthy Food
+              {t('aboutAgro.subtitle')}
             </p>
           </div>
 
           {/* Introduction */}
           <p className="mt-8 text-lg text-base-content ">
-            At Agro, we are committed to revolutionizing agriculture by
-            providing sustainable, organic, and healthy food solutions. Our
-            mission is to empower farmers, promote green practices, and ensure
-            food security for future generations.
+            {t('aboutAgro.description')}
           </p>
 
           {/* Agriculture & Foods Section */}
@@ -41,11 +41,10 @@ const AboutAgro = () => {
               } p-6 rounded-lg shadow-md flex-1`}
             >
               <h2 className="text-2xl font-semibold text-green-700">
-                Agriculture & Foods
+                {t('aboutAgro.agriculture')}
               </h2>
               <p className="mt-2 text-base-content">
-                We specialize in modern farming techniques and food production,
-                ensuring high-quality, organic products for global markets.
+                {t('aboutAgro.agriculture_desc')}
               </p>
             </div>
 
@@ -56,27 +55,24 @@ const AboutAgro = () => {
               } p-6 rounded-lg shadow-md flex-1`}
             >
               <h2 className="text-2xl font-semibold text-green-700">
-                Vegetables & Fruits
+                {t('aboutAgro.Vegetables')}
               </h2>
               <p className="mt-2 text-base-content">
-                Our farms produce a wide variety of fresh, organic vegetables
-                and fruits, grown with care and sustainability in mind.
+                {t('aboutAgro.vegetables_desc')}
               </p>
             </div>
           </div>
 
           {/* Mission Statement */}
           <p className="mt-12 text-lg text-base-content ">
-            By converting non-utilized lands into productive farms, we provide
-            agricultural livelihoods for farmers, employ youth, and contribute
-            to a greener, more sustainable future.
+            {t('aboutAgro.mission')}
           </p>
 
           {/* Footer Section */}
           <div className="mt-16 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p className="text-base-content">Co-Founder, Agro</p>
+            <p className="text-base-content">{t('aboutAgro.sign')} </p>
             <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
-              Explore More →
+              {t('aboutAgro.exploreMore')} →
             </button>
           </div>
         </div>
