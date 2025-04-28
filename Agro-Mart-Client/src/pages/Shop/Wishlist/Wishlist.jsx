@@ -117,66 +117,72 @@ const Wishlist = () => {
       <h2 className="text-center text-3xl font-bold mb-10">My Wishlist</h2>
 
       {/* Responsive table wrapper */}
-      <div className="bg-base-100 border rounded-xl overflow-x-auto shadow min-h-28">
-        <table className="w-full table-auto min-w-[600px]">
-          <tbody>
-            {wishlist?.map((item) => (
-              <tr
-                key={item._id}
-                className={`${
-                  theme === "dark" ? "hover:bg-gray-900" : "hover:bg-gray-100"
-                } border-b last:border-b-0`}
-              >
-                {/* Image */}
-                <td className="p-4 w-28">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-contain rounded-md"
-                  />
-                </td>
+      {wishlist.length === 0 ? (
+        <p className="text-center text-xl font-semibold">
+          no wishlist product added
+        </p>
+      ) : (
+        <div className="bg-base-100 border rounded-xl overflow-x-auto shadow min-h-28">
+          <table className="w-full table-auto min-w-[600px]">
+            <tbody>
+              {wishlist?.map((item) => (
+                <tr
+                  key={item._id}
+                  className={`${
+                    theme === "dark" ? "hover:bg-gray-900" : "hover:bg-gray-100"
+                  } border-b last:border-b-0`}
+                >
+                  {/* Image */}
+                  <td className="p-4 w-28">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-contain rounded-md"
+                    />
+                  </td>
 
-                {/* Name + Date */}
-                <td className="p-4">
-                  <div className="text-lg font-semibold text-base-content">
-                    {item.name}
-                  </div>
-                  <div className="text-sm text-base-content">
-                    ${item.price.toFixed(2)}
-                  </div>
-                  <div className="text-sm text-base-content mt-1">
-                    {new Date(item.addedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </div>
-                </td>
+                  {/* Name + Date */}
+                  <td className="p-4">
+                    <div className="text-lg font-semibold text-base-content">
+                      {item.name}
+                    </div>
+                    <div className="text-sm text-base-content">
+                      ${item.price.toFixed(2)}
+                    </div>
+                    <div className="text-sm text-base-content mt-1">
+                      {new Date(item.addedAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </div>
+                  </td>
 
-                {/* Add to Cart Button */}
-                <td className="p-4 text-right whitespace-nowrap">
-                  <button
-                    onClick={() => handleAddToCart(item)}
-                    className="bg-green-700 hover:bg-yellow-300 hover:text-black text-white px-6 py-2 rounded-full font-semibold transition"
-                  >
-                    Add To Cart
-                  </button>
-                </td>
+                  {/* Add to Cart Button */}
+                  <td className="p-4 text-right whitespace-nowrap">
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="bg-green-700 hover:bg-yellow-300 hover:text-black text-white px-6 py-2 rounded-full font-semibold transition"
+                    >
+                      Add To Cart
+                    </button>
+                  </td>
 
-                {/* Delete Button */}
-                <td className="p-4 text-right whitespace-nowrap">
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-semibold transition"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  {/* Delete Button */}
+                  <td className="p-4 text-right whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-semibold transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Wishlist Share Link */}
       {/* flex flex-col sm:flex-row */}

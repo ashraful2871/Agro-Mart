@@ -96,7 +96,7 @@ const SignUp = () => {
           email: user?.email,
           photo: user?.photoURL,
           uid: user?.uid,
-          role: "user",
+          role: "customer",
         };
         axios
           .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
