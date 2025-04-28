@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ImSpinner9 } from "react-icons/im";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -8,7 +9,9 @@ import { ThemeContext } from "../../../../provider/ThemeProvider";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
 const AddProduct = () => {
+  const { t } = useTranslation();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
@@ -27,20 +30,7 @@ const AddProduct = () => {
     const description = formData.get("description");
     const stockQuantity = parseInt(formData.get("stockQuantity"));
     const imageFile = formData.get("image");
-    // Continue to product submit
-    // const productData = {
-    //   name,
-    //   category,
-    //   price,
-    //   description,
-    //   stockQuantity,
-    //   imageFile,
-    //   addedBy: {
-    //     name: user?.displayName,
-    //     email: user?.email,
-    //   },
-    // };
-    // console.log(productData);
+
     let imageUrl = "";
     if (imageFile) {
       const imageFormData = new FormData();
@@ -56,11 +46,12 @@ const AddProduct = () => {
         }
       } catch (error) {
         console.log(error);
-        toast.error("Image upload failed");
+        toast.error(t("dashboard.seller.add-product.toast_image_error"));
         setLoading(false);
         return;
       }
     }
+
     const productData = {
       name,
       category,
@@ -73,6 +64,7 @@ const AddProduct = () => {
         email: user?.email,
       },
     };
+
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/products`,
@@ -80,11 +72,11 @@ const AddProduct = () => {
       );
 
       console.log("Product Added:", data);
-      toast.success("Product successfully added!");
+      toast.success(t("dashboard.seller.add-product.toast_success"));
       e.target.reset();
       navigate("/dashboard/manageProduct");
     } catch (err) {
-      setError("An error occurred while adding the product.");
+      setError(t("dashboard.seller.add-product.error"));
       console.error("Product Upload Error:", err.response?.data || err.message);
       setLoading(false);
     } finally {
@@ -93,44 +85,72 @@ const AddProduct = () => {
   };
 
   return (
-    <div className={`p-4 min-h-screen xl:mt-6 ${
-      theme === "dark" ? "bg-[#1f29374b]" : "bg-white"
-    } rounded-xl`}>
-      <h3 className="text-4xl mb-10 text-center">Add Product</h3>
+    <div
+      className={`p-4 min-h-screen xl:mt-6 ${
+        theme === "dark" ? "bg-[#1f29374b]" : "bg-white"
+      } rounded-xl`}
+    >
+      <h3 className="text-4xl mb-10 text-center">
+        {t("dashboard.seller.add-product.title")}
+      </h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Product Name */}
           <div>
-            <label className="block font-bold mb-1">Product Name</label>
+            <label className="block font-bold mb-1">
+              {t("dashboard.seller.add-product.product_name_label")}
+            </label>
             <input
               type="text"
               name="name"
               className="input input-bordered w-full"
-              placeholder="Product Name"
+              placeholder={t(
+                "dashboard.seller.add-product.product_name_placeholder"
+              )}
               required
             />
           </div>
 
           {/* Category */}
           <div>
-            <label className="block font-bold mb-1">Category</label>
+            <label className="block font-bold mb-1">
+              {t("dashboard.seller.add-product.category_label")}
+            </label>
             <select
               name="category"
               className="input input-bordered w-full"
               required
             >
-              <option value="">Select a category</option>
-              <option value="Seeds & Plants">Seeds & Plants</option>
-              <option value="Farming Equipment">Farming Equipment</option>
-              <option value="Fertilizers & Pesticides">
-                Fertilizers & Pesticides
+              <option value="">
+                {t("dashboard.seller.add-product.category_placeholder")}
               </option>
-              <option value="Agricultural Tools">Agricultural Tools</option>
-              <option value="Vegetables">Vegetables</option>
-              <option value="Fruits">Fruits</option>
-              <option value="Fresh Fish & Seafood">Fresh Fish & Seafood</option>
+              <option value="Seeds & Plants">
+                {t("dashboard.seller.add-product.categories.seeds_plants")}
+              </option>
+              <option value="Farming Equipment">
+                {t("dashboard.seller.add-product.categories.farming_equipment")}
+              </option>
+              <option value="Fertilizers & Pesticides">
+                {t(
+                  "dashboard.seller.add-product.categories.fertilizers_pesticides"
+                )}
+              </option>
+              <option value="Agricultural Tools">
+                {t(
+                  "dashboard.seller.add-product.categories.agricultural_tools"
+                )}
+              </option>
+              <option value="Vegetables">
+                {t("dashboard.seller.add-product.categories.vegetables")}
+              </option>
+              <option value="Fruits">
+                {t("dashboard.seller.add-product.categories.fruits")}
+              </option>
+              <option value="Fresh Fish & Seafood">
+                {t("dashboard.seller.add-product.categories.fish_seafood")}
+              </option>
               <option value="Dairy & Milk Products">
-                Dairy & Milk Products
+                {t("dashboard.seller.add-product.categories.dairy_milk")}
               </option>
             </select>
           </div>
@@ -138,19 +158,21 @@ const AddProduct = () => {
           {/* Image Upload */}
           <div>
             <label className="input input-bordered flex items-center gap-2 mt-7 pt-2 w-full">
-              <span>Upload Image</span>
+              <span>{t("dashboard.seller.add-product.image_label")}</span>
               <input type="file" name="image" accept="image/*" required />
             </label>
           </div>
 
           {/* Price */}
           <div>
-            <label className="block font-bold mb-1">Price</label>
+            <label className="block font-bold mb-1">
+              {t("dashboard.seller.add-product.price_label")}
+            </label>
             <input
               type="number"
               name="price"
               className="input input-bordered w-full"
-              placeholder="Price"
+              placeholder={t("dashboard.seller.add-product.price_placeholder")}
               required
               min="0"
             />
@@ -158,11 +180,15 @@ const AddProduct = () => {
 
           {/* Description */}
           <div className="md:col-span-2">
-            <label className="block font-bold mb-1">Description</label>
+            <label className="block font-bold mb-1">
+              {t("dashboard.seller.add-product.description_label")}
+            </label>
             <textarea
               name="description"
               className="input input-bordered w-full"
-              placeholder="Product Description"
+              placeholder={t(
+                "dashboard.seller.add-product.description_placeholder"
+              )}
               required
               rows="4"
             ></textarea>
@@ -170,12 +196,16 @@ const AddProduct = () => {
 
           {/* Stock Quantity */}
           <div>
-            <label className="block font-bold mb-1">Stock Quantity</label>
+            <label className="block font-bold mb-1">
+              {t("dashboard.seller.add-product.stock_quantity_label")}
+            </label>
             <input
               type="number"
               name="stockQuantity"
               className="input input-bordered w-full"
-              placeholder="Stock Quantity"
+              placeholder={t(
+                "dashboard.seller.add-product.stock_quantity_placeholder"
+              )}
               required
               min="0"
             />
@@ -191,7 +221,7 @@ const AddProduct = () => {
           {loading ? (
             <ImSpinner9 className="animate-spin mr-2" />
           ) : (
-            "Add Product"
+            t("dashboard.seller.add-product.submit_button")
           )}
         </button>
       </form>

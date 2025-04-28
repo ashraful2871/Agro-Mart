@@ -169,7 +169,35 @@
       "manage_product": "পণ্য পরিচালনা",
       "customer_orders": "গ্রাহকের অর্ডার",
       "doctor": "ফসল ডাক্তার",
-      "weather": "আবহাওয়া"
+      "weather": "আবহাওয়া",
+      "add-product": {
+        "title": "পণ্য যোগ করুন",
+        "product_name_label": "পণ্যের নাম",
+        "product_name_placeholder": "পণ্যের নাম",
+        "category_label": "বিভাগ",
+        "category_placeholder": "একটি বিভাগ নির্বাচন করুন",
+        "categories": {
+          "seeds_plants": "বীজ ও গাছ",
+          "farming_equipment": "কৃষি সরঞ্জাম",
+          "fertilizers_pesticides": "সার ও কীটনাশক",
+          "agricultural_tools": "কৃষি সরঞ্জাম",
+          "vegetables": "সবজি",
+          "fruits": "ফল",
+          "fish_seafood": "তাজা মাছ ও সামুদ্রিক খাবার",
+          "dairy_milk": "দুগ্ধ ও দুধজাত পণ্য"
+        },
+        "image_label": "ছবি আপলোড করুন",
+        "price_label": "মূল্য",
+        "price_placeholder": "মূল্য",
+        "description_label": "বিবরণ",
+        "description_placeholder": "পণ্যের বিবরণ",
+        "stock_quantity_label": "স্টক পরিমাণ",
+        "stock_quantity_placeholder": "স্টক পরিমাণ",
+        "submit_button": "পণ্য যোগ করুন",
+        "toast_success": "পণ্য সফলভাবে যোগ করা হয়েছে!",
+        "toast_image_error": "ছবি আপলোড ব্যর্থ হয়েছে",
+        "error": "পণ্য যোগ করার সময় একটি ত্রুটি ঘটেছে।"
+      }
     }
   },
   "profile": {

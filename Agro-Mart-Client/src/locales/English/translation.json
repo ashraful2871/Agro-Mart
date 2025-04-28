@@ -169,7 +169,35 @@
       "manage_product": "Manage Product",
       "customer_orders": "Customer Orders",
       "doctor": "Crop Doctor",
-      "weather": "Weather"
+      "weather": "Weather",
+      "add-product": {
+        "title": "Add Product",
+        "product_name_label": "Product Name",
+        "product_name_placeholder": "Product Name",
+        "category_label": "Category",
+        "category_placeholder": "Select a category",
+        "categories": {
+          "seeds_plants": "Seeds & Plants",
+          "farming_equipment": "Farming Equipment",
+          "fertilizers_pesticides": "Fertilizers & Pesticides",
+          "agricultural_tools": "Agricultural Tools",
+          "vegetables": "Vegetables",
+          "fruits": "Fruits",
+          "fish_seafood": "Fresh Fish & Seafood",
+          "dairy_milk": "Dairy & Milk Products"
+        },
+        "image_label": "Upload Image",
+        "price_label": "Price",
+        "price_placeholder": "Price",
+        "description_label": "Description",
+        "description_placeholder": "Product Description",
+        "stock_quantity_label": "Stock Quantity",
+        "stock_quantity_placeholder": "Stock Quantity",
+        "submit_button": "Add Product",
+        "toast_success": "Product successfully added!",
+        "toast_image_error": "Image upload failed",
+        "error": "An error occurred while adding the product."
+      }
     }
   },
   "profile": {
