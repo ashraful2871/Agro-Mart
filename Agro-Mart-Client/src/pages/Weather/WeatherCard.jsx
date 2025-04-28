@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useGeolocation from "../../hooks/useGeolocation";
 import { requestNotificationPermission } from "../../store/requestNotificationPermission";
-import { TiWeatherPartlySunny } from "react-icons/ti";
 
 const API_KEY = import.meta.env.VITE_Weather_API_KEY;
 
@@ -18,10 +17,12 @@ const WeatherCard = ({ onWeatherTypeChange, setWeather }) => {
         .then((res) => res.json())
         .then(async (data) => {
           setWeatherData(data);
-          setWeather(data);
+          if (setWeather) {
+            setWeather(data); // Only call if setWeather is defined
+          }
           onWeatherTypeChange?.(data.weather[0].main);
 
-          const granted = await requestNotificationPermission(); 
+          const granted = await requestNotificationPermission();
 
           if (granted) {
             const weatherMain = data.weather[0].main;
@@ -34,7 +35,7 @@ const WeatherCard = ({ onWeatherTypeChange, setWeather }) => {
             if (alerts[weatherMain]) {
               new Notification("🌦️ কৃষি সতর্কতা", {
                 body: alerts[weatherMain],
-                icon: <TiWeatherPartlySunny/>, 
+                icon: "/path/to/weather-icon.png", // Use a valid image URL
               });
             }
           }

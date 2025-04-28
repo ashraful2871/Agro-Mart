@@ -203,14 +203,14 @@ const ServiceCard = () => {
         }}
         pagination={true}
         autoplay={{
-          delay: 3000, // 3 seconds delay between slides
-          disableOnInteraction: true, // Pause autoplay on user interaction
+          delay: 3000,
+          disableOnInteraction: true,
         }}
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="mySwiper"
       >
-        {services.map((service) => (
-          <SwiperSlide className="swiper-slide2">
+        {services.map((service, idx) => (
+          <SwiperSlide key={idx} className="swiper-slide2">
             <div
               key={service.id}
               className="keen-slider__slide flex flex-col rounded-xl h-[420px] sm:h-[460px] lg:h-[480px] group overflow-visible"
