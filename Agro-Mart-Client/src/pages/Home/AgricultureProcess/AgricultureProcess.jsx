@@ -50,15 +50,19 @@ const AgricultureProcess = () => {
         {/* Right Side Content */}
         <div className="xl:w-1/2 h-full flex items-center">
           <div className="text-center xl:text-left w-full">
-          {/* <h1 className="text-3xl font-bold mt-6">{t('welcome')}</h1> */}
-            <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} font-bold uppercase text-sm`}>
+            {/* <h1 className="text-3xl font-bold mt-6">{t('welcome')}</h1> */}
+            <h3
+              className={`${
+                theme === "dark" ? "text-green-600" : "text-green-700"
+              } font-bold uppercase text-sm`}
+            >
               {t("agriculture.workProcess")}
             </h3>
             <h2 className="text-3xl md:text-4xl font-bold text-base-content mt-2">
-            {t("agriculture.agricultureProcess")}
+              {t("agriculture.agricultureProcess")}
             </h2>
             <p className="mt-4 text-base-content text-sm md:text-base">
-            {t("agriculture.description")}
+              {t("agriculture.description")}
             </p>
 
             {/* Experience Badge */}
@@ -71,8 +75,19 @@ const AgricultureProcess = () => {
                 />
               </div>
               <div>
-                <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-3xl font-bold`} font-bold> <LocalizedNumber number={experienceNumber} />+ </h3>
-                <p className="text-base-content"> {t("agriculture.yearsExperience")}</p>
+                <h3
+                  className={`${
+                    theme === "dark" ? "text-green-600" : "text-green-700"
+                  } text-3xl font-bold`}
+                  font-bold
+                >
+                  {" "}
+                  <LocalizedNumber number={experienceNumber} />+{" "}
+                </h3>
+                <p className="text-base-content">
+                  {" "}
+                  {t("agriculture.yearsExperience")}
+                </p>
               </div>
             </div>
 
@@ -83,7 +98,11 @@ const AgricultureProcess = () => {
                   key={step.id}
                   className="bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border"
                 >
-                  <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-base-content text-3xl font-bold`}>
+                  <span
+                    className={`${
+                      theme === "dark" ? "text-green-600" : "text-green-700"
+                    } text-base-content text-3xl font-bold`}
+                  >
                     {step.id}
                   </span>
                   <h4 className="text-lg font-bold text-base-content mt-2 flex items-center">

@@ -12,11 +12,13 @@ import toast from "react-hot-toast";
 import ViewModal from "./ViewModal";
 import WishListModal from "./Wishlist/WishListModal";
 import useCart from "../../hooks/useCart";
+import useWishlist from "../../hooks/useWishlist";
 
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
   const [cart, refetch] = useCart();
+  const [wishlist, wishRefetch] = useWishlist();
   const { image, name, category, price } = product;
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
@@ -75,6 +77,7 @@ const ProductsCard = ({ product }) => {
         toast.success("Item added successfully in wishlist");
         setIsWishListOpen(true);
         setIsWished(true);
+        wishRefetch();
       }
     } catch (error) {
       if (error.response?.status === 409) {

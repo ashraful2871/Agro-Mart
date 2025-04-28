@@ -17,6 +17,8 @@
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.14.2",
-    "stripe": "^18.0.0"
+    "sslcommerz-lts": "^1.1.0",
+    "stripe": "^18.0.0",
+    "uuid": "^11.1.0"
   }
 }

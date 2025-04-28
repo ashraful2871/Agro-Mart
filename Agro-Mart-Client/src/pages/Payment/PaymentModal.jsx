@@ -2,29 +2,71 @@ import React, { useContext, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../provider/ThemeProvider";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
   const [agree, setAgree] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
+  const [loading, setLoading] = useState(false);
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-
-  const handleProceed = () => {
+  const user = useAuth();
+  const handleProceed = async () => {
     if (!agree || !selectedPayment) return;
 
-    navigate(`/payment/${selectedPayment}`, {
-      state: {
-        totalAmount,
-        cartItems: cartItems.map((item) => ({
-          ...item,
-          // Get quantity from localStorage
-          quantity:
-            JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
-              ?.quantity || 1,
-        })),
-      },
-    });
-    closeModal();
+    if (selectedPayment === "sslcommerz") {
+      setLoading(true);
+      try {
+        const userInfo = {
+          name: user?.displayName,
+          email: user?.email,
+        };
+
+        const response = await axios.post(
+          "http://localhost:5000/init-payment",
+          {
+            userInfo,
+            totalAmount,
+            cartIds: cartItems.map((item) => item._id),
+            cartItems: cartItems.map((item) => ({
+              productId: item.productId, // ✅ Important
+              name: item.name,
+              price: item.price,
+              quantity:
+                JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
+                  ?.quantity || 1,
+            })),
+          }
+        );
+
+        const { GatewayPageURL } = response.data;
+        if (GatewayPageURL) {
+          window.location.href = GatewayPageURL;
+        } else {
+          alert("Failed to initialize payment");
+        }
+      } catch (error) {
+        console.error("Payment initialization failed:", error);
+        alert("An error occurred while initializing payment");
+      } finally {
+        setLoading(false);
+        closeModal();
+      }
+    } else {
+      navigate(`/payment/${selectedPayment}`, {
+        state: {
+          totalAmount,
+          cartItems: cartItems.map((item) => ({
+            ...item,
+            quantity:
+              JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
+                ?.quantity || 1,
+          })),
+        },
+      });
+      closeModal();
+    }
   };
 
   return (
@@ -53,9 +95,17 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
                 value="stripe"
                 onChange={(e) => setSelectedPayment(e.target.value)}
               />
-              <span>Stripe payment</span>
+              <span>Stripe Payment</span>
             </label>
-            {/* Other payment options... */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="payment"
+                value="sslcommerz"
+                onChange={(e) => setSelectedPayment(e.target.value)}
+              />
+              <span>SSLCommerz Payment</span>
+            </label>
           </div>
 
           <div className="mt-4">
@@ -79,14 +129,14 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
 
           <button
             onClick={handleProceed}
-            disabled={!agree}
+            disabled={!agree || loading}
             className={`w-full py-2 px-4 rounded-full font-bold text-base ${
-              agree
+              agree && !loading
                 ? "bg-green-600 text-white"
                 : "bg-gray-700 text-gray-400 cursor-not-allowed"
             }`}
           >
-            Proceed To Payment
+            {loading ? "Processing..." : "Proceed To Payment"}
           </button>
         </Dialog.Panel>
       </div>
