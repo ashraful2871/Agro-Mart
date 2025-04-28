@@ -12,6 +12,7 @@ import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import useWishlist from "../hooks/useWishlist";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -21,6 +22,7 @@ const Navbar = () => {
   const user = useAuth();
   const [role] = useRole();
   const [cart] = useCart();
+  const [wishlist] = useWishlist();
   const isHomePage = location.pathname === "/";
   console.log("nav", user);
 
@@ -198,7 +200,7 @@ const Navbar = () => {
             </div>
 
             <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-              {cart.length}
+              {wishlist.length}
             </div>
           </div>
 
