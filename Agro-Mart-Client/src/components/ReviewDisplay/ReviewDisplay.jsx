@@ -3,12 +3,14 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./reviewStyle.css";
 import { ThemeContext } from "../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 export default () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [reviews, setReviews] = useState([]);
   const { theme } = useContext(ThemeContext);
+  const {t} = useTranslation();
 
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
@@ -25,9 +27,9 @@ export default () => {
       <div className="">
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <h5 className={`${theme === "dark" ? "text-green-600" : "text-green-700"}`}>Our Testimonials</h5>
+            <h5 className={`${theme === "dark" ? "text-green-600" : "text-green-700"}`}> {t('testimonials.title')} </h5>
             <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
-              Hear What Our Global Clients Say About Us
+              {t('testimonials.subTitle')}
             </h3>
           </div>
         </div>

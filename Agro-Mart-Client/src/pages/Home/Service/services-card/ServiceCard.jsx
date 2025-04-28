@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "./serviceCaer.css";
-// import required modules
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import { ThemeContext } from "../../../../provider/ThemeProvider";
 import { FaArrowRight } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+
 const ServiceCard = () => {
   const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
   const services = [
     {
       id: 1,
@@ -22,9 +22,8 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: "Nutrition Solutions",
-      description:
-        "We provide sustainable farming solutions tailored to your needs.",
+      title: t('service.nutrition_solutions'),
+      description: t('service.nutrition_solutions_desc'),
     },
     {
       id: 2,
@@ -38,9 +37,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: "Product Supplies",
-      description:
-        "High-quality supplies to boost your agricultural productivity.",
+      title: t('service.product_supplies'),
+      description: t('service.product_supplies_desc'),
     },
     {
       id: 3,
@@ -54,9 +52,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: "Fresh Vegetables",
-      description:
-        "Fresh, organic vegetables straight from the farm to your table.",
+      title: t('service.fresh_vegetables'),
+      description: t('service.fresh_vegetables_desc'),
     },
     {
       id: 4,
@@ -70,9 +67,8 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: "Nutrition Solutions",
-      description:
-        "We provide sustainable farming solutions tailored to your needs.",
+      title: t('service.organic_fruits'),
+      description: t('service.organic_fruits_desc'),
     },
     {
       id: 5,
@@ -86,9 +82,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: "Product Supplies",
-      description:
-        "High-quality supplies to boost your agricultural productivity.",
+      title: t('service.dairy_products'),
+      description: t('service.dairy_products_desc'),
     },
     {
       id: 6,
@@ -102,9 +97,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: "Fresh Vegetables",
-      description:
-        "Fresh, organic vegetables straight from the farm to your table.",
+      title: t('service.poultry_products'),
+      description: t('service.poultry_products_desc'),
     },
     {
       id: 7,
@@ -118,9 +112,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: "Fresh Vegetables",
-      description:
-        "Fresh, organic vegetables straight from the farm to your table.",
+      title: t('service.crop_protection'),
+      description: t('service.crop_protection_desc'),
     },
     {
       id: 8,
@@ -134,9 +127,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: "Fresh Vegetables",
-      description:
-        "Fresh, organic vegetables straight from the farm to your table.",
+      title: t('service.soil_health_management'),
+      description: t('service.soil_health_management_desc'),
     },
     {
       id: 9,
@@ -150,9 +142,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: "Product Supplies",
-      description:
-        "High-quality supplies to boost your agricultural productivity.",
+      title: t('service.water_management'),
+      description: t('service.water_management_desc'),
     },
     {
       id: 10,
@@ -166,9 +157,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: "Fresh Vegetables",
-      description:
-        "Fresh, organic vegetables straight from the farm to your table.",
+      title: t('service.farm_mechanization'),
+      description: t('service.farm_mechanization_desc'),
     },
     {
       id: 11,
@@ -182,11 +172,11 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: "Nutrition Solutions",
-      description:
-        "We provide sustainable farming solutions tailored to your needs.",
-    },
+      title: t('service.weather_based_services'),
+      description: t('service.weather_based_services_desc'),
+    }
   ];
+
   return (
     <>
       <Swiper

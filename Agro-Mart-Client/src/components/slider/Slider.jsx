@@ -9,6 +9,9 @@ import { EffectFade, Autoplay } from "swiper/modules";
 import CountdownTimer from "./CountdownTimer";
 import { Link } from "react-router-dom";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import { useTranslation } from "react-i18next";
+
+
 const textVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
@@ -25,39 +28,39 @@ const textVariants = {
 
 const Slider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { t } = useTranslation();
 
   const slides = [
-    {
-      img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
-      title: ["Celebrate Eid with", "Fresh Organic Produce"],
-      subtitle:
-        "Experience the joy of Eid with our sustainably grown products.",
-      isEid: true,
-    },
-    {
-      img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
-      type: "timer",
-      timerDate: "2025-04-20T00:00:00",
-    },
+    // {
+    //   img: "https://i.ibb.co.com/x8Jfj1vp/Eid-banner.jpg",
+    //   title: [t("slider.celebrateEid"), t("slider.freshOrganicProduce")],
+    //   subtitle: t("slider.experienceJoy"),
+    //   isEid: true,
+    // },
+    // {
+    //   img: "https://i.ibb.co.com/tpWhv3JY/eid-banner-2.jpg",
+    //   type: "timer",
+    //   timerDate: "2025-04-20T00:00:00",
+    // },
     {
       img: "https://i.ibb.co/7x62M20F/footer-bg-1.png",
-      title: ["High Quality Fresh", "Organic Foods"],
-      subtitle: "Experience the taste of nature with organic farm products.",
+      title: [t("slider.highQuality"), t("slider.organicFoods")],
+      subtitle: t("slider.experienceTaste"),
     },
     {
       img: "https://i.ibb.co.com/hR8R8B2s/organic.jpg",
-      title: ["Organic Food", "Delivery"],
-      subtitle: "We ensure eco-friendly and sustainable agriculture.",
+      title: [t("slider.organicFood"), t("slider.delivery")],
+      subtitle: t("slider.ecoFriendlySustainable"),
     },
     {
       img: "https://i.ibb.co/jk9hyFT8/environmental-conservation-plant-sustainability.jpg",
-      title: ["Eco-Friendly", "Agriculture"],
-      subtitle: "Cultivating nature’s best with responsible farming.",
+      title: [t("slider.ecoFriendly"), t("slider.agriculture")],
+      subtitle: t("slider.cultivatingBest"),
     },
     {
       img: "https://i.ibb.co/xSRR9vkh/senior-hardworking-farmer-agronomist-soybean-field-checking-crops-before-harvest.jpg",
-      title: ["Pure Agriculture", "Product"],
-      subtitle: "Providing fresh and organic food directly from farms.",
+      title: [t("slider.pureAgriculture"), t("slider.product")],
+      subtitle: t("slider.freshDirectFarm"),
     },
   ];
 
@@ -97,7 +100,7 @@ const Slider = () => {
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
               {slide.type === "timer" ? (
                 <div>
-                  <h1 className="text-5xl font-bold">Eid Hot sales 🔥</h1>
+                  <h1 className="text-5xl font-bold">{t("slider.eidHotSales")}</h1>
                   <div className="text-7xl mt-4">
                     <CountdownTimer targetDate={slide.timerDate} />
                   </div>
@@ -143,7 +146,7 @@ const Slider = () => {
                       exit="exit"
                       className="mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne flex items-center gap-1"
                     >
-                      <span className="text-base"> Learn More</span>{" "}
+                      <span className="text-base">{t("slider.learnMore")}</span>{" "}
                       <span>
                         <ArrowForwardOutlinedIcon fontSize="medium" />
                       </span>
