@@ -197,6 +197,25 @@
         "toast_success": "Product successfully added!",
         "toast_image_error": "Image upload failed",
         "error": "An error occurred while adding the product."
+      },
+      "manage-product": {
+        "title": "Manage Products",
+        "no_products": "No products available. Please add some products.",
+        "fetch_error": "Failed to fetch products.",
+        "format_error": "Fetched data is not in the expected format.",
+        "try_again": "Please try again later.",
+        "update_button": "Update",
+        "delete_button": "Delete",
+        "swal": {
+          "confirm_title": "Are you sure?",
+          "confirm_text": "Do you want to delete this product?",
+          "confirm_button": "Yes, delete it!",
+          "cancel_button": "Cancel",
+          "success_title": "Deleted!",
+          "success_text": "The product has been deleted.",
+          "error_title": "Error!",
+          "error_text": "Something went wrong while deleting the product."
+        }
       }
     }
   },
