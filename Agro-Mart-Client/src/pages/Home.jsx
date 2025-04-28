@@ -8,6 +8,7 @@ import ParallaxSection from "./Home/ParallaxSection/ParallaxSection";
 import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 import Service from "./Home/Service/Service";
 import WeatherCard from "./Weather/WeatherCard";
+import LanguageSwitcher from "../components/LanguageSwitcher/LanguageSwitcher";
 
 const Home = () => {
   return (
@@ -19,6 +20,8 @@ const Home = () => {
           <Slider></Slider>
         </div>
 
+        <div><LanguageSwitcher></LanguageSwitcher></div>
+        
         {/* weather div */}
         <div className="absolute top-20 left-0 p-4 z-10">
           {/* <h1 className="text-2xl font-bold">Agro Mart 🧑‍🌾</h1> */}

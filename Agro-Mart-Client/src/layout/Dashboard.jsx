@@ -52,7 +52,7 @@ const Dashboard = () => {
               {/* Sidebar Menus */}
               {role === "admin" && <AdminMenu />}
               {role === "farmer" && <SellerMenu />}
-              {role === "user" && <UserMenu />}
+              {role === "customer" && <UserMenu />}
               
               {/* {role === "tutor" && <TutorMenu />}
               {role === "student" && <StudentMenu />} */}
