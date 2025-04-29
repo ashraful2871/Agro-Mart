@@ -344,6 +344,39 @@
             "cold": "❄️ Cold weather today, use warm water for irrigating potatoes.",
             "normal": "✅ Today's weather is suitable for farming."
           }
+        },
+        "weather_advice_card": {
+          "title": "🌾 Agricultural Advice",
+          "advice": {
+            "hot": "Today's temperature is very high (above 35°C). Provide extra irrigation for wheat. 🌾💧",
+            "rain": "It may rain today. Use a canopy to protect plants. 🌧️",
+            "clear": "The weather is clear, perfect time for farming. 🌞🌱",
+            "thunderstorm": "There is a risk of a storm. Cover crops and stay safe. ⛈️",
+            "default": "No special precautions based on the weather. Continue farming. 🌿"
+          }
+        },
+        "suggested_products": {
+          "title": "Suggested Products for Current Weather",
+          "products": {
+            "rain": [
+              { "name": "Rain Canopy" },
+              { "name": "Waterproof Seed Bag" },
+              { "name": "Fungicide" }
+            ],
+            "clear": [
+              { "name": "Sun Hat" },
+              { "name": "Irrigation Kit" },
+              { "name": "Soil Moisture Sensor" }
+            ],
+            "clouds": [
+              { "name": "Compost Fertilizer" },
+              { "name": "LED Grow Light" }
+            ],
+            "default": [
+              { "name": "Organic Fertilizer" },
+              { "name": "General Farming Tools" }
+            ]
+          }
         }
       }
     }
