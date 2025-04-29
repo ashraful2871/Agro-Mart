@@ -204,6 +204,30 @@
     "next": "Next"
   },
   "dashboard": {
+    "logout": "Logout",
+    "user_menu": {
+      "my_orders": "My Orders",
+      "wishlist": "WishList",
+      "my_profile": "My Profile"
+    },
+    "my_orders": {
+      "title": "My Orders",
+      "table_headers": {
+        "invoice_no": "INVOICE NO",
+        "order_time": "ORDER TIME",
+        "customer_email": "CUSTOMER EMAIL",
+        "method": "METHOD",
+        "amount": "AMOUNT",
+        "status": "STATUS",
+        "invoice": "INVOICE"
+      },
+      "status": {
+        "Pending": "Pending",
+        "Delivered": "Delivered",
+        "Processing": "Processing"
+      },
+      "no_orders": "No orders found."
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",

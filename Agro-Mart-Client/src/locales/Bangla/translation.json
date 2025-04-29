@@ -204,6 +204,30 @@
     "next": "পরবর্তী"
   },
   "dashboard": {
+    "logout": "লগআউট",
+    "user_menu": {
+      "my_orders": "আমার অর্ডার",
+      "wishlist": "ইচ্ছে তালিকা",
+      "my_profile": "আমার প্রোফাইল"
+    },
+    "my_orders": {
+      "title": "আমার অর্ডার",
+      "table_headers": {
+        "invoice_no": "ইনভয়েস নম্বর",
+        "order_time": "অর্ডারের সময়",
+        "customer_email": "গ্রাহকের ইমেল",
+        "method": "পদ্ধতি",
+        "amount": "মোট পরিমাণ",
+        "status": "স্থিতি",
+        "invoice": "ইনভয়েস"
+      },
+      "status": {
+        "Pending": "মুলতুবি",
+        "Delivered": "বিতরণ করা হয়েছে",
+        "Processing": "প্রক্রিয়াকরণ"
+      },
+      "no_orders": "কোনো অর্ডার পাওয়া যায়নি।"
+    },
     "seller": {
       "my_profile": "আমার প্রোফাইল",
       "add_product": "পণ্য যোগ করুন",
