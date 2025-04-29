@@ -1,29 +1,37 @@
+import { useTranslation } from "react-i18next";
 
-
-
-const getCropAdvice = (temp, weatherMain) => {
+const getCropAdvice = (temp, weatherMain, t) => {
   if (weatherMain === "Rain") {
-    return "☔ আজ বৃষ্টি হতে পারে, গাছের চারপাশে পানি জমতে দেবেন না।";
+    return t(
+      "dashboard.seller.weather-suggestion.crop_advice_card.advice.rain"
+    );
   } else if (temp > 34) {
-    return "🔥 আজকের তাপমাত্রা বেশি, গমের জন্য বেশি সেচের প্রয়োজন হতে পারে।";
+    return t("dashboard.seller.weather-suggestion.crop_advice_card.advice.hot");
   } else if (temp < 18) {
-    return "❄️ আজকের আবহাওয়া ঠান্ডা, আলু চাষে গরম পানি সেচ দিন।";
+    return t(
+      "dashboard.seller.weather-suggestion.crop_advice_card.advice.cold"
+    );
   } else {
-    return "✅ আজকের আবহাওয়া কৃষিকাজের জন্য উপযোগী।";
+    return t(
+      "dashboard.seller.weather-suggestion.crop_advice_card.advice.normal"
+    );
   }
 };
 
 // CropAdviceCard component
 const CropAdviceCard = ({ weather }) => {
+  const { t } = useTranslation();
   console.log("Received weather in CropAdviceCard:", weather);
 
   if (!weather?.main || !weather?.weather) return null;
 
-  const advice = getCropAdvice(weather.main.temp, weather.weather[0].main);
+  const advice = getCropAdvice(weather.main.temp, weather.weather[0].main, t);
 
   return (
     <div className="p-4 bg-green-100/60 backdrop-blur-md w-fit rounded-xl shadow-md mt-4">
-      <h2 className="text-xl font-semibold mb-2">🧑‍🌾 কৃষি পরামর্শ</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        {t("dashboard.seller.weather-suggestion.crop_advice_card.title")}
+      </h2>
       <p className="text-green-900 font-medium">{advice}</p>
     </div>
   );

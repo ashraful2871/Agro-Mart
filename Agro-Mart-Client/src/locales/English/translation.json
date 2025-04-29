@@ -256,32 +256,94 @@
           "success_text": "The product has been deleted.",
           "error_title": "Error!",
           "error_text": "Something went wrong while deleting the product."
+        }
+      },
+      "customer-orders": {
+        "email_placeholder": "Search by Customer email",
+        "status_label": "Status",
+        "status_options": {
+          "pending": "Pending",
+          "delivered": "Delivered",
+          "processing": "Processing"
         },
-        "customer-orders": {
-          "email_placeholder": "Search by Customer email",
-          "status_label": "Status",
-          "status_options": {
-            "pending": "Pending",
-            "delivered": "Delivered",
-            "processing": "Processing"
-          },
-          "order_limit_label": "Order Limits",
-          "order_limit_options": {
-            "10": "Last 10 days Orders",
-            "50": "Last 50 days Orders",
-            "100": "Last 100 days Orders"
-          },
-          "method_label": "Method",
-          "method_options": {
-            "stripe": "Stripe",
-            "card": "Card",
-            "online": "Online"
-          },
-          "start_date_label": "Start Date",
-          "end_date_label": "End Date",
-          "download_button": "Download All Orders",
-          "reset_button": "Reset",
-          "download_error": "Download failed: {{error}}"
+        "order_limit_label": "Order Limits",
+        "order_limit_options": {
+          "10": "Last 10 days Orders",
+          "50": "Last 50 days Orders",
+          "100": "Last 100 days Orders"
+        },
+        "method_label": "Method",
+        "method_options": {
+          "stripe": "Stripe",
+          "card": "Card",
+          "online": "Online"
+        },
+        "start_date_label": "Start Date",
+        "end_date_label": "End Date",
+        "download_button": "Download All Orders",
+        "reset_button": "Reset",
+        "download_error": "Download failed: {{error}}"
+      },
+      "crop-doctor": {
+        "title": "🌱 Check Your Crop's Health, Quickly and Easily",
+        "subtitle": "Through this platform, you can identify crop diseases and receive quick and accurate treatment advice.",
+        "form_title": "🌱 Crop Doctor",
+        "method_label": "Use <strong>Roboflow</strong> (instead of Plant.id)",
+        "method_description": "Take a photo of the plant's leaves, stem, roots, or fruit — it makes disease detection easier and more accurate.",
+        "upload_label": "Upload Crop Image",
+        "loading_message": "Analyzing your crop...",
+        "error_prefix": "Error:",
+        "uploaded_image_label": "Uploaded Image",
+        "uploaded_image_alt": "Uploaded crop",
+        "result_healthy_title": "✅ Crop is Healthy",
+        "result_diseased_title": "⚠️ Disease Detected",
+        "result_disease_label": "Disease Name:",
+        "result_details_label": "Details:",
+        "result_treatment_label": "Recommended Treatment:",
+        "roboflow_title": "🌿 Roboflow Analysis",
+        "roboflow_label": "Label:",
+        "roboflow_confidence": "Confidence Level:",
+        "roboflow_treatment_label": "Recommended Treatment:",
+        "validation": {
+          "no_file": "No file selected",
+          "invalid_type": "Please upload an image file (JPEG, PNG)",
+          "size_exceeded": "Image size exceeds 5MB limit"
+        },
+        "api_errors": {
+          "image_upload_failed": "Image upload failed",
+          "diagnosis_failed": "Diagnosis failed. Please try again.",
+          "auth_failed": "Authentication failed. Please check your API key.",
+          "rate_limit": "Rate limit exceeded. Please wait and try again.",
+          "network_error": "Network error. Please check your connection.",
+          "plant_id_failed": "Plant.id API request failed",
+          "image_convert_failed": "Failed to convert image to base64",
+          "unknown_error": "Unknown error: {{message}}"
+        }
+      },
+      "weather-suggestion": {
+        "title": "Stay in Tune with the Weather for Farming and Product Selection!",
+        "weather_card": {
+          "loading": "Loading weather data...",
+          "title": "Weather in Your Area",
+          "temperature": "🌡️ Temperature: {{temp}}°C",
+          "humidity": "💧 Humidity: {{humidity}}%",
+          "wind": "🌬️ Wind: {{speed}} m/s",
+          "condition": "🌥️ Condition: {{description}}",
+          "notifications": {
+            "title": "🌦️ Farming Alert",
+            "rain": "It may rain today, please cover your crops. 🌧️",
+            "thunderstorm": "A storm is likely! Stay cautious. ⛈️",
+            "extreme": "Extreme weather conditions, take precautions for farming. 🔥"
+          }
+        },
+        "crop_advice_card": {
+          "title": "🧑‍🌾 Farming Advice",
+          "advice": {
+            "rain": "☔ It may rain today, avoid water accumulation around plants.",
+            "hot": "🔥 High temperature today, wheat may require extra irrigation.",
+            "cold": "❄️ Cold weather today, use warm water for irrigating potatoes.",
+            "normal": "✅ Today's weather is suitable for farming."
+          }
         }
       }
     }

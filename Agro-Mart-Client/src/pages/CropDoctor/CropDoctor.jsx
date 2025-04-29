@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
 import { ThemeContext } from "../../provider/ThemeProvider";
@@ -10,6 +11,7 @@ const roboflow_api_key = "6ni1DHc1icSyCqjxurIZ";
 const plant_id_api = "https://plant.id/api/v3/health_assessment";
 
 function CropDoctor() {
+  const { t } = useTranslation();
   const [image, setImage] = useState(null);
   const [result, setResult] = useState(null);
   const [roboflowResult, setRoboflowResult] = useState(null);
@@ -18,13 +20,14 @@ function CropDoctor() {
   const [useRoboflow, setUseRoboflow] = useState(false);
   const { theme } = useContext(ThemeContext);
   const axiosSecure = useAxiosSecure();
-  console.log(result);
+
   // Validate image before processing
   const validateImage = (file) => {
-    if (!file) return "No file selected";
+    if (!file) return t("dashboard.seller.crop-doctor.validation.no_file");
     if (!file.type.match("image.*"))
-      return "Please upload an image file (JPEG, PNG)";
-    if (file.size > 5 * 1024 * 1024) return "Image size exceeds 5MB limit";
+      return t("dashboard.seller.crop-doctor.validation.invalid_type");
+    if (file.size > 5 * 1024 * 1024)
+      return t("dashboard.seller.crop-doctor.validation.size_exceeded");
     return null;
   };
 
@@ -51,7 +54,9 @@ function CropDoctor() {
       });
 
       if (!imgRes.data.success) {
-        throw new Error("Image upload failed");
+        throw new Error(
+          t("dashboard.seller.crop-doctor.api_errors.image_upload_failed")
+        );
       }
 
       const imageUrl = imgRes.data.data.display_url;
@@ -65,19 +70,34 @@ function CropDoctor() {
       }
     } catch (error) {
       console.error("Error:", error);
-      let errorMessage = "Diagnosis failed. Please try again.";
+      let errorMessage = t(
+        "dashboard.seller.crop-doctor.api_errors.diagnosis_failed"
+      );
       if (error.response) {
         if (error.response.status === 401) {
-          errorMessage = "Authentication failed. Please check your API key.";
+          errorMessage = t(
+            "dashboard.seller.crop-doctor.api_errors.auth_failed"
+          );
         } else if (error.response.status === 429) {
-          errorMessage = "Rate limit exceeded. Please wait and try again.";
+          errorMessage = t(
+            "dashboard.seller.crop-doctor.api_errors.rate_limit"
+          );
         } else {
-          errorMessage = `Error: ${
-            error.response.data?.message || "Unknown error"
-          }`;
+          errorMessage = t(
+            "dashboard.seller.crop-doctor.api_errors.unknown_error",
+            {
+              message: error.response.data?.message || "Unknown error",
+            }
+          );
         }
       } else if (error.request) {
-        errorMessage = "Network error. Please check your connection.";
+        errorMessage = t(
+          "dashboard.seller.crop-doctor.api_errors.network_error"
+        );
+      } else if (error.message.includes("base64")) {
+        errorMessage = t(
+          "dashboard.seller.crop-doctor.api_errors.image_convert_failed"
+        );
       }
       setError(errorMessage);
     } finally {
@@ -103,7 +123,9 @@ function CropDoctor() {
         reader.readAsDataURL(blob);
       });
     } catch (error) {
-      throw new Error("Failed to convert image to base64");
+      throw new Error(
+        t("dashboard.seller.crop-doctor.api_errors.image_convert_failed")
+      );
     }
   };
 
@@ -129,8 +151,10 @@ function CropDoctor() {
       let diagnosisResult = {
         isHealthy: healthData.is_healthy?.binary ?? true,
         disease: "Healthy",
-        description: "Your plant appears healthy!",
-        treatment: "Maintain current care practices.",
+        description: t("dashboard.seller.crop-doctor.result_healthy_title"),
+        treatment:
+          t("dashboard.seller.crop-doctor.result_healthy_treatment") ||
+          "Maintain current care practices.",
       };
 
       if (
@@ -143,6 +167,7 @@ function CropDoctor() {
           disease: disease.name || "Unknown disease",
           description:
             disease.details?.description ||
+            t("dashboard.seller.crop-doctor.result_no_description") ||
             "No detailed description available.",
           treatment: formatTreatment(disease.details?.treatment),
         };
@@ -150,27 +175,38 @@ function CropDoctor() {
 
       setResult(diagnosisResult);
     } catch (error) {
-      throw new Error("Plant.id API request failed");
+      throw new Error(
+        t("dashboard.seller.crop-doctor.api_errors.plant_id_failed")
+      );
     }
   };
 
   const formatTreatment = (treatment) => {
-    if (!treatment) return "No specific treatment information available.";
+    if (!treatment)
+      return (
+        t("dashboard.seller.crop-doctor.result_no_treatment") ||
+        "No specific treatment information available."
+      );
     const { chemical = [], biological = [], prevention = [] } = treatment;
     let treatmentText = "";
     if (chemical.length > 0) {
-      treatmentText += `**Chemical Treatments**:\n${chemical.join("\n")}\n\n`;
+      treatmentText += `${t(
+        "dashboard.seller.crop-doctor.result_chemical_treatment"
+      )}:\n${chemical.join("\n")}\n\n`;
     }
     if (biological.length > 0) {
-      treatmentText += `**Biological Treatments**:\n${biological.join(
-        "\n"
-      )}\n\n`;
+      treatmentText += `${t(
+        "dashboard.seller.crop-doctor.result_biological_treatment"
+      )}:\n${biological.join("\n")}\n\n`;
     }
     if (prevention.length > 0) {
-      treatmentText += `**Prevention Methods**:\n${prevention.join("\n")}\n\n`;
+      treatmentText += `${t(
+        "dashboard.seller.crop-doctor.result_prevention_methods"
+      )}:\n${prevention.join("\n")}\n\n`;
     }
     return (
       treatmentText ||
+      t("dashboard.seller.crop-doctor.result_consult_expert") ||
       "Consult a local agricultural expert for treatment options."
     );
   };
@@ -193,17 +229,25 @@ function CropDoctor() {
         });
       } else {
         setRoboflowResult({
-          label: "No disease detected",
+          label:
+            t("dashboard.seller.crop-doctor.roboflow_no_disease") ||
+            "No disease detected",
           confidence: 0,
-          treatment: "Maintain current care practices.",
+          treatment:
+            t("dashboard.seller.crop-doctor.roboflow_healthy_treatment") ||
+            "Maintain current care practices.",
         });
       }
     } catch (error) {
       console.error("Roboflow error:", error);
       setRoboflowResult({
-        label: "Error in detection",
+        label:
+          t("dashboard.seller.crop-doctor.roboflow_error_label") ||
+          "Error in detection",
         confidence: 0,
-        treatment: "Unable to suggest treatment due to detection error.",
+        treatment:
+          t("dashboard.seller.crop-doctor.roboflow_error_treatment") ||
+          "Unable to suggest treatment due to detection error.",
       });
     }
   };
@@ -212,205 +256,223 @@ function CropDoctor() {
   const getRoboflowTreatment = (label) => {
     const treatments = {
       bacterial_leaf_spot:
-        "Apply copper-based bactericides and remove affected leaves.",
+        t(
+          "dashboard.seller.crop-doctor.roboflow_treatments.bacterial_leaf_spot"
+        ) || "Apply copper-based bactericides and remove affected leaves.",
       powdery_mildew:
+        t("dashboard.seller.crop-doctor.roboflow_treatments.powdery_mildew") ||
         "Use sulfur-based fungicides and improve air circulation.",
-      healthy: "Maintain current care practices.",
+      healthy:
+        t("dashboard.seller.crop-doctor.roboflow_treatments.healthy") ||
+        "Maintain current care practices.",
     };
     return (
       treatments[label.toLowerCase()] ||
+      t("dashboard.seller.crop-doctor.roboflow_treatments.default") ||
       "Consult a local expert for specific treatment."
     );
   };
 
   return (
     <div className="p-6">
-    <div className="mb-8">
-      <h1 className={`${ theme === "dark" ? "text-green-400" : "text-green-700"} text-4xl font-extrabold mb-6 text-center`}>
-        🌱 আপনার ফসলের স্বাস্থ্য যাচাই করুন, দ্রুত এবং সহজে
-      </h1>
-      <p
-        className={`${
-          theme === "dark" ? "text-gray-300" : "text-gray-700"
-        } text-lg text-center mb-8`}
-      >
-        এই প্ল্যাটফর্মের মাধ্যমে আপনি আপনার ফসলের রোগ শনাক্ত করতে পারবেন এবং
-        দ্রুত সঠিক চিকিৎসার পরামর্শ পেতে পারবেন।
-      </p>
-      
-    </div>
-    <div
-  className={`${
-    theme === "dark" ? "bg-gray-800" : "bg-white"
-  } max-w-lg mx-auto p-6 border rounded-lg shadow-lg`}
->
-  <h2
-    className={`${
-      theme === "dark" ? "text-green-400" : "text-green-700"
-    } text-2xl font-bold mb-6 text-center`}
-  >
-    🌱 ক্রপ ডক্টর
-  </h2>
-
-  {/* পদ্ধতি নির্বাচন */}
-  <div className="mb-6">
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        checked={useRoboflow}
-        onChange={() => setUseRoboflow(!useRoboflow)}
-        className="form-checkbox h-5 w-5 text-green-600"
-      />
-      <span
-        className={`ml-2 text-sm ${
-          theme === "dark" ? "text-gray-300" : "text-gray-700"
-        }`}
-      >
-        <strong>রোবোফ্লো</strong> ব্যবহার করুন (Plant.id এর পরিবর্তে)
-      </span>
-    </label>
-    <p
-      className={`${
-        theme === "dark" ? "text-gray-300" : "text-gray-700"
-      } mt-2`}
-    >
-      গাছের পাতার ছবি, কাণ্ড, মূল বা ফলের ছবি তুলুন — তাতে রোগ শনাক্তকরণ আরও সহজ ও নির্ভুল হবে।
-    </p>
-  </div>
-
-  {/* ছবি আপলোড */}
-  <div className="mb-6">
-    <label
-      className={`${
-        theme === "dark" ? "text-gray-300" : "text-gray-700"
-      } block mb-2 text-sm font-medium`}
-    >
-      ফসলের ছবি আপলোড করুন
-    </label>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleFileChange}
-      className={`block w-full text-sm
-        file:mr-4 file:py-2 file:px-4
-        file:rounded-md file:border-0
-        file:text-sm file:font-semibold
-        ${
-          theme === "dark"
-            ? "text-gray-300 file:bg-green-600 file:text-white hover:file:bg-green-700"
-            : "text-gray-700 file:bg-green-700 file:text-white hover:file:bg-green-600"
-        }`}
-      disabled={loading}
-    />
-  </div>
-
-  {/* লোডিং */}
-  {loading && (
-    <div className="flex items-center justify-center p-4 bg-gray-100 rounded-lg">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-      <span
-        className={`ml-3 ${
-          theme === "dark" ? "text-gray-300" : "text-gray-700"
-        }`}
-      >
-        আপনার ফসল বিশ্লেষণ করা হচ্ছে...
-      </span>
-    </div>
-  )}
-
-  {/* এরর মেসেজ */}
-  {error && (
-    <div className="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
-      <strong>ত্রুটি:</strong> {error}
-    </div>
-  )}
-
-  {/* আপলোডকৃত ছবি */}
-  {image && (
-    <div className="mb-6">
-      <h3
-        className={`${
-          theme === "dark" ? "text-gray-300" : "text-gray-700"
-        } text-sm font-medium mb-2`}
-      >
-        আপলোডকৃত ছবি
-      </h3>
-      <img
-        src={image}
-        alt="Uploaded crop"
-        className="max-h-64 w-full object-contain rounded border border-gray-200"
-      />
-    </div>
-  )}
-
-  {/* Plant.id ফলাফল */}
-  {result && (
-    <div
-      className={`p-6 border rounded-lg ${
-        theme === "dark"
-          ? "bg-gray-900"
-          : result.isHealthy
-          ? "bg-green-50"
-          : "bg-red-50"
-      }`}
-    >
-      <h3
-        className={`${
-          theme === "dark" ? "text-green-600" : "text-green-700"
-        } text-lg font-bold mb-4`}
-      >
-        {result.isHealthy ? "✅ ফসল সুস্থ আছে" : "⚠️ রোগ শনাক্ত হয়েছে"}
-      </h3>
-      <p className="font-semibold mb-2 text-purple-700">
-        রোগের নাম: {result.disease}
-      </p>
-      <p
-        className={`${
-          theme === "dark" ? "text-gray-300" : "text-gray-700"
-        } mb-4`}
-      >
-        বিস্তারিত: {result.description}
-      </p>
-      <div className="mt-4">
-        <h4
+      <div className="mb-8">
+        <h1
           className={`${
-            theme === "dark" ? "text-green-600" : "text-green-700"
-          } font-semibold mb-2`}
+            theme === "dark" ? "text-green-400" : "text-green-700"
+          } text-4xl font-extrabold mb-6 text-center`}
         >
-          সুপারিশকৃত চিকিৎসা:
-        </h4>
-        <div
+          {t("dashboard.seller.crop-doctor.title")}
+        </h1>
+        <p
           className={`${
-            theme === "dark" ? "bg-gray-800" : "bg-white"
-          } p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner`}
+            theme === "dark" ? "text-gray-300" : "text-gray-700"
+          } text-lg text-center mb-8`}
         >
-          {result.treatment}
-        </div>
+          {t("dashboard.seller.crop-doctor.subtitle")}
+        </p>
       </div>
-    </div>
-  )}
+      <div
+        className={`${
+          theme === "dark" ? "bg-gray-800" : "bg-white"
+        } max-w-lg mx-auto p-6 border rounded-lg shadow-lg`}
+      >
+        <h2
+          className={`${
+            theme === "dark" ? "text-green-400" : "text-green-700"
+          } text-2xl font-bold mb-6 text-center`}
+        >
+          {t("dashboard.seller.crop-doctor.form_title")}
+        </h2>
 
-  {/* রোবোফ্লো ফলাফল */}
-  {roboflowResult && (
-    <div className="p-6 border rounded-lg bg-yellow-50 mt-6">
-      <h3 className="text-lg font-bold text-yellow-800 mb-4">
-        🌿 রোবোফ্লো বিশ্লেষণ
-      </h3>
-      <p className="text-gray-700 mb-2">লেবেল: {roboflowResult.label}</p>
-      <p className="text-gray-700 mb-4">
-        আত্মবিশ্বাসের মাত্রা: {(roboflowResult.confidence * 100).toFixed(2)}%
-      </p>
-      <div>
-        <h4 className="font-semibold text-yellow-800 mb-2">
-          সুপারিশকৃত চিকিৎসা:
-        </h4>
-        <div className="bg-white p-4 rounded-lg text-sm shadow-inner">
-          {roboflowResult.treatment}
+        {/* Method Selection */}
+        <div className="mb-6">
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              checked={useRoboflow}
+              onChange={() => setUseRoboflow(!useRoboflow)}
+              className="form-checkbox h-5 w-5 text-green-600"
+            />
+            <span
+              className={`ml-2 text-sm ${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              }`}
+              dangerouslySetInnerHTML={{
+                __html: t("dashboard.seller.crop-doctor.method_label"),
+              }}
+            />
+          </label>
+          <p
+            className={`${
+              theme === "dark" ? "text-gray-300" : "text-gray-700"
+            } mt-2`}
+          >
+            {t("dashboard.seller.crop-doctor.method_description")}
+          </p>
         </div>
+
+        {/* Image Upload */}
+        <div className="mb-6">
+          <label
+            className={`${
+              theme === "dark" ? "text-gray-300" : "text-gray-700"
+            } block mb-2 text-sm font-medium`}
+          >
+            {t("dashboard.seller.crop-doctor.upload_label")}
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className={`block w-full text-sm
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:font-semibold
+              ${
+                theme === "dark"
+                  ? "text-gray-300 file:bg-green-600 file:text-white hover:file:bg-green-700"
+                  : "text-gray-700 file:bg-green-700 file:text-white hover:file:bg-green-600"
+              }`}
+            disabled={loading}
+          />
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="flex items-center justify-center p-4 bg-gray-100 rounded-lg">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+            <span
+              className={`ml-3 ${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              {t("dashboard.seller.crop-doctor.loading_message")}
+            </span>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg">
+            <strong>{t("dashboard.seller.crop-doctor.error_prefix")}</strong>{" "}
+            {error}
+          </div>
+        )}
+
+        {/* Uploaded Image */}
+        {image && (
+          <div className="mb-6">
+            <h3
+              className={`${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              } text-sm font-medium mb-2`}
+            >
+              {t("dashboard.seller.crop-doctor.uploaded_image_label")}
+            </h3>
+            <img
+              src={image}
+              alt={t("dashboard.seller.crop-doctor.uploaded_image_alt")}
+              className="max-h-64 w-full object-contain rounded border border-gray-200"
+            />
+          </div>
+        )}
+
+        {/* Plant.id Result */}
+        {result && (
+          <div
+            className={`p-6 border rounded-lg ${
+              theme === "dark"
+                ? "bg-gray-900"
+                : result.isHealthy
+                ? "bg-green-50"
+                : "bg-red-50"
+            }`}
+          >
+            <h3
+              className={`${
+                theme === "dark" ? "text-green-600" : "text-green-700"
+              } text-lg font-bold mb-4`}
+            >
+              {result.isHealthy
+                ? t("dashboard.seller.crop-doctor.result_healthy_title")
+                : t("dashboard.seller.crop-doctor.result_diseased_title")}
+            </h3>
+            <p className="font-semibold mb-2 text-purple-700">
+              {t("dashboard.seller.crop-doctor.result_disease_label")}{" "}
+              {result.disease}
+            </p>
+            <p
+              className={`${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              } mb-4`}
+            >
+              {t("dashboard.seller.crop-doctor.result_details_label")}{" "}
+              {result.description}
+            </p>
+            <div className="mt-4">
+              <h4
+                className={`${
+                  theme === "dark" ? "text-green-600" : "text-green-700"
+                } font-semibold mb-2`}
+              >
+                {t("dashboard.seller.crop-doctor.result_treatment_label")}
+              </h4>
+              <div
+                className={`${
+                  theme === "dark" ? "bg-gray-800" : "bg-white"
+                } p-4 rounded-lg text-sm whitespace-pre-wrap shadow-inner`}
+              >
+                {result.treatment}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Roboflow Result */}
+        {roboflowResult && (
+          <div className="p-6 border rounded-lg bg-yellow-50 mt-6">
+            <h3 className="text-lg font-bold text-yellow-800 mb-4">
+              {t("dashboard.seller.crop-doctor.roboflow_title")}
+            </h3>
+            <p className="text-gray-700 mb-2">
+              {t("dashboard.seller.crop-doctor.roboflow_label")}{" "}
+              {roboflowResult.label}
+            </p>
+            <p className="text-gray-700 mb-4">
+              {t("dashboard.seller.crop-doctor.roboflow_confidence")}{" "}
+              {(roboflowResult.confidence * 100).toFixed(2)}%
+            </p>
+            <div>
+              <h4 className="font-semibold text-yellow-800 mb-2">
+                {t("dashboard.seller.crop-doctor.roboflow_treatment_label")}
+              </h4>
+              <div className="bg-white p-4 rounded-lg text-sm shadow-inner">
+                {roboflowResult.treatment}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  )}
-    </div>
     </div>
   );
 }
