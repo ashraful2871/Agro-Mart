@@ -271,6 +271,34 @@
       "orders_processing": "প্রক্রিয়াকরণ অর্ডার",
       "orders_delivered": "বিতরণকৃত অর্ডার"
     },
+    "weekly_sales_chart": {
+      "title": "সাপ্তাহিক বিক্রয়",
+      "sales_tab": "বিক্রয়",
+      "tooltip": {
+        "date": "তারিখ",
+        "value": "মূল্য"
+      }
+    },
+    "best_selling_products_chart": {
+      "title": "সর্বাধিক বিক্রিত পণ্য",
+      "no_data": "কোনো তথ্য উপলব্ধ নেই"
+    },
+    "recent_order_table": {
+      "table_headers": {
+        "invoice_no": "ইনভয়েস নম্বর",
+        "order_time": "অর্ডারের সময়",
+        "customer_email": "গ্রাহকের ইমেল",
+        "method": "পদ্ধতি",
+        "amount": "মোট পরিমাণ",
+        "status": "স্থিতি",
+        "action": "ক্রিয়া",
+        "invoice": "ইনভয়েস"
+      },
+      "toast": {
+        "success": "অর্ডারের স্থিতি সফলভাবে আপডেট করা হয়েছে!",
+        "error": "অর্ডারের স্থিতি আপডেট করতে ব্যর্থ!"
+      }
+    },
     "seller": {
       "my_profile": "আমার প্রোফাইল",
       "add_product": "পণ্য যোগ করুন",

@@ -271,6 +271,34 @@
       "orders_processing": "Orders Processing",
       "orders_delivered": "Orders Delivered"
     },
+    "weekly_sales_chart": {
+      "title": "Weekly Sales",
+      "sales_tab": "Sales",
+      "tooltip": {
+        "date": "Date",
+        "value": "Value"
+      }
+    },
+    "best_selling_products_chart": {
+      "title": "Best Selling Products",
+      "no_data": "No data available"
+    },
+    "recent_order_table": {
+      "table_headers": {
+        "invoice_no": "INVOICE NO",
+        "order_time": "ORDER TIME",
+        "customer_email": "CUSTOMER EMAIL",
+        "method": "METHOD",
+        "amount": "AMOUNT",
+        "status": "STATUS",
+        "action": "ACTION",
+        "invoice": "INVOICE"
+      },
+      "toast": {
+        "success": "Order status updated successfully!",
+        "error": "Failed to update order status!"
+      }
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",
