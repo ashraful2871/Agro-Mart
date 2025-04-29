@@ -94,7 +94,7 @@ const StripeCheckOutForm = ({ totalAmount, cartItems }) => {
         email: user?.email,
         name: user?.displayName,
         totalAmount,
-        status: paymentIntent.status,
+        status: "pending",
         method: "Stripe",
         transactionId: paymentIntent.id,
         cartIds: cartItems.map((item) => item._id),

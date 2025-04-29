@@ -10,7 +10,10 @@ import Theme from "./theme/Theme";
 import { LuShoppingBag } from "react-icons/lu";
 import useCart from "../hooks/useCart";
 import useRole from "../hooks/useRole";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import useWishlist from "../hooks/useWishlist";
+import { FiHeart } from "react-icons/fi";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -20,8 +23,19 @@ const Navbar = () => {
   const user = useAuth();
   const [role] = useRole();
   const [cart] = useCart();
+  const [wishlist] = useWishlist();
   const isHomePage = location.pathname === "/";
-  console.log(user);
+  console.log("nav", user);
+
+  let dashboardLink = "/dashboard";
+
+  if (role === "admin") {
+    dashboardLink = "/dashboard/overview";
+  } else if (role === "seller") {
+    dashboardLink = "/dashboard";
+  } else if (role === "user") {
+    dashboardLink = "/dashboard/wishlist";
+  }
 
   const links = (
     <>
@@ -161,7 +175,7 @@ const Navbar = () => {
                 style={{ color: "", backgroundColor: "transparent" }}
                 to="/shopping-cart"
               >
-                <LuShoppingBag className="text-3xl"></LuShoppingBag>
+                <AiOutlineShoppingCart className="text-3xl"></AiOutlineShoppingCart>
               </NavLink>
             </div>
 
@@ -180,14 +194,14 @@ const Navbar = () => {
                     : ""
                 }
                 style={{ color: "", backgroundColor: "transparent" }}
-                to="/shopping-cart"
+                to="/dashboard/wishlist"
               >
-                <FaRegHeart className="text-3xl" />
+                <FiHeart className="text-3xl" />
               </NavLink>
             </div>
 
             <div className=" badge p-1 badge-sm indicator-item bg-yellow-300 absolute bottom-5 left-4  text-xs font-bold text-black">
-              {cart.length}
+              {wishlist.length}
             </div>
           </div>
 
@@ -206,7 +220,7 @@ const Navbar = () => {
                     role="button"
                     className="btn btn-ghost btn-circle avatar"
                   >
-                    <div className="w-10 rounded-full bg-gray-300">
+                    <div className="w-10 rounded-full border-2 border-green-600 bg-gray-300">
                       <img
                         referrerPolicy="no-referrer"
                         src={
@@ -236,11 +250,7 @@ const Navbar = () => {
                 }  shadow-md rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}
               >
                 <Link
-                  to={`${
-                    role === "admin"
-                      ? "/dashboard/overview"
-                      : "/dashboard/all-orders"
-                  }`}
+                  to={dashboardLink}
                   className={`block px-4 py-2 text-base-content ${
                     theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
                   }`}

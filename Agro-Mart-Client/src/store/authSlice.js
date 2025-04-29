@@ -169,7 +169,7 @@ export const googleLogin = createAsyncThunk(
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
       await fetchToken(user.email);
-      return { user };
+      return { user: user };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -264,7 +264,7 @@ const authSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload?.user ?? action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -280,7 +280,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.loading = false;
       })
       .addCase(signUpUser.rejected, (state, action) => {
@@ -292,7 +292,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signInUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.loading = false;
       })
       .addCase(signInUser.rejected, (state, action) => {
@@ -304,7 +304,8 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
+        console.log(state.user);
         state.loading = false;
       })
       .addCase(googleLogin.rejected, (state, action) => {
@@ -313,11 +314,8 @@ const authSlice = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         if (state.user) {
-          state.user.user = {
-            ...state.user.user,
-            displayName: action.payload.displayName,
-            photoURL: action.payload.photoURL,
-          };
+          state.user.displayName = action.payload.displayName;
+          state.user.photoURL = action.payload.photoURL;
         }
       })
       .addCase(InitializeAuthListener.fulfilled, (state) => {

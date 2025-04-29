@@ -26,6 +26,12 @@ import SslCommerzePayment from "../pages/Payment/SslCommerzePayment";
 import CropDoctor from "../pages/CropDoctor/CropDoctor";
 import Settings from "../pages/Dashboard/Settings/Settings";
 import CouponSettings from "../pages/Dashboard/Settings/AdminSettings/CouponSettings";
+import MyOrders from "../pages/Dashboard/UsersDashboard/MyOrders";
+import UserProfile from "../pages/Dashboard/UsersDashboard/UserProfile";
+import Weather from "../pages/Weather/Weather";
+import Success from "../pages/Payment/Success";
+import PaymentFail from "../pages/Payment/PaymentFail";
+import PaymentCancel from "../pages/Payment/PaymentCancel";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -38,11 +44,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: (
-          <Privet>
-            <Shop></Shop>
-          </Privet>
-        ),
+        element: <Shop></Shop>,
       },
       {
         path: "/shopping-cart",
@@ -57,16 +59,16 @@ export const router = createBrowserRouter([
         element: <StripePayment></StripePayment>,
       },
       {
-        path: "payment/bKAsh",
-        element: <BKashPayment></BKashPayment>,
+        path: "/payment/success",
+        element: <Success></Success>,
       },
       {
-        path: "/payment/nagad",
-        element: <NagadPayment></NagadPayment>,
+        path: "/payment/fail",
+        element: <PaymentFail></PaymentFail>,
       },
       {
-        path: "payment/SSLCommerz",
-        element: <SslCommerzePayment></SslCommerzePayment>,
+        path: "/payment/cancel",
+        element: <PaymentCancel></PaymentCancel>,
       },
       {
         path: "/about",
@@ -102,10 +104,22 @@ export const router = createBrowserRouter([
         path: "settings",
         element: <Settings></Settings>,
       },
-      //user rout
+      //user route
+      {
+        path: "user-profile",
+        element: <UserProfile></UserProfile>,
+      },
       {
         path: "wishlist",
         element: <Wishlist></Wishlist>,
+      },
+      {
+        path: "my-orders",
+        element: <MyOrders></MyOrders>,
+      },
+      {
+        path: "weather",
+        element: <Weather></Weather>,
       },
       // admin route
       {

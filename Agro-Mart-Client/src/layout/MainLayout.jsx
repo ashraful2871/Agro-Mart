@@ -37,7 +37,11 @@ const MainLayout = () => {
       >
         <div
           className={`min-h-[814px]   md:px-2 lg:px-0 ${
-            !isHomePage && !isLoginPage && !isSignUpPage && !isResetPasswordPage && !isStripePaymentPage
+            !isHomePage &&
+            !isLoginPage &&
+            !isSignUpPage &&
+            !isResetPasswordPage &&
+            !isStripePaymentPage
               ? "mt-3"
               : ""
           }`}

@@ -1,34 +1,33 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { IoMdCheckmark } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 const WhyChooseUs = () => {
     const { theme } = useContext(ThemeContext);
+    const {t} = useTranslation();
   
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center p-8 bg-base-50 mb-20">
       <div className="space-y-6 max-w-xl">
         <h4 className= {`${theme === "dark" ? "text-green-600" : "text-green-700"} uppercase text-sm font-bold tracking-wide`}>
-          Why Choose Us
+          {t('whyChooseUs.title')}
         </h4>
         <h2 className="font-syne text-4xl font-bold text-base-content">
-          We Are Different From Other Farming
+          {t('whyChooseUs.subtitle')}
         </h2>
         <p className="text-base-content">
-          Our farming methods are sustainable, eco-friendly, and designed to
-          deliver the highest quality produce. We prioritize nature and health
-          in everything we do.
+          {t('whyChooseUs.description')}
         </p>
         <div className="space-y-6">
           <div className="flex md:space-x-4">
             <div className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-green-700 text-2xl hidden md:block`}>🌱</div>
             <div>
               <h3 className="font-bold text-xl text-base-content">
-                Sustainable Practices
+                {t('whyChooseUs.sustainablePractices')}
               </h3>
               <p className="text-base-content">
-                We use eco-friendly techniques to ensure the land remains
-                fertile for future generations.
+                {t('whyChooseUs.sustainablePracticesDesc')}
               </p>
             </div>
           </div>
@@ -36,11 +35,10 @@ const WhyChooseUs = () => {
             <div className={`${theme === "dark" ? "text-green-600" : "text-green-700"}text-2xl hidden md:block`}>🍃</div>
             <div>
               <h3 className="font-bold text-xl text-base-content">
-                Organic Certification
+                {t('whyChooseUs.organicCertification')}
               </h3>
               <p className="text-base-content">
-                All our products are certified organic, free from harmful
-                chemicals and pesticides.
+                {t('whyChooseUs.organicCertificationDesc')}
               </p>
             </div>
           </div>
@@ -48,19 +46,19 @@ const WhyChooseUs = () => {
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="flex items-center space-x-2">
             <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl font-bold`}><IoMdCheckmark /></span>
-            <p className="text-base-content">100% Natural</p>
+            <p className="text-base-content"> {t('whyChooseUs.checkmarks.natural')} </p>
           </div>
           <div className="flex items-center space-x-2">
             <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl font-bold`}><IoMdCheckmark /></span>
-            <p className="text-base-content">Locally Sourced</p>
+            <p className="text-base-content"> {t('whyChooseUs.checkmarks.locallySourced')} </p>
           </div>
           <div className="flex items-center space-x-2">
             <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl font-bold`}><IoMdCheckmark /></span>
-            <p className="text-base-content">Eco-Friendly</p>
+            <p className="text-base-content"> {t('whyChooseUs.checkmarks.ecoFriendly')} </p>
           </div>
           <div className="flex items-center space-x-2">
             <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-xl font-bold`}><IoMdCheckmark /></span>
-            <p className="text-base-content">Fresh & Healthy</p>
+            <p className="text-base-content"> {t('whyChooseUs.checkmarks.freshHealthy')} </p>
           </div>
         </div>
       </div>

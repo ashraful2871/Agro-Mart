@@ -1,36 +1,36 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
+import LocalizedNumber from "../../../components/LocalizedNumber/LocalizedNumber";
 
 const AgricultureProcess = () => {
   const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
+  const experienceNumber = 250;
 
   const steps = [
     {
       id: "01",
-      title: "Schedule Your Experience",
-      description:
-        "When you work with us, you’ll see that absolute conditions is our priority.",
+      title: t("agriculture.scheduleExperience"),
+      description: t("agriculture.priorityDescription"),
       icon: "📅",
     },
     {
       id: "02",
-      title: "Get Professional Advice",
-      description:
-        "When you work with us, you’ll see that absolute conditions is our priority.",
+      title: t("agriculture.professionalAdvice"),
+      description: t("agriculture.priorityDescription"),
       icon: "🛠️",
     },
     {
       id: "03",
-      title: "Meet Our Expert People",
-      description:
-        "When you work with us, you’ll see that absolute conditions is our priority.",
+      title: t("agriculture.meetExperts"),
+      description: t("agriculture.priorityDescription"),
       icon: "👨‍🌾",
     },
     {
       id: "04",
-      title: "Now Get A Best Products",
-      description:
-        "When you work with us, you’ll see that absolute conditions is our priority.",
+      title: t("agriculture.getBestProducts"),
+      description: t("agriculture.priorityDescription"),
       icon: "🛒",
     },
   ];
@@ -50,17 +50,19 @@ const AgricultureProcess = () => {
         {/* Right Side Content */}
         <div className="xl:w-1/2 h-full flex items-center">
           <div className="text-center xl:text-left w-full">
-            <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} font-bold uppercase text-sm`}>
-              Work Process
+            {/* <h1 className="text-3xl font-bold mt-6">{t('welcome')}</h1> */}
+            <h3
+              className={`${
+                theme === "dark" ? "text-green-600" : "text-green-700"
+              } font-bold uppercase text-sm`}
+            >
+              {t("agriculture.workProcess")}
             </h3>
             <h2 className="text-3xl md:text-4xl font-bold text-base-content mt-2">
-              The Agriculture Process
+              {t("agriculture.agricultureProcess")}
             </h2>
             <p className="mt-4 text-base-content text-sm md:text-base">
-              We take part in many key international agricultural exhibitions,
-              which gives us the opportunity to find new partners, learn new
-              trends in the development of the agricultural sector, share
-              experiences, present our products and the latest innovations.
+              {t("agriculture.description")}
             </p>
 
             {/* Experience Badge */}
@@ -73,8 +75,19 @@ const AgricultureProcess = () => {
                 />
               </div>
               <div>
-                <h3 className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-3xl font-bold`} font-bold>250+</h3>
-                <p className="text-base-content">Years of experience</p>
+                <h3
+                  className={`${
+                    theme === "dark" ? "text-green-600" : "text-green-700"
+                  } text-3xl font-bold`}
+                  font-bold
+                >
+                  {" "}
+                  <LocalizedNumber number={experienceNumber} />+{" "}
+                </h3>
+                <p className="text-base-content">
+                  {" "}
+                  {t("agriculture.yearsExperience")}
+                </p>
               </div>
             </div>
 
@@ -85,7 +98,11 @@ const AgricultureProcess = () => {
                   key={step.id}
                   className="bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border"
                 >
-                  <span className={`${theme === "dark" ? "text-green-600" : "text-green-700"} text-base-content text-3xl font-bold`}>
+                  <span
+                    className={`${
+                      theme === "dark" ? "text-green-600" : "text-green-700"
+                    } text-base-content text-3xl font-bold`}
+                  >
                     {step.id}
                   </span>
                   <h4 className="text-lg font-bold text-base-content mt-2 flex items-center">

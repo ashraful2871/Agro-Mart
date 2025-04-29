@@ -1,7 +1,6 @@
 import React from "react";
-import { FaHeart, FaShoppingCart, FaUsers } from "react-icons/fa";
-import { FaUserDoctor } from "react-icons/fa6";
-import { MdDashboardCustomize } from "react-icons/md";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const UserMenu = () => {
@@ -9,6 +8,17 @@ const UserMenu = () => {
     <div>
       <ul className="menu font-semibold text-base text-base-content">
         {" "}
+        <li className="py-3">
+          <NavLink
+            to="/dashboard/my-orders"
+            className={({ isActive }) =>
+              isActive ? "text-green-600 border-l-4 border-green-600" : ""
+            }
+            style={{ color: "", backgroundColor: "transparent" }}
+          >
+            <FaShoppingCart className="text-xl ml-2" /> My Orders
+          </NavLink>
+        </li>
         <li className=" py-3">
           <NavLink
             to="/dashboard/wishlist"
@@ -22,35 +32,13 @@ const UserMenu = () => {
         </li>
         <li className=" py-3">
           <NavLink
-            to="/dashboard/overview"
+            to="/dashboard/user-profile"
             className={({ isActive }) =>
               isActive ? "text-green-600 border-l-4 border-green-600" : ""
             }
             style={{ color: "", backgroundColor: "transparent" }}
           >
-            <MdDashboardCustomize className="text-xl ml-2" /> Overview
-          </NavLink>
-        </li>
-        <li className="py-3">
-          <NavLink
-            to="/dashboard/all-users"
-            className={({ isActive }) =>
-              isActive ? "text-green-600 border-l-4 border-green-600" : ""
-            }
-            style={{ color: "", backgroundColor: "transparent" }}
-          >
-            <FaUsers className="text-xl ml-2" /> Customers
-          </NavLink>
-        </li>
-        <li className="py-3">
-          <NavLink
-            to="/dashboard/all-orders"
-            className={({ isActive }) =>
-              isActive ? "text-green-600 border-l-4 border-green-600" : ""
-            }
-            style={{ color: "", backgroundColor: "transparent" }}
-          >
-            <FaShoppingCart className="text-xl ml-2" /> Orders
+            <FaUser className="text-xl ml-2" /> My Profile
           </NavLink>
         </li>
       </ul>

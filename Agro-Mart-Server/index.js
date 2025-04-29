@@ -5,10 +5,16 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 const { Parser } = require("json2csv");
-
+const SSLCommerzPayment = require("sslcommerz-lts");
+const { v4: uuidv4 } = require("uuid");
 //middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const store_id = process.env.STORE_ID;
+const store_passwd = process.env.STORE_PASSWORD;
+const is_live = process.env.IS_LIVE === "true";
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -21,7 +27,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
+const tempCartStorage = new Map();
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -111,33 +117,42 @@ async function run() {
       res.send(result);
     });
 
-    app.get('/user/:email', async (req, res) => {
+    app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email };
       const result = await usersCollection.findOne(query);
       res.send(result);
     });
-    
-    app.patch('/users/update-coupon-enabled', async (req, res) => {
+
+    app.patch("/users/update-coupon-enabled", async (req, res) => {
       const { couponEnabled } = req.body;
-    
+
       try {
         // Ensure couponEnabled is a boolean
-        if (typeof couponEnabled !== 'boolean') {
-          throw new Error('Invalid couponEnabled value');
+        if (typeof couponEnabled !== "boolean") {
+          throw new Error("Invalid couponEnabled value");
         }
-    
+
         // Update the collection
-        const result = await usersCollection.updateMany({}, { $set: { couponEnabled } });
-        
+        const result = await usersCollection.updateMany(
+          {},
+          { $set: { couponEnabled } }
+        );
+
         if (result.modifiedCount > 0) {
-          res.send({ message: "Coupon enabled status updated successfully!", modifiedCount: result.modifiedCount });
+          res.send({
+            message: "Coupon enabled status updated successfully!",
+            modifiedCount: result.modifiedCount,
+          });
         } else {
           res.status(404).send({ message: "No users were updated." });
         }
       } catch (error) {
         console.error("Error updating couponEnabled:", error);
-        res.status(500).send({ message: "Error updating couponEnabled", error: error.message });
+        res.status(500).send({
+          message: "Error updating couponEnabled",
+          error: error.message,
+        });
       }
     });
 
@@ -168,6 +183,27 @@ async function run() {
       }
     });
 
+    // Update user role
+    app.put("/user/role/:email", async (req, res) => {
+      const { email } = req.params;
+      const { role } = req.body;
+
+      try {
+        const result = await usersCollection.updateOne(
+          { email },
+          { $set: { role } }
+        );
+
+        if (result.modifiedCount > 0) {
+          res.send({ message: "Role updated", role });
+        } else {
+          res.status(400).send({ message: "No changes made" });
+        }
+      } catch (err) {
+        res.status(500).send({ message: "Update failed", error: err.message });
+      }
+    });
+
     // Delete user
     app.delete("/user/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
@@ -175,7 +211,6 @@ async function run() {
       const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
-    
 
     // products related apis crud
     // products create
@@ -216,7 +251,7 @@ async function run() {
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 6;
       const skip = (page - 1) * limit;
-      
+
       if (req.query.sort && req.query.sort !== "default") {
         sortByPrice = { price: parseInt(req.query.sort) };
         console.log(sortByPrice);
@@ -241,7 +276,7 @@ async function run() {
           .skip(skip)
           .limit(limit)
           .toArray();
-    
+
         res.send({
           totalItems: total,
           currentPage: page,
@@ -595,15 +630,28 @@ async function run() {
       }
     });
 
+    app.get("/orders/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log("Received email:", email);
+      try {
+        const query = { email: email };
+        const result = await paymentCollection.find(query).toArray();
+        console.log("Fetched orders:", result);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Server Error", error });
+      }
+    });
+
     // Download orders as CSV
     app.get("/orders/download", async (req, res) => {
       try {
         const orders = await paymentCollection.find().toArray();
-    
+
         if (!orders.length) {
           return res.status(404).send({ message: "No orders found" });
         }
-    
+
         const flattenedOrders = orders?.map((order) => ({
           id: order?._id.toString(),
           name: order?.name || "",
@@ -615,14 +663,14 @@ async function run() {
           date: order?.date ? new Date(order.date).toLocaleDateString() : "",
           invoiceNo: order?.invoiceNo || "",
         }));
-    
+
         const json2csv = new Parser();
         const csv = json2csv.parse(flattenedOrders);
-    
+
         // Add BOM for proper CSV rendering
         res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment("orders.csv");
-        res.send("\uFEFF" + csv);  // Adding BOM here before sending the CSV data
+        res.send("\uFEFF" + csv); // Adding BOM here before sending the CSV data
       } catch (err) {
         console.error("Error generating CSV:", err);
         res.status(500).json({ message: "Failed to download orders" });
@@ -633,26 +681,30 @@ async function run() {
     app.get("/orders/:id/download", async (req, res) => {
       const id = req.params.id;
       try {
-        const order = await paymentCollection.findOne({ _id: new ObjectId(id) });
+        const order = await paymentCollection.findOne({
+          _id: new ObjectId(id),
+        });
         if (!order) {
           return res.status(404).json({ message: "Order not found" });
         }
-    
-        const orderData = [{
-          id: order?._id.toString(),
-          name: order?.name || "",
-          email: order?.email || "",
-          status: order?.status || "",
-          totalAmount: order.totalAmount || "",
-          method: order?.method || "",
-          transactionId: order?.transactionId || "",
-          date: order?.date ? new Date(order.date).toLocaleDateString() : "",
-          invoiceNo: order?.invoiceNo || "",
-        }];
-    
+
+        const orderData = [
+          {
+            id: order?._id.toString(),
+            name: order?.name || "",
+            email: order?.email || "",
+            status: order?.status || "",
+            totalAmount: order.totalAmount || "",
+            method: order?.method || "",
+            transactionId: order?.transactionId || "",
+            date: order?.date ? new Date(order.date).toLocaleDateString() : "",
+            invoiceNo: order?.invoiceNo || "",
+          },
+        ];
+
         const json2csv = new Parser();
         const csv = json2csv.parse(orderData);
-    
+
         res.header("Content-Type", "text/csv; charset=utf-8");
         res.attachment(`order_${order.invoiceNo}.csv`);
         res.send("\uFEFF" + csv);
@@ -794,70 +846,278 @@ async function run() {
 
     app.get("/weekly-sales", async (req, res) => {
       try {
-        const result = await paymentCollection.aggregate([
-          {
-            $group: {
-              _id: "$date",
-              sales: { $sum: "$totalAmount" },
-              orders: { $sum: 1 }
-            }
-          },
-          { $sort: { _id: 1 } }
-        ]).toArray();
-    
+        const result = await paymentCollection
+          .aggregate([
+            {
+              $group: {
+                _id: "$date",
+                sales: { $sum: "$totalAmount" },
+                orders: { $sum: 1 },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+          .toArray();
+
         // Format the data for frontend
-        const formattedData = result.map(item => ({
+        const formattedData = result.map((item) => ({
           date: item._id,
           sales: item.sales,
-          orders: item.orders
+          orders: item.orders,
         }));
-    
+
         res.json(formattedData);
       } catch (error) {
         console.error("Error fetching sales data:", error);
         res.status(500).json({ message: "Failed to fetch sales data" });
       }
-    });    
+    });
 
-    app.get('/best-selling-products', async (req, res) => {
+    app.get("/best-selling-products", async (req, res) => {
       try {
-        const bestSellingProducts = await paymentCollection.aggregate([
-          { $unwind: "$productId" },
-          {
-            $group: {
-              _id: "$productId",
-              totalOrderCount: { $sum: 1 }
-            }
-          },
-          {
-            $addFields: {
-              _id: { $toObjectId: "$_id" }
-            }
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "productDetails"
-            }
-          },
-          { $unwind: "$productDetails" },
-          {
-            $project: {
-              name: "$productDetails.name",
-              totalOrderCount: 1
-            }
-          },
-          { $sort: { totalOrderCount: -1 } }
-        ]).toArray();
-    
+        const bestSellingProducts = await paymentCollection
+          .aggregate([
+            { $unwind: "$productId" },
+            {
+              $group: {
+                _id: "$productId",
+                totalOrderCount: { $sum: 1 },
+              },
+            },
+            {
+              $addFields: {
+                _id: { $toObjectId: "$_id" },
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "_id",
+                as: "productDetails",
+              },
+            },
+            { $unwind: "$productDetails" },
+            {
+              $project: {
+                name: "$productDetails.name",
+                totalOrderCount: 1,
+              },
+            },
+            { $sort: { totalOrderCount: -1 } },
+          ])
+          .toArray();
+
         res.json(bestSellingProducts);
       } catch (error) {
-        console.error('Error fetching best-selling products:', error);
+        console.error("Error fetching best-selling products:", error);
         res.status(500).json({ message: "Server error" });
       }
-    });           
+    });
+
+    //sslcommarze
+    app.post("/init-payment", async (req, res) => {
+      const { totalAmount, cartItems, cartIds, userInfo } = req.body;
+      console.log(totalAmount, cartItems, cartIds);
+      const tran_id = uuidv4(); // Unique transaction ID
+
+      tempCartStorage.set(tran_id, {
+        cartItems,
+        cartIds,
+        email: userInfo.email,
+      });
+      const data = {
+        total_amount: totalAmount,
+        currency: "BDT", // Change to your currency
+        tran_id: tran_id,
+        success_url: "http://localhost:5000/payment/success",
+        fail_url: "http://localhost:5000/payment/fail",
+        cancel_url: "http://localhost:5000/payment/cancel",
+        ipn_url: "http://localhost:5000/payment/ipn",
+        shipping_method: "NO",
+        product_name: cartItems.map((item) => item.name).join(", "),
+        product_category: "general",
+        product_profile: "general",
+        cus_name: userInfo?.name || "Customer Name", // Replace with dynamic data if available
+        cus_email: userInfo?.email,
+        cus_add1: "Dhaka",
+        cus_city: "Dhaka",
+        cus_country: "Bangladesh",
+        cus_phone: "01711111111",
+        ship_name: "Customer Name",
+        ship_add1: "Dhaka",
+        ship_city: "Dhaka",
+        ship_country: "Bangladesh",
+        ship_postcode: "1000",
+      };
+
+      try {
+        const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+        const apiResponse = await sslcz.init(data);
+        res.json({ GatewayPageURL: apiResponse.GatewayPageURL, tran_id });
+      } catch (error) {
+        console.error("Error initializing payment:", error);
+        res.status(500).json({ error: "Failed to initialize payment" });
+      }
+    });
+
+    // Handle success callback
+    app.post("/payment/success", async (req, res) => {
+      const paymentIntent = req.body;
+
+      if (paymentIntent.status !== "VALID") {
+        return res.redirect("http://localhost:5173/payment/fail");
+      }
+
+      try {
+        // Retrieve cart data from temporary storage
+        const { cartItems, cartIds, email } = tempCartStorage.get(
+          paymentIntent.tran_id
+        ) || {
+          cartItems: [],
+          cartIds: [],
+          email: null,
+        };
+
+        console.log("Retrieved cartItems:", cartItems);
+        console.log("Retrieved cartIds:", cartIds);
+        console.log("User email:", email);
+
+        if (!email) {
+          console.error("Email not found in temporary storage");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Fetch user data
+        const user = await usersCollection.findOne({ email: email });
+        if (!user) {
+          console.error("User not found for email:", email);
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Validate cart items
+        if (!cartItems.length || !cartIds.length) {
+          console.error("No cart items or cart IDs found in temporary storage");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Validate product IDs
+        const productIds = cartItems
+          .map((item) => {
+            try {
+              return new ObjectId(item.productId);
+            } catch (err) {
+              console.error(`Invalid productId: ${item.productId}`);
+              return null;
+            }
+          })
+          .filter((id) => id !== null);
+
+        if (productIds.length !== cartItems.length) {
+          console.error("Some productIds are invalid");
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Fetch product data
+        const products = await productCollection
+          .find({
+            _id: { $in: productIds },
+          })
+          .toArray();
+
+        console.log("Found products:", products);
+
+        // Check stock availability
+        const stockErrors = [];
+        cartItems.forEach((item) => {
+          const product = products.find(
+            (p) => p._id.toString() === item.productId
+          );
+          if (!product) {
+            stockErrors.push(`Product not found (ID: ${item.productId})`);
+          } else if (parseFloat(product.stockQuantity) < (item.quantity || 1)) {
+            stockErrors.push(
+              `Not enough stock for ${item.name}. Available: ${
+                product.stockQuantity
+              }, Ordered: ${item.quantity || 1}`
+            );
+          }
+        });
+
+        if (stockErrors.length > 0) {
+          console.error("Stock validation failed. Errors:", stockErrors);
+          return res.redirect("http://localhost:5173/payment/fail");
+        }
+
+        // Prepare payment information
+        const paymentInfo = {
+          email: user.email,
+          name: user.name || "Unknown",
+          totalAmount: parseFloat(paymentIntent.amount),
+          status: paymentIntent.status,
+          method: paymentIntent.card_type || "Unknown",
+          transactionId: paymentIntent.tran_id,
+          cartIds: cartIds,
+          cartItems: cartItems.map((item) => ({
+            productId: item.productId,
+            orderedQuantity: item.quantity || 1,
+            price: parseFloat(item.price),
+            name: item.name,
+          })),
+          date: new Date().toISOString(),
+          invoiceNo: Math.floor(100000 + Math.random() * 900000).toString(),
+          createdAt: new Date(),
+        };
+
+        // Update product stock quantities
+        const bulkUpdateOps = cartItems.map((item) => ({
+          updateOne: {
+            filter: { _id: new ObjectId(item.productId) },
+            update: {
+              $inc: { stockQuantity: -(item.quantity || 1) },
+              $set: { updatedAt: new Date() },
+            },
+          },
+        }));
+
+        await productCollection.bulkWrite(bulkUpdateOps);
+
+        // Save payment information
+        await paymentCollection.insertOne(paymentInfo);
+
+        // Clear the user's cart
+        await cartCollection.deleteMany({
+          _id: { $in: cartIds.map((id) => new ObjectId(id)) },
+        });
+
+        // Clean up temporary storage
+        tempCartStorage.delete(paymentIntent.tran_id);
+
+        // console.log("Payment saved to database:", paymentInfo);
+
+        res.redirect("http://localhost:5173/payment/success");
+      } catch (error) {
+        console.error("Error processing payment:", error);
+        res.redirect("http://localhost:5173/payment/fail");
+      }
+    });
+
+    // Handle failure callback
+    app.post("/payment/fail", (req, res) => {
+      res.redirect("http://localhost:5173/payment/fail");
+    });
+
+    // Handle cancel callback
+    app.post("/payment/cancel", (req, res) => {
+      res.redirect("http://localhost:5173/payment/cancel");
+    });
+
+    // Handle IPN (Instant Payment Notification)
+    app.post("/payment/ipn", (req, res) => {
+      console.log("IPN received:", req.body);
+      // Update database based on IPN data
+      res.status(200).send("IPN received");
+    });
 
     app.get("/", async (req, res) => {
       res.send("Agro is running");
