@@ -228,6 +228,26 @@
       },
       "no_orders": "No orders found."
     },
+    "wishlist": {
+      "title": "My Wishlist",
+      "no_wishlist": "No wishlist product added",
+      "add_to_cart": "Add To Cart",
+      "delete": "Delete",
+      "toast": {
+        "success": "Moved to Cart!",
+        "error": "Error: {{message}}"
+      },
+      "swal": {
+        "confirm_title": "Are you sure?",
+        "confirm_text": "You won't be able to revert this!",
+        "confirm_button": "Yes, delete it!",
+        "cancel_button": "Cancel",
+        "success_title": "Deleted!",
+        "success_text": "The item has been deleted from your wishlist.",
+        "error_title": "Error",
+        "error_text": "Something went wrong while deleting the item."
+      }
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",
