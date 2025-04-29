@@ -204,6 +204,165 @@
     "next": "Next"
   },
   "dashboard": {
+    "logout": "Logout",
+    "user_menu": {
+      "my_orders": "My Orders",
+      "wishlist": "WishList",
+      "my_profile": "My Profile"
+    },
+    "my_orders": {
+      "title": "My Orders",
+      "table_headers": {
+        "invoice_no": "INVOICE NO",
+        "order_time": "ORDER TIME",
+        "customer_email": "CUSTOMER EMAIL",
+        "method": "METHOD",
+        "amount": "AMOUNT",
+        "status": "STATUS",
+        "invoice": "INVOICE"
+      },
+      "status": {
+        "Pending": "Pending",
+        "Delivered": "Delivered",
+        "Processing": "Processing"
+      },
+      "no_orders": "No orders found."
+    },
+    "wishlist": {
+      "title": "My Wishlist",
+      "no_wishlist": "No wishlist product added",
+      "add_to_cart": "Add To Cart",
+      "delete": "Delete",
+      "toast": {
+        "success": "Moved to Cart!",
+        "error": "Error: {{message}}"
+      },
+      "swal": {
+        "confirm_title": "Are you sure?",
+        "confirm_text": "You won't be able to revert this!",
+        "confirm_button": "Yes, delete it!",
+        "cancel_button": "Cancel",
+        "success_title": "Deleted!",
+        "success_text": "The item has been deleted from your wishlist.",
+        "error_title": "Error",
+        "error_text": "Something went wrong while deleting the item."
+      }
+    },
+    "admin_menu": {
+      "overview": "Overview",
+      "customers": "Customers",
+      "orders": "Orders",
+      "settings": "Settings"
+    },
+    "overview": {
+      "dashboard_overview": "Dashboard Overview",
+      "recent_order": "Recent Order"
+    },
+    "sales_cards": {
+      "loading": "Loading...",
+      "today_orders": "Today Orders",
+      "yesterday_orders": "Yesterday Orders",
+      "this_month": "This Month",
+      "all_time_sales": "All-Time Sales"
+    },
+    "order_cards": {
+      "total_order": "Total Order",
+      "orders_pending": "Orders Pending",
+      "orders_processing": "Orders Processing",
+      "orders_delivered": "Orders Delivered"
+    },
+    "weekly_sales_chart": {
+      "title": "Weekly Sales",
+      "sales_tab": "Sales",
+      "tooltip": {
+        "date": "Date",
+        "value": "Value"
+      }
+    },
+    "best_selling_products_chart": {
+      "title": "Best Selling Products",
+      "no_data": "No data available"
+    },
+    "recent_order_table": {
+      "table_headers": {
+        "invoice_no": "INVOICE NO",
+        "order_time": "ORDER TIME",
+        "customer_email": "CUSTOMER EMAIL",
+        "method": "METHOD",
+        "amount": "AMOUNT",
+        "status": "STATUS",
+        "action": "ACTION",
+        "invoice": "INVOICE"
+      },
+      "toast": {
+        "success": "Order status updated successfully!",
+        "error": "Failed to update order status!"
+      }
+    },
+    "customers": {
+      "title": "Customer"
+    },
+    "user_table": {
+      "table_headers": {
+        "id": "ID",
+        "joining_date": "JOINING DATE",
+        "name": "NAME",
+        "email": "EMAIL",
+        "phone": "PHONE",
+        "actions": "ACTIONS"
+      },
+      "search_placeholder": "Search by name/email/phone",
+      "reset_button": "Reset",
+      "pagination": {
+        "showing": "SHOWING {{from}}-{{to}} OF {{total}}"
+      },
+      "swal": {
+        "confirm_title": "Are you sure?",
+        "confirm_text": "Do you want to delete this user?",
+        "confirm_button": "Yes, delete it!",
+        "cancel_button": "Cancel",
+        "success_title": "Deleted!",
+        "success_text": "The user has been deleted.",
+        "error_title": "Error!",
+        "error_text": "Something went wrong while deleting the user."
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "update_button": "Update",
+      "fields": {
+        "number_of_images": "Number of images per product",
+        "auto_translation": "Allow Auto Translation",
+        "translation_key": "Translation Secret Key",
+        "language": "Language",
+        "currency": "Currency",
+        "timezone": "Timezone",
+        "coupon_enabled": "Enable Coupon Feature"
+      },
+      "language_options": {
+        "English": "English",
+        "Bangla": "Bangla",
+        "Hindi": "Hindi"
+      },
+      "currency_options": {
+        "Dollar": "Dollar",
+        "Taka": "Taka",
+        "Rupee": "Rupee"
+      },
+      "company_info": {
+        "title": "Company Info",
+        "shop_name": "Shop Name",
+        "address": "Address",
+        "contact": "Contact",
+        "email": "Email",
+        "website": "Website"
+      },
+      "alerts": {
+        "coupon_success": "All users' couponEnabled updated successfully!",
+        "coupon_no_update": "No users were updated.",
+        "coupon_error": "Failed to update couponEnabled for all users."
+      }
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",
@@ -256,32 +415,127 @@
           "success_text": "The product has been deleted.",
           "error_title": "Error!",
           "error_text": "Something went wrong while deleting the product."
+        }
+      },
+      "customer-orders": {
+        "email_placeholder": "Search by Customer email",
+        "status_label": "Status",
+        "status_options": {
+          "pending": "Pending",
+          "delivered": "Delivered",
+          "processing": "Processing"
         },
-        "customer-orders": {
-          "email_placeholder": "Search by Customer email",
-          "status_label": "Status",
-          "status_options": {
-            "pending": "Pending",
-            "delivered": "Delivered",
-            "processing": "Processing"
-          },
-          "order_limit_label": "Order Limits",
-          "order_limit_options": {
-            "10": "Last 10 days Orders",
-            "50": "Last 50 days Orders",
-            "100": "Last 100 days Orders"
-          },
-          "method_label": "Method",
-          "method_options": {
-            "stripe": "Stripe",
-            "card": "Card",
-            "online": "Online"
-          },
-          "start_date_label": "Start Date",
-          "end_date_label": "End Date",
-          "download_button": "Download All Orders",
-          "reset_button": "Reset",
-          "download_error": "Download failed: {{error}}"
+        "order_limit_label": "Order Limits",
+        "order_limit_options": {
+          "10": "Last 10 days Orders",
+          "50": "Last 50 days Orders",
+          "100": "Last 100 days Orders"
+        },
+        "method_label": "Method",
+        "method_options": {
+          "stripe": "Stripe",
+          "card": "Card",
+          "online": "Online"
+        },
+        "start_date_label": "Start Date",
+        "end_date_label": "End Date",
+        "download_button": "Download All Orders",
+        "reset_button": "Reset",
+        "download_error": "Download failed: {{error}}"
+      },
+      "crop-doctor": {
+        "title": "🌱 Check Your Crop's Health, Quickly and Easily",
+        "subtitle": "Through this platform, you can identify crop diseases and receive quick and accurate treatment advice.",
+        "form_title": "🌱 Crop Doctor",
+        "method_label": "Use <strong>Roboflow</strong> (instead of Plant.id)",
+        "method_description": "Take a photo of the plant's leaves, stem, roots, or fruit — it makes disease detection easier and more accurate.",
+        "upload_label": "Upload Crop Image",
+        "loading_message": "Analyzing your crop...",
+        "error_prefix": "Error:",
+        "uploaded_image_label": "Uploaded Image",
+        "uploaded_image_alt": "Uploaded crop",
+        "result_healthy_title": "✅ Crop is Healthy",
+        "result_diseased_title": "⚠️ Disease Detected",
+        "result_disease_label": "Disease Name:",
+        "result_details_label": "Details:",
+        "result_treatment_label": "Recommended Treatment:",
+        "roboflow_title": "🌿 Roboflow Analysis",
+        "roboflow_label": "Label:",
+        "roboflow_confidence": "Confidence Level:",
+        "roboflow_treatment_label": "Recommended Treatment:",
+        "validation": {
+          "no_file": "No file selected",
+          "invalid_type": "Please upload an image file (JPEG, PNG)",
+          "size_exceeded": "Image size exceeds 5MB limit"
+        },
+        "api_errors": {
+          "image_upload_failed": "Image upload failed",
+          "diagnosis_failed": "Diagnosis failed. Please try again.",
+          "auth_failed": "Authentication failed. Please check your API key.",
+          "rate_limit": "Rate limit exceeded. Please wait and try again.",
+          "network_error": "Network error. Please check your connection.",
+          "plant_id_failed": "Plant.id API request failed",
+          "image_convert_failed": "Failed to convert image to base64",
+          "unknown_error": "Unknown error: {{message}}"
+        }
+      },
+      "weather-suggestion": {
+        "title": "Stay in Tune with the Weather for Farming and Product Selection!",
+        "weather_card": {
+          "loading": "Loading weather data...",
+          "title": "Weather in Your Area",
+          "temperature": "🌡️ Temperature: {{temp}}°C",
+          "humidity": "💧 Humidity: {{humidity}}%",
+          "wind": "🌬️ Wind: {{speed}} m/s",
+          "condition": "🌥️ Condition: {{description}}",
+          "notifications": {
+            "title": "🌦️ Farming Alert",
+            "rain": "It may rain today, please cover your crops. 🌧️",
+            "thunderstorm": "A storm is likely! Stay cautious. ⛈️",
+            "extreme": "Extreme weather conditions, take precautions for farming. 🔥"
+          }
+        },
+        "crop_advice_card": {
+          "title": "🧑‍🌾 Farming Advice",
+          "advice": {
+            "rain": "☔ It may rain today, avoid water accumulation around plants.",
+            "hot": "🔥 High temperature today, wheat may require extra irrigation.",
+            "cold": "❄️ Cold weather today, use warm water for irrigating potatoes.",
+            "normal": "✅ Today's weather is suitable for farming."
+          }
+        },
+        "weather_advice_card": {
+          "title": "🌾 Agricultural Advice",
+          "advice": {
+            "hot": "Today's temperature is very high (above 35°C). Provide extra irrigation for wheat. 🌾💧",
+            "rain": "It may rain today. Use a canopy to protect plants. 🌧️",
+            "clear": "The weather is clear, perfect time for farming. 🌞🌱",
+            "thunderstorm": "There is a risk of a storm. Cover crops and stay safe. ⛈️",
+            "default": "No special precautions based on the weather. Continue farming. 🌿"
+          }
+        },
+        "suggested_products": {
+          "title": "Suggested Products for Current Weather",
+          "products": {
+            "rain": [
+              { "name": "Rain Canopy" },
+              { "name": "Waterproof Seed Bag" },
+              { "name": "Fungicide" }
+            ],
+            "clear": [
+              { "name": "Sun Hat" },
+              { "name": "Irrigation Kit" },
+              { "name": "Soil Moisture Sensor" }
+            ],
+            "clouds": [
+              { "name": "Compost Fertilizer" },
+              { "name": "LED Grow Light" }
+            ],
+            "default": [
+              { "name": "Organic Fertilizer" },
+              { "name": "General Farming Tools" }
+            ]
+          }
         }
       }
     }
