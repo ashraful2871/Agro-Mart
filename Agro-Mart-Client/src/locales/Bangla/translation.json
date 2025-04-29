@@ -248,6 +248,29 @@
         "error_text": "পণ্য মুছতে গিয়ে কিছু ভুল হয়েছে।"
       }
     },
+    "admin_menu": {
+      "overview": "ওভারভিউ",
+      "customers": "গ্রাহক",
+      "orders": "অর্ডার",
+      "settings": "সেটিংস"
+    },
+    "overview": {
+      "dashboard_overview": "ড্যাশবোর্ড ওভারভিউ",
+      "recent_order": "সাম্প্রতিক অর্ডার"
+    },
+    "sales_cards": {
+      "loading": "লোড হচ্ছে...",
+      "today_orders": "আজকের অর্ডার",
+      "yesterday_orders": "গতকালের অর্ডার",
+      "this_month": "এই মাস",
+      "all_time_sales": "সর্বকালের বিক্রয়"
+    },
+    "order_cards": {
+      "total_order": "মোট অর্ডার",
+      "orders_pending": "মুলতুবি অর্ডার",
+      "orders_processing": "প্রক্রিয়াকরণ অর্ডার",
+      "orders_delivered": "বিতরণকৃত অর্ডার"
+    },
     "seller": {
       "my_profile": "আমার প্রোফাইল",
       "add_product": "পণ্য যোগ করুন",

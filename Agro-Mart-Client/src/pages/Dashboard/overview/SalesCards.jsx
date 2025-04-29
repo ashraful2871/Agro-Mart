@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FaLayerGroup, FaShoppingCart, FaCreditCard } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const SalesCards = () => {
+  const { t } = useTranslation();
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -19,35 +21,35 @@ const SalesCards = () => {
   }, []);
 
   if (!stats) {
-    return <p>Loading...</p>;
+    return <p>{t("dashboard.sales_cards.loading")}</p>;
   }
 
   const salesData = [
     {
       id: 1,
       icon: <FaLayerGroup className="text-3xl" />,
-      title: "Today Orders",
+      title: t("dashboard.sales_cards.today_orders"),
       amount: `$${stats.today.revenue.toFixed(2)}`,
       bgColor: "bg-teal-600",
     },
     {
       id: 2,
       icon: <FaLayerGroup className="text-3xl" />,
-      title: "Yesterday Orders",
+      title: t("dashboard.sales_cards.yesterday_orders"),
       amount: `$${stats.yesterday.revenue.toFixed(2)}`,
       bgColor: "bg-orange-500",
     },
     {
       id: 3,
       icon: <FaShoppingCart className="text-3xl" />,
-      title: "This Month",
+      title: t("dashboard.sales_cards.this_month"),
       amount: `$${stats.thisMonth.revenue.toFixed(2)}`,
       bgColor: "bg-blue-500",
     },
     {
       id: 4,
       icon: <FaCreditCard className="text-3xl" />,
-      title: "All-Time Sales",
+      title: t("dashboard.sales_cards.all_time_sales"),
       amount: `$${stats.allTime.revenue.toFixed(2)}`,
       bgColor: "bg-green-600",
     },

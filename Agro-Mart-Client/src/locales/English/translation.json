@@ -248,6 +248,29 @@
         "error_text": "Something went wrong while deleting the item."
       }
     },
+    "admin_menu": {
+      "overview": "Overview",
+      "customers": "Customers",
+      "orders": "Orders",
+      "settings": "Settings"
+    },
+    "overview": {
+      "dashboard_overview": "Dashboard Overview",
+      "recent_order": "Recent Order"
+    },
+    "sales_cards": {
+      "loading": "Loading...",
+      "today_orders": "Today Orders",
+      "yesterday_orders": "Yesterday Orders",
+      "this_month": "This Month",
+      "all_time_sales": "All-Time Sales"
+    },
+    "order_cards": {
+      "total_order": "Total Order",
+      "orders_pending": "Orders Pending",
+      "orders_processing": "Orders Processing",
+      "orders_delivered": "Orders Delivered"
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",
