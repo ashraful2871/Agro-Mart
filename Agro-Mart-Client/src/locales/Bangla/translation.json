@@ -299,6 +299,70 @@
         "error": "অর্ডারের স্থিতি আপডেট করতে ব্যর্থ!"
       }
     },
+    "customers": {
+      "title": "গ্রাহক"
+    },
+    "user_table": {
+      "table_headers": {
+        "id": "আইডি",
+        "joining_date": "যোগদানের তারিখ",
+        "name": "নাম",
+        "email": "ইমেল",
+        "phone": "ফোন",
+        "actions": "ক্রিয়া"
+      },
+      "search_placeholder": "নাম/ইমেল/ফোন দ্বারা অনুসন্ধান করুন",
+      "reset_button": "রিসেট",
+      "pagination": {
+        "showing": "{{from}}-{{to}} দেখানো হচ্ছে, মোট {{total}} এর মধ্যে"
+      },
+      "swal": {
+        "confirm_title": "আপনি কি নিশ্চিত?",
+        "confirm_text": "আপনি কি এই ব্যবহারকারীকে মুছতে চান?",
+        "confirm_button": "হ্যাঁ, মুছুন!",
+        "cancel_button": "বাতিল",
+        "success_title": "মুছে ফেলা হয়েছে!",
+        "success_text": "ব্যবহারকারী মুছে ফেলা হয়েছে।",
+        "error_title": "ত্রুটি!",
+        "error_text": "ব্যবহারকারী মুছতে গিয়ে কিছু ভুল হয়েছে।"
+      }
+    },
+    "settings": {
+      "title": "সেটিংস",
+      "update_button": "আপডেট",
+      "fields": {
+        "number_of_images": "প্রতি পণ্যের ছবির সংখ্যা",
+        "auto_translation": "স্বয়ংক্রিয় অনুবাদ অনুমতি",
+        "translation_key": "অনুবাদ সিক্রেট কী",
+        "language": "ভাষা",
+        "currency": "মুদ্রা",
+        "timezone": "সময় অঞ্চল",
+        "coupon_enabled": "কুপন ফিচার সক্ষম করুন"
+      },
+      "language_options": {
+        "English": "ইংরেজি",
+        "Bangla": "বাংলা",
+        "Hindi": "হিন্দি"
+      },
+      "currency_options": {
+        "Dollar": "ডলার",
+        "Taka": "টাকা",
+        "Rupee": "রুপি"
+      },
+      "company_info": {
+        "title": "কোম্পানির তথ্য",
+        "shop_name": "দোকানের নাম",
+        "address": "ঠিকানা",
+        "contact": "যোগাযোগ",
+        "email": "ইমেল",
+        "website": "ওয়েবসাইট"
+      },
+      "alerts": {
+        "coupon_success": "সকল ব্যবহারকারীর কুপন সক্ষম সফলভাবে আপডেট করা হয়েছে!",
+        "coupon_no_update": "কোনো ব্যবহারকারী আপডেট করা হয়নি।",
+        "coupon_error": "সকল ব্যবহারকারীর জন্য কুপন সক্ষম আপডেট করতে ব্যর্থ।"
+      }
+    },
     "seller": {
       "my_profile": "আমার প্রোফাইল",
       "add_product": "পণ্য যোগ করুন",

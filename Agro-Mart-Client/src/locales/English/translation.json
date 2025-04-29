@@ -299,6 +299,70 @@
         "error": "Failed to update order status!"
       }
     },
+    "customers": {
+      "title": "Customer"
+    },
+    "user_table": {
+      "table_headers": {
+        "id": "ID",
+        "joining_date": "JOINING DATE",
+        "name": "NAME",
+        "email": "EMAIL",
+        "phone": "PHONE",
+        "actions": "ACTIONS"
+      },
+      "search_placeholder": "Search by name/email/phone",
+      "reset_button": "Reset",
+      "pagination": {
+        "showing": "SHOWING {{from}}-{{to}} OF {{total}}"
+      },
+      "swal": {
+        "confirm_title": "Are you sure?",
+        "confirm_text": "Do you want to delete this user?",
+        "confirm_button": "Yes, delete it!",
+        "cancel_button": "Cancel",
+        "success_title": "Deleted!",
+        "success_text": "The user has been deleted.",
+        "error_title": "Error!",
+        "error_text": "Something went wrong while deleting the user."
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "update_button": "Update",
+      "fields": {
+        "number_of_images": "Number of images per product",
+        "auto_translation": "Allow Auto Translation",
+        "translation_key": "Translation Secret Key",
+        "language": "Language",
+        "currency": "Currency",
+        "timezone": "Timezone",
+        "coupon_enabled": "Enable Coupon Feature"
+      },
+      "language_options": {
+        "English": "English",
+        "Bangla": "Bangla",
+        "Hindi": "Hindi"
+      },
+      "currency_options": {
+        "Dollar": "Dollar",
+        "Taka": "Taka",
+        "Rupee": "Rupee"
+      },
+      "company_info": {
+        "title": "Company Info",
+        "shop_name": "Shop Name",
+        "address": "Address",
+        "contact": "Contact",
+        "email": "Email",
+        "website": "Website"
+      },
+      "alerts": {
+        "coupon_success": "All users' couponEnabled updated successfully!",
+        "coupon_no_update": "No users were updated.",
+        "coupon_error": "Failed to update couponEnabled for all users."
+      }
+    },
     "seller": {
       "my_profile": "My Profile",
       "add_product": "Add Product",

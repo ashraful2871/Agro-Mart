@@ -5,8 +5,10 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/loading/Loading";
+import { useTranslation } from "react-i18next";
 
 const Settings = () => {
+  const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -40,10 +42,10 @@ const Settings = () => {
   // const handleSubmit = async () => {
   //   try {
   //     await axiosSecure.put(`/users/${user?.email}`, settings);
-  //     alert("Settings Updated Successfully!");
+  //     alert(t("dashboard.settings.alerts.update_success"));
   //   } catch (error) {
   //     console.error(error);
-  //     alert("Failed to update settings!");
+  //     alert(t("dashboard.settings.alerts.update_error"));
   //   }
   // };
 
@@ -63,20 +65,20 @@ const Settings = () => {
       console.log("Response from server:", res.data);
 
       if (res.data.modifiedCount > 0) {
-        alert("All users' couponEnabled updated successfully!");
+        alert(t("dashboard.settings.alerts.coupon_success"));
       } else {
-        alert("No users were updated.");
+        alert(t("dashboard.settings.alerts.coupon_no_update"));
       }
     } catch (error) {
       console.error("Error updating couponEnabled:", error);
-      alert("Failed to update couponEnabled for all users.");
+      alert(t("dashboard.settings.alerts.coupon_error"));
     }
   };
 
   if (isLoading || !settings)
     return (
       <div>
-        <Loading></Loading>
+        <Loading />
       </div>
     );
 
@@ -87,7 +89,7 @@ const Settings = () => {
           theme === "dark" ? "text-gray-300" : "text-gray-700"
         }`}
       >
-        Settings
+        {t("dashboard.settings.title")}
       </h1>
 
       <div
@@ -100,13 +102,13 @@ const Settings = () => {
             <span className="my-auto">
               <IoSettingsSharp />
             </span>{" "}
-            Settings
+            {t("dashboard.settings.title")}
           </div>
           <button
             // onClick={handleSubmit}
             className="btn bg-green-600 text-white font-bold px-8 py-2 mt-6 rounded-full"
           >
-            Update
+            {t("dashboard.settings.update_button")}
           </button>
         </div>
 
@@ -114,7 +116,7 @@ const Settings = () => {
 
         {/** Other Fields */}
         <div className="grid grid-cols-3 mt-7 mb-6">
-          <label>Number of images per product</label>
+          <label>{t("dashboard.settings.fields.number_of_images")}</label>
           <input
             type="number"
             name="numberOfImages"
@@ -125,7 +127,7 @@ const Settings = () => {
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Allow Auto Translation</label>
+          <label>{t("dashboard.settings.fields.auto_translation")}</label>
           <input
             type="checkbox"
             name="autoTranslation"
@@ -136,7 +138,7 @@ const Settings = () => {
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Translation Secret Key</label>
+          <label>{t("dashboard.settings.fields.translation_key")}</label>
           <input
             type="password"
             name="translationKey"
@@ -147,35 +149,47 @@ const Settings = () => {
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Language</label>
+          <label>{t("dashboard.settings.fields.language")}</label>
           <select
             name="language"
             value={settings.language || ""}
             onChange={handleChange}
             className="select select-bordered w-full bg-gray-700 text-white col-span-2"
           >
-            <option value="English">English</option>
-            <option value="Bangla">Bangla</option>
-            <option value="Hindi">Hindi</option>
+            <option value="English">
+              {t("dashboard.settings.language_options.English")}
+            </option>
+            <option value="Bangla">
+              {t("dashboard.settings.language_options.Bangla")}
+            </option>
+            <option value="Hindi">
+              {t("dashboard.settings.language_options.Hindi")}
+            </option>
           </select>
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Currency</label>
+          <label>{t("dashboard.settings.fields.currency")}</label>
           <select
             name="currency"
             value={settings.currency || ""}
             onChange={handleChange}
             className="select select-bordered w-full bg-gray-700 text-white col-span-2"
           >
-            <option value="Dollar">Dollar</option>
-            <option value="Taka">Taka</option>
-            <option value="Rupee">Rupee</option>
+            <option value="Dollar">
+              {t("dashboard.settings.currency_options.Dollar")}
+            </option>
+            <option value="Taka">
+              {t("dashboard.settings.currency_options.Taka")}
+            </option>
+            <option value="Rupee">
+              {t("dashboard.settings.currency_options.Rupee")}
+            </option>
           </select>
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Timezone</label>
+          <label>{t("dashboard.settings.fields.timezone")}</label>
           <input
             type="text"
             name="timeZone"
@@ -186,7 +200,7 @@ const Settings = () => {
         </div>
 
         <div className="grid grid-cols-3 mb-6">
-          <label>Enable Coupon Feature</label>
+          <label>{t("dashboard.settings.fields.coupon_enabled")}</label>
           <input
             type="checkbox"
             name="couponEnabled"
@@ -197,11 +211,13 @@ const Settings = () => {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold mt-10 mb-6">Company Info</h1>
+      <h1 className="text-2xl font-bold mt-10 mb-6">
+        {t("dashboard.settings.company_info.title")}
+      </h1>
 
       <div className="bg-gray-800 p-6 rounded-xl space-y-4">
         <div>
-          <label>Shop Name</label>
+          <label>{t("dashboard.settings.company_info.shop_name")}</label>
           <input
             type="text"
             name="shopName"
@@ -212,7 +228,7 @@ const Settings = () => {
         </div>
 
         <div>
-          <label>Address</label>
+          <label>{t("dashboard.settings.company_info.address")}</label>
           <input
             type="text"
             name="address"
@@ -223,7 +239,7 @@ const Settings = () => {
         </div>
 
         <div>
-          <label>Contact</label>
+          <label>{t("dashboard.settings.company_info.contact")}</label>
           <input
             type="text"
             name="contact"
@@ -234,7 +250,7 @@ const Settings = () => {
         </div>
 
         <div>
-          <label>Email</label>
+          <label>{t("dashboard.settings.company_info.email")}</label>
           <input
             type="email"
             name="email"
@@ -245,7 +261,7 @@ const Settings = () => {
         </div>
 
         <div>
-          <label>Website</label>
+          <label>{t("dashboard.settings.company_info.website")}</label>
           <input
             type="text"
             name="website"
