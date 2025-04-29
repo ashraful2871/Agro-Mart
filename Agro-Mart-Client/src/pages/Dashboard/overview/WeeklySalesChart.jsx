@@ -1,8 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,} from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 const WeeklySalesChart = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Sales");
   const { theme } = useContext(ThemeContext);
   const [salesData, setSalesData] = useState([]);
@@ -26,17 +37,19 @@ const WeeklySalesChart = () => {
         theme === "dark" ? "bg-[#1F2937]" : "bg-white"
       } p-6 rounded-lg shadow-md`}
     >
-      <h2 className="text-lg font-bold mb-4">Weekly Sales</h2>
+      <h2 className="text-lg font-bold mb-4">
+        {t("dashboard.weekly_sales_chart.title")}
+      </h2>
       <div className="border-b">
         <button
-          className={`mr-4 pb-2 font-semibold  ${
+          className={`mr-4 pb-2 font-semibold ${
             activeTab === "Sales"
               ? "text-green-600 border-b-2 border-green-600"
               : "text-base-content"
           }`}
           onClick={() => setActiveTab("Sales")}
         >
-          Sales
+          {t("dashboard.weekly_sales_chart.sales_tab")}
         </button>
         {/* <button
           className={`pb-2 font-semibold ${
@@ -55,26 +68,31 @@ const WeeklySalesChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
-          <Tooltip 
+          <Tooltip
             content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 return (
                   <div
                     className={`p-2 rounded shadow ${
-                      theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+                      theme === "dark"
+                        ? "bg-gray-900 text-white"
+                        : "bg-white text-black"
                     }`}
                   >
                     <p className="font-semibold">
-                      Date: {new Date(label).toISOString().split('T')[0]}
+                      {t("dashboard.weekly_sales_chart.tooltip.date")}:{" "}
+                      {new Date(label).toISOString().split("T")[0]}
                     </p>
-                    <p>Value: {payload[0].value}</p>
+                    <p>
+                      {t("dashboard.weekly_sales_chart.tooltip.value")}:{" "}
+                      {payload[0].value}
+                    </p>
                   </div>
                 );
               }
               return null;
             }}
           />
-          <Tooltip />
           <Legend />
           {activeTab === "Sales" && (
             <Line
