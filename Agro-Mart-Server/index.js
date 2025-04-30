@@ -30,8 +30,6 @@ const client = new MongoClient(uri, {
 const tempCartStorage = new Map();
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
     // Send a ping to confirm a successful connection
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
