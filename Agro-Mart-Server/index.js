@@ -38,6 +38,7 @@ async function run() {
     const cartCollection = client.db("AgroMart").collection("carts");
     const wishCollection = client.db("AgroMart").collection("wishes");
     const paymentCollection = client.db("AgroMart").collection("payments");
+    const reviewCollection = client.db("AgroMart").collection("reviews");
 
     //generate jwt token
     app.post("/jwt", async (req, res) => {
@@ -209,6 +210,13 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    //user review
+    app.post("/reviews", async (req, res) => {
+      const { reviews } = req.body;
+      const result = await reviewCollection.insertOne(reviews);
       res.send(result);
     });
 

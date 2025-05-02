@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import { useTranslation } from "react-i18next";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const ReviewPosting = () => {
   const [rating, setRating] = useState(0);
@@ -8,7 +9,26 @@ const ReviewPosting = () => {
   const [userName, setUserName] = useState("");
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-  const handleSubmit = async (e) => {};
+  const [loading, setLoading] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const handleSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const message = formData.get("message");
+    const reviews = { name, email, message };
+    console.log(reviews);
+    try {
+      const { data } = await axiosPublic.post("/reviews", { reviews });
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -41,73 +61,70 @@ const ReviewPosting = () => {
           ></div>
 
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
+          <div className="absolute inset-0 bg-black opacity-45 z-10"></div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 justify-items-center"
-          >
-            <div>
-              <input
-                type="text"
-                className="input input-info w-80 my-3"
-                placeholder="Your Name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                className="input input-info w-80 my-3"
-                placeholder="Your Name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                className="input input-info w-80 my-3"
-                placeholder="Your Name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="rating py-4">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                  key={star}
-                  type="radio"
-                  name="rating"
-                  className={`mask mask-star ${
-                    rating >= star ? "bg-yellow-500" : "bg-gray-300"
-                  }`}
-                  value={star}
-                  checked={rating === star}
-                  onChange={() => setRating(star)}
-                  required
-                />
-              ))}
-            </div>
-            <textarea
-              className="textarea textarea-info"
-              placeholder="Write your review here..."
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-              required
-            ></textarea>
-            <button
-              type="submit"
-              className="btn bg-[#cbec5f] border-green-700 mt-4"
+          <div className="card  w-full max-w-sm shrink-0 shadow-2xl z-10 relative flex left-32">
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
-              Post Review
-            </button>
-          </form>
+              {/* Full Name */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-white">
+                  {t("contactForm.name")}
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={t("contactForm.namePlaceholder")}
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-100 text-black"
+                />
+              </div>
+
+              {/* Email Address */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-white">
+                  {t("contactForm.email")}
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={t("contactForm.emailPlaceholder")}
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-100 text-black"
+                />
+              </div>
+
+              {/* Message */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-white">
+                  {t("contactForm.message")}
+                </label>
+                <textarea
+                  rows="4"
+                  name="message"
+                  placeholder={t("contactForm.massagePlaceholder")}
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-100 text-black"
+                ></textarea>
+              </div>
+
+              {/* Send Message Button */}
+              {loading ? (
+                <button className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 col-span-2">
+                  <span className="loading loading-spinner"></span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300  col-span-2"
+                >
+                  {t("contactForm.submit")} →
+                </button>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </>
