@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const ReviewPosting = () => {
   const [rating, setRating] = useState(0);
@@ -18,11 +19,16 @@ const ReviewPosting = () => {
     const name = formData.get("name");
     const email = formData.get("email");
     const message = formData.get("message");
-    const reviews = { name, email, message };
+    const date = new Date();
+    const reviews = { name, email, message, date };
     console.log(reviews);
     try {
       const { data } = await axiosPublic.post("/reviews", { reviews });
-      console.log(data);
+      console.log(data.insertedId);
+      if (data.insertedId) {
+        toast.success("Successfully Submit Review");
+        e.target.reset();
+      }
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -120,7 +126,7 @@ const ReviewPosting = () => {
                   type="submit"
                   className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300  col-span-2"
                 >
-                  {t("contactForm.submit")} →
+                  {t("reviewForm.submit")} →
                 </button>
               )}
             </form>

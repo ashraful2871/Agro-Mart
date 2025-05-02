@@ -31,9 +31,9 @@ const Navbar = () => {
 
   if (role === "admin") {
     dashboardLink = "/dashboard/overview";
-  } else if (role === "seller") {
+  } else if (role === "farmer") {
     dashboardLink = "/dashboard";
-  } else if (role === "user") {
+  } else if (role === "customer") {
     dashboardLink = "/dashboard/wishlist";
   }
 
@@ -103,6 +103,23 @@ const Navbar = () => {
           style={{ color: "", backgroundColor: "transparent" }}
         >
           Contact
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/reviews"
+          className={({ isActive }) =>
+            isActive
+              ? !isHomePage
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
+                : ""
+              : isHomePage
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
+              : ""
+          }
+          style={{ color: "", backgroundColor: "transparent" }}
+        >
+          Reviews
         </NavLink>
       </li>
       {/* <li>
