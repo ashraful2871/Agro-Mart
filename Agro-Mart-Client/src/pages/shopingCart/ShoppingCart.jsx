@@ -6,6 +6,8 @@ import Loading from "../../components/loading/Loading";
 import useAuth from "../../hooks/useAuth";
 import PaymentModal from "../Payment/PaymentModal";
 import { NavLink } from "react-router-dom";
+import { useCurrency } from "../../store/CurrencyContext";
+
 
 const ShoppingCart = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,6 +16,7 @@ const ShoppingCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const shippingFee = 100;
   const finalTotal = subtotal + shippingFee;
+  const { convertPrice, getSymbol } = useCurrency();
 
   const {
     data: cartData = [],
@@ -99,7 +102,12 @@ const ShoppingCart = () => {
               {cartData?.map((cart) => (
                 <CartItems
                   key={cart._id}
-                  cart={cart}
+                  cart={{
+                    ...cart,
+                    price: convertPrice(cart.price),
+                    total: convertPrice(cart.total),
+                    symbol: getSymbol(),
+                  }}
                   refetch={refetch}
                   onCartUpdate={updateSubtotal}
                 />
@@ -120,15 +128,21 @@ const ShoppingCart = () => {
               <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
               <div className="flex justify-between mb-2 text-sm sm:text-base">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                {/* <span>{getSymbol()}{convertPrice(subtotal)}</span>
+                <span>${subtotal.toFixed(2)}</span> */}
+                <span>{getSymbol()}{convertPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between mb-2 text-sm sm:text-base">
                 <span>Shipping:</span>
-                <span>${shippingFee.toFixed(2)}</span>
+                {/* <span>{getSymbol()}{convertPrice(shippingFee)}</span>
+                <span>${shippingFee.toFixed(2)}</span> */}
+                <span>{getSymbol()}{convertPrice(shippingFee)}</span>
               </div>
               <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
                 <span>Total:</span>
-                <span>${finalTotal.toFixed(2)}</span>
+                {/* <span>{getSymbol()}{convertPrice(finalTotal)}</span>
+                <span>${finalTotal.toFixed(2)}</span> */}
+                <span>{getSymbol()}{convertPrice(finalTotal)}</span>
               </div>
               <button
                 onClick={() => setIsModalOpen(true)}
