@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { ThemeContext } from "../../../provider/ThemeProvider";
+import ProductPrice from "../../../components/ProductPrice/ProductPrice";
 
 const WishListModal = ({ isOpen, closeModal }) => {
   const [wishlist, setWishlist] = useState([]);
@@ -113,7 +114,7 @@ const WishListModal = ({ isOpen, closeModal }) => {
                           {item.name}
                         </div>
                         <div className="text-sm text-base-content">
-                          ${item.price.toFixed(2)}
+                        <ProductPrice amount={item.price} />
                         </div>
                         <div className="text-sm text-base-content mt-1">
                           {new Date(item.addedAt).toLocaleDateString("en-US", {

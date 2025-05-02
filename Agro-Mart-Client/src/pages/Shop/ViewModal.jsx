@@ -6,6 +6,7 @@ import { FaFacebookF, FaTwitter, FaPinterestP, FaStar } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { ThemeContext } from "../../provider/ThemeProvider";
+import ProductPrice from "../../components/ProductPrice/ProductPrice";
 
 const ViewModal = ({ isOpen, closeModal, product }) => {
   const user = useAuth();
@@ -41,43 +42,51 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
   };
 
   const addCard = async (cartProduct) => {
-    const { image, _id, name, category, price } = cartProduct;
-    const cartData = {
-      image,
-      productId: _id,
-      name,
-      category,
-      price,
-      userInfo: {
-        name: user?.displayName,
-        email: user?.email,
-      },
-    };
-    const { data } = await axiosSecure.post("/add-cart", { cartData });
-    if (data.insertedId) {
-      toast.success("Item added successfully to cart");
+    try {
+      const { image, _id, name, category, price } = cartProduct;
+      const cartData = {
+        image,
+        productId: _id,
+        name,
+        category,
+        price,
+        userInfo: {
+          name: user?.displayName,
+          email: user?.email,
+        },
+      };
+      const { data } = await axiosSecure.post("/add-cart", { cartData });
+      if (data.insertedId) {
+        toast.success("Item added successfully to cart");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to add item to cart");
     }
-  };
+  };  
 
   const addWish = async (wishProduct) => {
-    const { image, _id, name, category, price } = wishProduct;
-    const wishData = {
-      image,
-      productId: _id,
-      name,
-      category,
-      price,
-      userInfo: {
-        name: user?.displayName,
-        email: user?.email,
-      },
-    };
-    const { data } = await axiosSecure.post("/add-wish", { wishData });
-    if (data.insertedId) {
-      toast.success("Item added successfully to wishlist");
+    try {
+      const { image, _id, name, category, price } = wishProduct;
+      const wishData = {
+        image,
+        productId: _id,
+        name,
+        category,
+        price,
+        userInfo: {
+          name: user?.displayName,
+          email: user?.email,
+        },
+      };
+      const { data } = await axiosSecure.post("/add-wish", { wishData });
+      if (data.insertedId) {
+        toast.success("Item added successfully to wishlist");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to add item to wishlist");
     }
   };
-
+  
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={closeModal}>
@@ -113,7 +122,7 @@ const ViewModal = ({ isOpen, closeModal, product }) => {
 
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-xl font-bold text-green-600">
-                      ${price}
+                    <ProductPrice amount={price} />
                     </span>
                     <span className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} line-through`}>
                       ${oldPrice}
