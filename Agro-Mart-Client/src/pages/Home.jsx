@@ -9,6 +9,7 @@ import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 import Service from "./Home/Service/Service";
 import WeatherCard from "./Weather/WeatherCard";
 import LanguageSwitcher from "../components/LanguageSwitcher/LanguageSwitcher";
+import Review from "../components/ReviewPosting/review";
 
 const Home = () => {
   return (
@@ -20,8 +21,10 @@ const Home = () => {
           <Slider></Slider>
         </div>
 
-        <div><LanguageSwitcher></LanguageSwitcher></div>
-        
+        <div>
+          <LanguageSwitcher></LanguageSwitcher>
+        </div>
+
         {/* weather div */}
         <div className="absolute top-20 left-0 p-4 z-10">
           {/* <h1 className="text-2xl font-bold">Agro Mart 🧑‍🌾</h1> */}
@@ -45,11 +48,6 @@ const Home = () => {
           <FaqSection></FaqSection>
         </div>
 
-        {/* Review Posting Section */}
-        {/* <section>
-           <ReviewPosting></ReviewPosting>
-         </section> */}
-
         {/* Why Choose Us */}
         <div className="max-w-screen-xl mx-auto p-2">
           <WhyChooseUs></WhyChooseUs>
@@ -63,6 +61,11 @@ const Home = () => {
           <ReviewDisplay></ReviewDisplay>
         </div>
       </div>
+      {/* Review Posting Section  */}
+      <section>
+        <ReviewPosting></ReviewPosting>
+        {/* <Review></Review> */}
+      </section>
     </div>
   );
 };

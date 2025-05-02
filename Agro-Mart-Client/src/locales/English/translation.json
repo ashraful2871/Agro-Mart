@@ -147,6 +147,12 @@
       }
     ]
   },
+
+  "review": {
+    "title": "We Value Your Feedback",
+    "subTitle": "Give your valuable feedback."
+  },
+
   "aboutUs": {
     "projectName": "AGRO MART"
   },

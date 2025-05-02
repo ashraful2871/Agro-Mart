@@ -6,7 +6,7 @@ import LocalizedNumber from "../../../components/LocalizedNumber/LocalizedNumber
 const AgricultureProcess = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-  const experienceNumber = 250;
+  const experienceNumber = 5;
 
   const steps = [
     {
