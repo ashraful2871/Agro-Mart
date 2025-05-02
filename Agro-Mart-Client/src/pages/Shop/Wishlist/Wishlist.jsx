@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { ThemeContext } from "../../../provider/ThemeProvider";
 import { useTranslation } from "react-i18next";
+import ProductPrice from "../../../components/ProductPrice/ProductPrice";
 
 const Wishlist = () => {
   const { t } = useTranslation();
@@ -80,11 +81,10 @@ const Wishlist = () => {
       color: `${theme === "dark" ? "#ffff" : "#1D232A"}`,
     }).then((result) => {
       if (result.isConfirmed) {
-        // Sending DELETE request to the backend
         axiosSecure
           .delete(`/wishlist/${_id}`)
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 200 || res.status === 204 || res.data.deletedCount > 0) {
               Swal.fire({
                 title: t("dashboard.wishlist.swal.success_title"),
                 text: t("dashboard.wishlist.swal.success_text"),
@@ -92,8 +92,7 @@ const Wishlist = () => {
                 background: `${theme === "dark" ? "#1D232A" : "#ffff"}`,
                 color: `${theme === "dark" ? "#ffff" : "#1D232A"}`,
               });
-
-              // Optimistically update the UI by removing the deleted item from the wishlist
+  
               setWishlist((prevWishlist) =>
                 prevWishlist.filter((item) => item._id !== _id)
               );
@@ -112,6 +111,7 @@ const Wishlist = () => {
       }
     });
   };
+  
 
   if (!wishlist) {
     return (
@@ -158,7 +158,7 @@ const Wishlist = () => {
                       {item.name}
                     </div>
                     <div className="text-sm text-base-content">
-                      ${item.price.toFixed(2)}
+                      <ProductPrice amount={item.price}></ProductPrice>
                     </div>
                     <div className="text-sm text-base-content mt-1">
                       {new Date(item.addedAt).toLocaleDateString(

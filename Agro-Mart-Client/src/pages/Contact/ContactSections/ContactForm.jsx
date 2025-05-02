@@ -180,7 +180,7 @@ const ContactForm = () => {
                 <textarea
                   rows="4"
                   name="message"
-                  placeholder= {t('contactForm.messagePlaceholder')}
+                  placeholder= {t('contactForm.massagePlaceholder')}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import { useCurrency } from "../../store/CurrencyContext"; // CurrencyContext import
 
 const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
   const [agree, setAgree] = useState(false);
@@ -12,8 +13,13 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const user = useAuth();
+
+  const { currency, convertPrice, getSymbol } = useCurrency(); // CurrencyContext থেকে দরকারি data
+
   const handleProceed = async () => {
     if (!agree || !selectedPayment) return;
+
+    const convertedAmount = Number(convertPrice(totalAmount));
 
     if (selectedPayment === "sslcommerz") {
       setLoading(true);
@@ -27,12 +33,13 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
           "http://localhost:5000/init-payment",
           {
             userInfo,
-            totalAmount,
+            totalAmount: convertedAmount, // ✅ converted amount পাঠানো
+            currency, // ✅ currency পাঠানো (backend সাপোর্ট করলে)
             cartIds: cartItems.map((item) => item._id),
             cartItems: cartItems.map((item) => ({
-              productId: item.productId, // ✅ Important
+              productId: item.productId,
               name: item.name,
-              price: item.price,
+              price: Number(convertPrice(item.price)), // ✅ item price convert
               quantity:
                 JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
                   ?.quantity || 1,
@@ -56,9 +63,11 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
     } else {
       navigate(`/payment/${selectedPayment}`, {
         state: {
-          totalAmount,
+          totalAmount: convertedAmount, // ✅ converted amount পাঠানো
+          currency, // ✅ currency পাঠানো
           cartItems: cartItems.map((item) => ({
             ...item,
+            price: Number(convertPrice(item.price)), // ✅ item price convert
             quantity:
               JSON.parse(localStorage.getItem("cartItems"))?.[item._id]
                 ?.quantity || 1,
@@ -84,7 +93,10 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
 
           <div className="flex justify-between mt-4">
             <span>Total Amount:</span>
-            <span>${totalAmount.toFixed(2)}</span>
+            <span>
+              {getSymbol()}
+              {convertPrice(totalAmount)}
+            </span>
           </div>
 
           <div className="grid grid-cols-1 gap-4">

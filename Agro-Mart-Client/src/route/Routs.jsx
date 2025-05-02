@@ -32,6 +32,7 @@ import Weather from "../pages/Weather/Weather";
 import Success from "../pages/Payment/Success";
 import PaymentFail from "../pages/Payment/PaymentFail";
 import PaymentCancel from "../pages/Payment/PaymentCancel";
+import Reviews from "../pages/reviews/Reviews";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop></Shop>,
+      },
+      {
+        path: "/reviews",
+        element: <Reviews></Reviews>,
       },
       {
         path: "/shopping-cart",
