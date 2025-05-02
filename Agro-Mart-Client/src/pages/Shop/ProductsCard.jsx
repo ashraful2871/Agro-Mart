@@ -139,7 +139,7 @@ const ProductsCard = ({ product }) => {
           >
             <AiOutlineEye className="text-green-600 text-lg" />
           </button>
-          <button className="p-2 bg-white shadow-md rounded-full">
+          <button className="p-2 bg-white shadow-md rounded-full hidden">
             <AiOutlineSync className="text-green-600 text-lg" />
           </button>
         </div>
