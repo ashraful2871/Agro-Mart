@@ -4,6 +4,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FiMinus, FiPlus, FiX } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { ThemeContext } from "../../provider/ThemeProvider";
+import { useCurrency } from "../../store/CurrencyContext";
 
 const CartItems = ({ cart, refetch, onCartUpdate }) => {
   const { name, image, price, _id, productId } = cart;
@@ -11,6 +12,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
   const [quantity, setQuantity] = useState(cart.quantity || 1);
   const [total, setTotal] = useState(price * quantity);
   const { theme } = useContext(ThemeContext);
+  const { convertPrice, getSymbol } = useCurrency();
 
   const calculateAndStoreTotal = (qty) => {
     const calculatedTotal = qty * price;
@@ -112,7 +114,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
         <img src={image} alt="Item Image" className="w-10 h-10 rounded-lg" />
         <span>{name}</span>
       </div>
-      <div className="w-1/5 text-center">${price}</div>
+      <div className="w-1/5 text-center">{getSymbol()}{convertPrice(price)}</div>
       <div className="w-1/5">
         <div className="flex justify-center items-center border rounded-full px-3 py-1 gap-2">
           <button
@@ -140,7 +142,7 @@ const CartItems = ({ cart, refetch, onCartUpdate }) => {
           </button>
         </div>
       </div>
-      <div className="w-1/5 text-center">${total}</div>
+      <div className="w-1/5 text-center">{getSymbol()}{convertPrice(total)}</div>
       <div
         className="w-1/12 text-center text-base-content cursor-pointer"
         onClick={() => handleDelete(_id)}

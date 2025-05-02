@@ -9,6 +9,7 @@ import AgricultureProcess from "./Home/AgricultureProcess/AgricultureProcess";
 import Service from "./Home/Service/Service";
 import WeatherCard from "./Weather/WeatherCard";
 import LanguageSwitcher from "../components/LanguageSwitcher/LanguageSwitcher";
+import CurrencySelector from "../components/CurrencySelector/CurrencySelector";
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
         </div>
 
         <div><LanguageSwitcher></LanguageSwitcher></div>
+        <div><CurrencySelector></CurrencySelector></div>
         
         {/* weather div */}
         <div className="absolute top-20 left-0 p-4 z-10">
