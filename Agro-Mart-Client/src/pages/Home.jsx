@@ -21,9 +21,13 @@ const Home = () => {
           <Slider></Slider>
         </div>
 
-        <div><LanguageSwitcher></LanguageSwitcher></div>
-        <div><CurrencySelector></CurrencySelector></div>
-        
+        {/* <div>
+          <LanguageSwitcher></LanguageSwitcher>
+        </div>
+        <div>
+          <CurrencySelector></CurrencySelector>
+        </div> */}
+
         {/* weather div */}
         <div className="absolute top-20 left-0 p-4 z-10">
           {/* <h1 className="text-2xl font-bold">Agro Mart 🧑‍🌾</h1> */}
@@ -47,11 +51,6 @@ const Home = () => {
           <FaqSection></FaqSection>
         </div>
 
-        {/* Review Posting Section */}
-        {/* <section>
-           <ReviewPosting></ReviewPosting>
-         </section> */}
-
         {/* Why Choose Us */}
         <div className="max-w-screen-xl mx-auto p-2">
           <WhyChooseUs></WhyChooseUs>
@@ -65,6 +64,11 @@ const Home = () => {
           <ReviewDisplay></ReviewDisplay>
         </div>
       </div>
+      {/* Review Posting Section  */}
+      <section>
+        <ReviewPosting></ReviewPosting>
+        {/* <Review></Review> */}
+      </section>
     </div>
   );
 };

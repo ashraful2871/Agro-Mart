@@ -147,6 +147,12 @@
       }
     ]
   },
+
+  "review": {
+    "title": "We Value Your Feedback",
+    "subTitle": "Give your valuable feedback."
+  },
+
   "aboutUs": {
     "projectName": "AGRO MART"
   },
@@ -184,7 +190,7 @@
       "phone": "01712345678"
     }
   },
-  "contactForm":{
+  "contactForm": {
     "title": "GET TO CONTACT US",
     "subtitle": "Send Your Message",
     "name": "Full Name*",
@@ -195,6 +201,13 @@
     "massagePlaceholder": "Write Message...",
     "phone": "Phone",
     "submit": "Send Massage",
+    "subject": "Subject",
+    "subjectPlaceholder": "Enter subject",
+    "successMessage": "Your message has been sent successfully! We will get back to you soon.",
+    "errorMessage": "There was an error sending your message. Please try again."
+  },
+  "reviewForm": {
+    "submit": "submit",
     "subject": "Subject",
     "subjectPlaceholder": "Enter subject",
     "successMessage": "Your message has been sent successfully! We will get back to you soon.",

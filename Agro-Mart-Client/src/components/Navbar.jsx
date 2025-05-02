@@ -14,6 +14,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import useWishlist from "../hooks/useWishlist";
 import { FiHeart } from "react-icons/fi";
+import LanguageSwitcher from "./LanguageSwitcher/LanguageSwitcher";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -31,9 +32,9 @@ const Navbar = () => {
 
   if (role === "admin") {
     dashboardLink = "/dashboard/overview";
-  } else if (role === "seller") {
+  } else if (role === "farmer") {
     dashboardLink = "/dashboard";
-  } else if (role === "user") {
+  } else if (role === "customer") {
     dashboardLink = "/dashboard/wishlist";
   }
 
@@ -103,6 +104,23 @@ const Navbar = () => {
           style={{ color: "", backgroundColor: "transparent" }}
         >
           Contact
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/reviews"
+          className={({ isActive }) =>
+            isActive
+              ? !isHomePage
+                ? `${theme === "dark" ? "text-green-600" : "text-green-700"}`
+                : ""
+              : isHomePage
+              ? `${theme === "dark" ? "text-white" : "text-black"}`
+              : ""
+          }
+          style={{ color: "", backgroundColor: "transparent" }}
+        >
+          Reviews
         </NavLink>
       </li>
       {/* <li>
@@ -208,6 +226,9 @@ const Navbar = () => {
           {/* toggle theme */}
           <div>
             <Theme></Theme>
+          </div>
+          <div>
+            <LanguageSwitcher></LanguageSwitcher>
           </div>
         </div>
         {/* Profile Dropdown */}
