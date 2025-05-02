@@ -5,6 +5,7 @@ import ProductsCard from "./ProductsCard";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import CurrencySelector from "../../components/CurrencySelector/CurrencySelector";
 
 const Shop = () => {
   // State for products, sorting, search, and selected category
@@ -602,21 +603,26 @@ const Shop = () => {
               </div>
             </div>
 
-            <div>
-              <select
-                onChange={handleSortChange}
-                className="py-2 px-4 border border-gray-300 rounded-full"
-              >
-                <option value=""> {t("shop.sortOptions.default")} </option>
-                <option value={1}>
-                  {" "}
-                  {t("shop.sortOptions.priceLowToHigh")}{" "}
-                </option>
-                <option value={-1}>
-                  {" "}
-                  {t("shop.sortOptions.priceHighToLow")}{" "}
-                </option>
-              </select>
+            <div className="flex gap-3 items-center">
+              <div>
+                <CurrencySelector></CurrencySelector>
+              </div>
+              <div>
+                <select
+                  onChange={handleSortChange}
+                  className="py-2 px-4 border border-gray-300 rounded-full"
+                >
+                  <option value=""> {t("shop.sortOptions.default")} </option>
+                  <option value={1}>
+                    {" "}
+                    {t("shop.sortOptions.priceLowToHigh")}{" "}
+                  </option>
+                  <option value={-1}>
+                    {" "}
+                    {t("shop.sortOptions.priceHighToLow")}{" "}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
 

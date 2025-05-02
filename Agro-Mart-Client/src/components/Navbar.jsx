@@ -14,6 +14,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import useWishlist from "../hooks/useWishlist";
 import { FiHeart } from "react-icons/fi";
+import LanguageSwitcher from "./LanguageSwitcher/LanguageSwitcher";
 
 const Navbar = () => {
   const { theme } = useContext(ThemeContext);
@@ -225,6 +226,9 @@ const Navbar = () => {
           {/* toggle theme */}
           <div>
             <Theme></Theme>
+          </div>
+          <div>
+            <LanguageSwitcher></LanguageSwitcher>
           </div>
         </div>
         {/* Profile Dropdown */}

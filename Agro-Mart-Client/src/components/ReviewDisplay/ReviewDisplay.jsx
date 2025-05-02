@@ -4,14 +4,18 @@ import "keen-slider/keen-slider.min.css";
 import "./reviewStyle.css";
 import { ThemeContext } from "../../provider/ThemeProvider";
 import { useTranslation } from "react-i18next";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import Loading from "../loading/Loading";
 
 export default () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [reviews, setReviews] = useState([]);
   const { theme } = useContext(ThemeContext);
-  const {t} = useTranslation();
-
+  const { t } = useTranslation();
+  const axiosPublic = useAxiosPublic();
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
     slideChanged(slider) {
@@ -22,14 +26,32 @@ export default () => {
     },
   });
 
+  const { data: UserReviews = [], isLoading } = useQuery({
+    queryKey: ["/reviews"],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get("/reviews");
+      return data;
+    },
+  });
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
+
   return (
     <div className="pt-20">
       <div className="">
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <h5 className={`${theme === "dark" ? "text-green-600" : "text-green-700"}`}> {t('testimonials.title')} </h5>
+            <h5
+              className={`${
+                theme === "dark" ? "text-green-600" : "text-green-700"
+              }`}
+            >
+              {" "}
+              {t("testimonials.title")}{" "}
+            </h5>
             <h3 className="text-5xl font-bold font-syne max-w-3xl py-4">
-              {t('testimonials.subTitle')}
+              {t("testimonials.subTitle")}
             </h3>
           </div>
         </div>
@@ -49,45 +71,28 @@ export default () => {
         >
           <div className="navigation-wrapper max-w-4xl mx-auto">
             <div ref={sliderRef} className="keen-slider">
-              <div className="keen-slider__slide number-slide2 flex-col">
-                <p className="my-2">
-                  <strong>Rating:</strong> 0 / 5
-                </p>
-                <p className="w-3/4 text-center">
-                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
-                  amet, consectetur adipisicing elit. Non quod aut obcaecati
-                  eaque minus, iure tempore mollitia in. Illo, molestias! "
-                </p>
-                <div className={`${theme === "dark" ? "text-green-600" : "text-green-700"} my-7 text-center`}>
-                  <p>
-                    <strong>User Name</strong>
-                  </p>
-                  <p>
-                    <small>Posted on: this date</small>
-                  </p>
+              {UserReviews.map((r) => (
+                <div className="keen-slider__slide number-slide2 flex-col">
+                  {/* <p className="my-2">
+                    <strong>Rating:</strong> 0 / 5
+                  </p> */}
+                  <p className="w-3/4 text-center">{r.message}</p>
+                  <div
+                    className={`${
+                      theme === "dark" ? "text-green-600" : "text-green-700"
+                    } my-7 text-center`}
+                  >
+                    <p>
+                      <strong>User: {r.name}</strong>
+                    </p>
+                    <p>
+                      <small>
+                        Posted on: {format(new Date(r.date), "MMMM d, yyyy")}
+                      </small>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="keen-slider__slide number-slide2 ">
-                <p className="max-w-2xl text-center">
-                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
-                  amet, consectetur adipisicing elit. Non quod aut obcaecati
-                  eaque minus, iure tempore mollitia in. Illo, molestias! "
-                </p>
-              </div>
-              <div className="keen-slider__slide number-slide2 ">
-                <p className="max-w-2xl text-center">
-                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
-                  amet, consectetur adipisicing elit. Non quod aut obcaecati
-                  eaque minus, iure tempore mollitia in. Illo, molestias! "
-                </p>
-              </div>
-              <div className="keen-slider__slide number-slide2 ">
-                <p className="max-w-2xl text-center">
-                  Testimonial 2: "Highly recommended! Lorem ipsum dolor sit
-                  amet, consectetur adipisicing elit. Non quod aut obcaecati
-                  eaque minus, iure tempore mollitia in. Illo, molestias! "
-                </p>
-              </div>
+              ))}
             </div>
 
             {loaded && instanceRef.current && (

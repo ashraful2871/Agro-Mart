@@ -21,12 +21,12 @@ const Home = () => {
           <Slider></Slider>
         </div>
 
-        <div>
+        {/* <div>
           <LanguageSwitcher></LanguageSwitcher>
         </div>
         <div>
           <CurrencySelector></CurrencySelector>
-        </div>
+        </div> */}
 
         {/* weather div */}
         <div className="absolute top-20 left-0 p-4 z-10">
