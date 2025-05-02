@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { StyledEngineProvider } from "@mui/material";
 import ThemeProvider from "./provider/ThemeProvider.jsx";
 import OrderProvider from "./pages/Dashboard/overview/OrderProvider.jsx";
+import { CurrencyProvider } from "./store/CurrencyContext.jsx";
 // import emailjs from "@emailjs/browser";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <OrderProvider>
+      <CurrencyProvider>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <StyledEngineProvider injectFirst>
@@ -30,6 +32,7 @@ createRoot(document.getElementById("root")).render(
           <AuthObserver></AuthObserver>
         </QueryClientProvider>
       </Provider>
+      </CurrencyProvider>
       </OrderProvider>
     </ThemeProvider>
   </StrictMode>

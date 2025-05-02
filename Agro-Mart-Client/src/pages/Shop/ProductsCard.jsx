@@ -13,6 +13,7 @@ import ViewModal from "./ViewModal";
 import WishListModal from "./Wishlist/WishListModal";
 import useCart from "../../hooks/useCart";
 import useWishlist from "../../hooks/useWishlist";
+import ProductPrice from "../../components/ProductPrice/ProductPrice";
 
 const ProductsCard = ({ product }) => {
   const axiosSecure = useAxiosSecure();
@@ -151,7 +152,9 @@ const ProductsCard = ({ product }) => {
               {name.length > 10 ? `${name.slice(0, 10)}...` : name}
             </span>
           </h2>
-          <p className="text-green-600 text-lg font-semibold">${price}</p>
+          <p className="text-green-600 text-lg font-semibold">
+          <ProductPrice amount={price} />
+          </p>
         </div>
 
         {/* Cart Button */}
