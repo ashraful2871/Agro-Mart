@@ -267,7 +267,7 @@ async function run() {
 
       if (req.query.sort && req.query.sort !== "default") {
         sortByPrice = { price: parseInt(req.query.sort) };
-        console.log(sortByPrice);
+        // console.log(sortByPrice);
       }
       if (req.query.searchQuery) {
         filter.name = {
@@ -645,11 +645,11 @@ async function run() {
 
     app.get("/orders/:email", async (req, res) => {
       const email = req.params.email;
-      console.log("Received email:", email);
+      // console.log("Received email:", email);
       try {
         const query = { email: email };
         const result = await paymentCollection.find(query).toArray();
-        console.log("Fetched orders:", result);
+        // console.log("Fetched orders:", result);
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Server Error", error });
@@ -931,8 +931,8 @@ async function run() {
     //sslcommarze
     app.post("/init-payment", async (req, res) => {
       const { totalAmount, cartItems, cartIds, userInfo } = req.body;
-      console.log(totalAmount, cartItems, cartIds);
-      const tran_id = uuidv4(); // Unique transaction ID
+      // console.log(totalAmount, cartItems, cartIds);
+      const tran_id = uuidv4();
 
       tempCartStorage.set(tran_id, {
         cartItems,
@@ -943,15 +943,15 @@ async function run() {
         total_amount: totalAmount,
         currency: "BDT", // Change to your currency
         tran_id: tran_id,
-        success_url: "http://localhost:5000/payment/success",
-        fail_url: "http://localhost:5000/payment/fail",
-        cancel_url: "http://localhost:5000/payment/cancel",
-        ipn_url: "http://localhost:5000/payment/ipn",
+        success_url: "https://agro-mart-server.vercel.app/payment/success",
+        fail_url: "https://agro-mart-server.vercel.app/payment/fail",
+        cancel_url: "https://agro-mart-server.vercel.app/payment/cancel",
+        ipn_url: "https://agro-mart-server.vercel.app/payment/ipn",
         shipping_method: "NO",
         product_name: cartItems.map((item) => item.name).join(", "),
         product_category: "general",
         product_profile: "general",
-        cus_name: userInfo?.name || "Customer Name", // Replace with dynamic data if available
+        cus_name: userInfo?.name || "Customer Name",
         cus_email: userInfo?.email,
         cus_add1: "Dhaka",
         cus_city: "Dhaka",
@@ -979,7 +979,7 @@ async function run() {
       const paymentIntent = req.body;
 
       if (paymentIntent.status !== "VALID") {
-        return res.redirect("http://localhost:5173/payment/fail");
+        return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
       }
 
       try {
@@ -992,26 +992,26 @@ async function run() {
           email: null,
         };
 
-        console.log("Retrieved cartItems:", cartItems);
-        console.log("Retrieved cartIds:", cartIds);
-        console.log("User email:", email);
+        // console.log("Retrieved cartItems:", cartItems);
+        // console.log("Retrieved cartIds:", cartIds);
+        // console.log("User email:", email);
 
         if (!email) {
           console.error("Email not found in temporary storage");
-          return res.redirect("http://localhost:5173/payment/fail");
+          return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
         }
 
         // Fetch user data
         const user = await usersCollection.findOne({ email: email });
         if (!user) {
           console.error("User not found for email:", email);
-          return res.redirect("http://localhost:5173/payment/fail");
+          return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
         }
 
         // Validate cart items
         if (!cartItems.length || !cartIds.length) {
           console.error("No cart items or cart IDs found in temporary storage");
-          return res.redirect("http://localhost:5173/payment/fail");
+          return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
         }
 
         // Validate product IDs
@@ -1028,7 +1028,7 @@ async function run() {
 
         if (productIds.length !== cartItems.length) {
           console.error("Some productIds are invalid");
-          return res.redirect("http://localhost:5173/payment/fail");
+          return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
         }
 
         // Fetch product data
@@ -1038,7 +1038,7 @@ async function run() {
           })
           .toArray();
 
-        console.log("Found products:", products);
+        // console.log("Found products:", products);
 
         // Check stock availability
         const stockErrors = [];
@@ -1059,7 +1059,7 @@ async function run() {
 
         if (stockErrors.length > 0) {
           console.error("Stock validation failed. Errors:", stockErrors);
-          return res.redirect("http://localhost:5173/payment/fail");
+          return res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
         }
 
         // Prepare payment information
@@ -1108,26 +1108,26 @@ async function run() {
 
         // console.log("Payment saved to database:", paymentInfo);
 
-        res.redirect("http://localhost:5173/payment/success");
+        res.redirect("https://agro-mart-e2cb4.web.app/payment/success");
       } catch (error) {
         console.error("Error processing payment:", error);
-        res.redirect("http://localhost:5173/payment/fail");
+        res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
       }
     });
 
     // Handle failure callback
     app.post("/payment/fail", (req, res) => {
-      res.redirect("http://localhost:5173/payment/fail");
+      res.redirect("https://agro-mart-e2cb4.web.app/payment/fail");
     });
 
     // Handle cancel callback
     app.post("/payment/cancel", (req, res) => {
-      res.redirect("http://localhost:5173/payment/cancel");
+      res.redirect("https://agro-mart-e2cb4.web.app/payment/cancel");
     });
 
     // Handle IPN (Instant Payment Notification)
     app.post("/payment/ipn", (req, res) => {
-      console.log("IPN received:", req.body);
+      // console.log("IPN received:", req.body);
       // Update database based on IPN data
       res.status(200).send("IPN received");
     });
