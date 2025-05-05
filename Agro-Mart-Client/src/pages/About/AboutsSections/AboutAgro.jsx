@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const AboutAgro = () => {
   const { theme } = useContext(ThemeContext);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -22,15 +22,18 @@ const AboutAgro = () => {
         <div className="max-w-full lg:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
           <div className="">
-            <h1 className="text-4xl font-bold text-green-700"> {t('aboutAgro.title')} </h1>
+            <h1 className="text-4xl font-bold text-green-700">
+              {" "}
+              {t("aboutAgro.title")}{" "}
+            </h1>
             <p className="mt-4 text-5xl font-bold text-base-content">
-              {t('aboutAgro.subtitle')}
+              {t("aboutAgro.subtitle")}
             </p>
           </div>
 
           {/* Introduction */}
           <p className="mt-8 text-lg text-base-content ">
-            {t('aboutAgro.description')}
+            {t("aboutAgro.description")}
           </p>
 
           {/* Agriculture & Foods Section */}
@@ -41,10 +44,10 @@ const AboutAgro = () => {
               } p-6 rounded-lg shadow-md flex-1`}
             >
               <h2 className="text-2xl font-semibold text-green-700">
-                {t('aboutAgro.agriculture')}
+                {t("aboutAgro.agriculture")}
               </h2>
               <p className="mt-2 text-base-content">
-                {t('aboutAgro.agriculture_desc')}
+                {t("aboutAgro.agriculture_desc")}
               </p>
             </div>
 
@@ -55,24 +58,24 @@ const AboutAgro = () => {
               } p-6 rounded-lg shadow-md flex-1`}
             >
               <h2 className="text-2xl font-semibold text-green-700">
-                {t('aboutAgro.Vegetables')}
+                {t("aboutAgro.Vegetables")}
               </h2>
               <p className="mt-2 text-base-content">
-                {t('aboutAgro.vegetables_desc')}
+                {t("aboutAgro.vegetables_desc")}
               </p>
             </div>
           </div>
 
           {/* Mission Statement */}
           <p className="mt-12 text-lg text-base-content ">
-            {t('aboutAgro.mission')}
+            {t("aboutAgro.mission")}
           </p>
 
           {/* Footer Section */}
           <div className="mt-16 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p className="text-base-content">{t('aboutAgro.sign')} </p>
-            <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
-              {t('aboutAgro.exploreMore')} →
+            <p className="text-base-content">{t("aboutAgro.sign")} </p>
+            <button className="hidden bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
+              {t("aboutAgro.exploreMore")} →
             </button>
           </div>
         </div>

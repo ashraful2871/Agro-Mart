@@ -30,7 +30,7 @@ const PaymentModal = ({ isOpen, closeModal, totalAmount, cartItems }) => {
         };
 
         const response = await axios.post(
-          "http://localhost:5000/init-payment",
+          `${import.meta.env.VITE_API_URL}/init-payment`,
           {
             userInfo,
             totalAmount: convertedAmount, // ✅ converted amount পাঠানো

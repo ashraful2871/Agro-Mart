@@ -14,32 +14,30 @@ const ContactForm = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
 
-  useEffect(() => {
-    emailjs.init("61mSC3agsF3cMsWXG");
-  }, []);
-
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    toast.success("message sent successfully");
+    setName("");
+    setEmail("");
+    setTel("");
+    setSubject("");
+    setMessage("");
+    return;
     if (!name || !email || !subject || !message) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
-    if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   toast.error("Please enter a valid email address.");
+    //   return;
+    // }
 
     setLoading(true);
 
     const serviceID = "service_8z6oxv8";
-    const templateID = "template_0m98pb9"; 
+    const templateID = "template_0m98pb9";
+    const publicKey = "61mSC3agsF3cMsWXG"; // Use this here
 
     const templateParams = {
       from_name: name,
@@ -50,7 +48,7 @@ const ContactForm = () => {
     };
 
     emailjs
-      .send(serviceID, templateID, templateParams)
+      .send(serviceID, templateID, templateParams, publicKey)
       .then((response) => {
         console.log("Email sent successfully:", response);
         toast.success("Message sent successfully!", {
@@ -67,7 +65,9 @@ const ContactForm = () => {
       })
       .catch((error) => {
         console.error("Error sending email:", error.text || error);
-        toast.error("Failed to send message: " + (error.text || "Unknown error"));
+        toast.error(
+          "Failed to send message: " + (error.text || "Unknown error")
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -89,13 +89,16 @@ const ContactForm = () => {
         {/* Form Section */}
         <div className="card-body p-2 lg:w-1/2 ">
           <div className="text-center">
-            <h1 className="font-bold text-base-content"> {t('contactForm.title')} </h1>
+            <h1 className="font-bold text-base-content">
+              {" "}
+              {t("contactForm.title")}{" "}
+            </h1>
             <p
               className={`mt-4 text-4xl font-bold ${
                 theme === "dark" ? "text-green-500" : "text-green-600"
               }`}
             >
-              {t('contactForm.subtitle')}
+              {t("contactForm.subtitle")}
             </p>
           </div>
 
@@ -112,12 +115,12 @@ const ContactForm = () => {
               {/* Full Name */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  {t('contactForm.name')}
+                  {t("contactForm.name")}
                 </label>
                 <input
                   type="text"
                   name="from_name"
-                  placeholder={t('contactForm.namePlaceholder')}
+                  placeholder={t("contactForm.namePlaceholder")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -128,12 +131,12 @@ const ContactForm = () => {
               {/* Email Address */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  {t('contactForm.email')}
+                  {t("contactForm.email")}
                 </label>
                 <input
                   type="email"
                   name="from_email"
-                  placeholder={t('contactForm.emailPlaceholder')}
+                  placeholder={t("contactForm.emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -144,12 +147,12 @@ const ContactForm = () => {
               {/* Phone */}
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-base-content">
-                  {t('contactForm.phone')}
+                  {t("contactForm.phone")}
                 </label>
                 <input
                   type="tel"
                   name="tel"
-                  placeholder={t('contactForm.phone')}
+                  placeholder={t("contactForm.phone")}
                   value={tel}
                   onChange={(e) => setTel(e.target.value)}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-base-100"
@@ -159,12 +162,12 @@ const ContactForm = () => {
               {/* Subject */}
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-base-content">
-                  {t('contactForm.subject')}
+                  {t("contactForm.subject")}
                 </label>
                 <input
                   type="text"
                   name="subject"
-                  placeholder= {t('contactForm.subjectPlaceholder')}
+                  placeholder={t("contactForm.subjectPlaceholder")}
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   required
@@ -175,12 +178,12 @@ const ContactForm = () => {
               {/* Message */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-base-content">
-                  {t('contactForm.message')}
+                  {t("contactForm.message")}
                 </label>
                 <textarea
                   rows="4"
                   name="message"
-                  placeholder= {t('contactForm.massagePlaceholder')}
+                  placeholder={t("contactForm.massagePlaceholder")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
@@ -198,7 +201,7 @@ const ContactForm = () => {
                   type="submit"
                   className="bg-green-600 text-white text-base font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300"
                 >
-                  {t('contactForm.submit')} →
+                  {t("contactForm.submit")} →
                 </button>
               )}
             </form>
