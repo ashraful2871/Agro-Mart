@@ -5,10 +5,15 @@ import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import { ThemeContext } from "../../../../provider/ThemeProvider";
 import { FaArrowRight } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import ProductsCard from "../../../Shop/ProductsCard";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../../../components/loading/Loading";
 
 const ServiceCard = () => {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
+  const axiosPublic = useAxiosPublic();
   const services = [
     {
       id: 1,
@@ -22,8 +27,8 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: t('service.nutrition_solutions'),
-      description: t('service.nutrition_solutions_desc'),
+      title: t("service.nutrition_solutions"),
+      description: t("service.nutrition_solutions_desc"),
     },
     {
       id: 2,
@@ -37,8 +42,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: t('service.product_supplies'),
-      description: t('service.product_supplies_desc'),
+      title: t("service.product_supplies"),
+      description: t("service.product_supplies_desc"),
     },
     {
       id: 3,
@@ -52,8 +57,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: t('service.fresh_vegetables'),
-      description: t('service.fresh_vegetables_desc'),
+      title: t("service.fresh_vegetables"),
+      description: t("service.fresh_vegetables_desc"),
     },
     {
       id: 4,
@@ -67,8 +72,8 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: t('service.organic_fruits'),
-      description: t('service.organic_fruits_desc'),
+      title: t("service.organic_fruits"),
+      description: t("service.organic_fruits_desc"),
     },
     {
       id: 5,
@@ -82,8 +87,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: t('service.dairy_products'),
-      description: t('service.dairy_products_desc'),
+      title: t("service.dairy_products"),
+      description: t("service.dairy_products_desc"),
     },
     {
       id: 6,
@@ -97,8 +102,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: t('service.poultry_products'),
-      description: t('service.poultry_products_desc'),
+      title: t("service.poultry_products"),
+      description: t("service.poultry_products_desc"),
     },
     {
       id: 7,
@@ -112,8 +117,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: t('service.crop_protection'),
-      description: t('service.crop_protection_desc'),
+      title: t("service.crop_protection"),
+      description: t("service.crop_protection_desc"),
     },
     {
       id: 8,
@@ -127,8 +132,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: t('service.soil_health_management'),
-      description: t('service.soil_health_management_desc'),
+      title: t("service.soil_health_management"),
+      description: t("service.soil_health_management_desc"),
     },
     {
       id: 9,
@@ -142,8 +147,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z" />
         </svg>
       ),
-      title: t('service.water_management'),
-      description: t('service.water_management_desc'),
+      title: t("service.water_management"),
+      description: t("service.water_management_desc"),
     },
     {
       id: 10,
@@ -157,8 +162,8 @@ const ServiceCard = () => {
           <path d="M12 2a10 10 0 00-9 5h18a10 10 0 00-9-5zm-9 7v6h18V9zm0 8a10 10 0 009 5 10 10 0 009-5z" />
         </svg>
       ),
-      title: t('service.farm_mechanization'),
-      description: t('service.farm_mechanization_desc'),
+      title: t("service.farm_mechanization"),
+      description: t("service.farm_mechanization_desc"),
     },
     {
       id: 11,
@@ -172,10 +177,22 @@ const ServiceCard = () => {
           <path d="M9 3h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm0 4h6v2H9zm-2 6H5V3h2zm10 0h2V3h-2z" />
         </svg>
       ),
-      title: t('service.weather_based_services'),
-      description: t('service.weather_based_services_desc'),
-    }
+      title: t("service.weather_based_services"),
+      description: t("service.weather_based_services_desc"),
+    },
   ];
+
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["feature-product"],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get("/feature-product");
+      return data;
+    },
+  });
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
+  console.log(products);
 
   return (
     <>
@@ -199,63 +216,9 @@ const ServiceCard = () => {
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="mySwiper"
       >
-        {services.map((service, idx) => (
+        {products.map((product, idx) => (
           <SwiperSlide key={idx} className="swiper-slide2">
-            <div
-              key={service.id}
-              className="keen-slider__slide flex flex-col rounded-xl h-[420px] sm:h-[460px] lg:h-[480px] group overflow-visible"
-            >
-              {/* Image Section */}
-              <div className="relative w-full h-[55%] min-h-[200px] sm:min-h-[230px] md:min-h-[250px] overflow-hidden rounded-t-xl">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${service.image})` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-200 opacity-30"></div>
-              </div>
-
-              {/* Card Content */}
-              <div className="relative shadow-lg p-5 sm:p-6 md:p-8 bg-base-100 -mt-16 ml-6 sm:ml-10 md:ml-12 rounded-xl">
-                <div
-                  className="flex flex-col h-full"
-                  style={
-                    theme === "light"
-                      ? {
-                          backgroundImage: `url("https://i.ibb.co/tpwNCzD8/background-single-post.png")`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }
-                      : {}
-                  }
-                >
-                  <div>
-                    <div
-                      className={`${
-                        theme === "dark" ? "text-green-500" : "text-green-700"
-                      } text-2xl`}
-                    >
-                      {service.icon}
-                    </div>
-                    <h3
-                      className={`${
-                        theme === "dark" ? "text-green-500" : "text-green-700"
-                      } text-lg md:text-xl font-bold mt-2 font-montserrat`}
-                    >
-                      {service.title}
-                    </h3>
-                    <div className="w-10 h-[3px] bg-green-300 my-2"></div>
-                  </div>
-                  <p className="text-base-content text-sm md:text-base leading-relaxed line-clamp-2">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Action Button */}
-                <div className="bg-green-700 text-base-content hover:bg-yellow-400 hover:text-black w-fit py-3 px-3 rounded-b-full absolute top-0 right-0 transition-colors duration-300">
-                  <FaArrowRight />
-                </div>
-              </div>
-            </div>
+            <ProductsCard product={product}></ProductsCard>
           </SwiperSlide>
         ))}
       </Swiper>

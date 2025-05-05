@@ -149,11 +149,11 @@ const ProductsCard = ({ product }) => {
           <p className="text-gray-400 text-sm">{category}</p>
           <h2 className="font-semibold text-xl ">
             <span className="hover:text-green-600 inline-block transition-colors duration-300">
-              {name.length > 10 ? `${name.slice(0, 10)}...` : name}
+              {name}
             </span>
           </h2>
           <p className="text-green-600 text-lg font-semibold">
-          <ProductPrice amount={price} />
+            <ProductPrice amount={price} />
           </p>
         </div>
 
