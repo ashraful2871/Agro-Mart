@@ -301,6 +301,11 @@ async function run() {
       }
     });
 
+    app.get("/feature-product", async (req, res) => {
+      const result = await productCollection.find().limit(10).toArray();
+      res.send(result);
+    });
+
     // Update a product by ID
     app.get("/dashboard/product/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
