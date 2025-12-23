@@ -580,7 +580,7 @@ Authorization: Bearer <your_jwt_token>
 
 | Home Page | Product Listing |
 |:---------:|:---------------:|
-| ![Home](https://via.placeholder.com/400x250?text=Home+Page) | ![Products](https://via.placeholder.com/400x250?text=Product+Listing) |
+| ![Home](https://res.cloudinary.com/dohpypgmy/image/upload/v1766508117/cf84df71-4a4d-415c-975a-373442b281c6_ubhaw4.png) | ![Products](https://res.cloudinary.com/dohpypgmy/image/upload/v1766508117/cf84df71-4a4d-415c-975a-373442b281c6_ubhaw4.png) |
 
 | AI Crop Doctor | Weather Dashboard |
 |:--------------:|:-----------------:|
