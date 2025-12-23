@@ -149,8 +149,8 @@ Ensure you have the following installed:
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/agro-mart.git
-cd agro-mart
+git clone https://github.com/ashraful2871/Agro-Mart.git
+cd Agro-Mart
 ```
 
 #### 2. Backend Setup
