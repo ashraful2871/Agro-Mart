@@ -66,7 +66,11 @@ const Slider = () => {
       {slides.map((slide, index) => (
         <SwiperSlide key={index}>
           <div className={`relative w-full h-[600px] zoom-effect slider-image`}>
-            <img src={slide.img} alt="slide" className="w-full h-full object-cover" />
+            <img
+              src={slide.img}
+              alt="slide"
+              className="w-full h-full object-cover"
+            />
             <div className="absolute inset-0 bg-black/45"></div>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
               <AnimatePresence mode="sync" key={activeIndex}>
@@ -107,7 +111,9 @@ const Slider = () => {
                     className="mt-4 px-6 py-2 bg-green-800 text-white rounded-full font-syne flex items-center gap-1"
                   >
                     <span className="text-base">{t("slider.learnMore")}</span>
-                    <span><ArrowForwardOutlinedIcon fontSize="medium" /></span>
+                    <span>
+                      <ArrowForwardOutlinedIcon fontSize="medium" />
+                    </span>
                   </motion.button>
                 </Link>
               </AnimatePresence>
