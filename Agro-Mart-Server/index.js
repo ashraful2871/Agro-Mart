@@ -137,7 +137,7 @@ async function run() {
         // Update the collection
         const result = await usersCollection.updateMany(
           {},
-          { $set: { couponEnabled } }
+          { $set: { couponEnabled } },
         );
 
         if (result.modifiedCount > 0) {
@@ -192,7 +192,7 @@ async function run() {
       try {
         const result = await usersCollection.updateOne(
           { email },
-          { $set: { role } }
+          { $set: { role } },
         );
 
         if (result.modifiedCount > 0) {
@@ -327,7 +327,7 @@ async function run() {
         };
         const result = await productCollection.updateOne(query, updateDoc);
         res.send(result);
-      }
+      },
     );
 
     // Delete product using id
@@ -399,7 +399,7 @@ async function run() {
         // 5. Update the cart item quantity
         const updateCartResult = await cartCollection.updateOne(
           { _id: new ObjectId(cartItemId) },
-          { $set: { quantity: quantity } } // Update the quantity field, not stockQuantity
+          { $set: { quantity: quantity } }, // Update the quantity field, not stockQuantity
         );
 
         if (updateCartResult.modifiedCount === 0) {
@@ -413,7 +413,7 @@ async function run() {
           const newStockQuantity = product.stockQuantity - quantityDifference;
           await productCollection.updateOne(
             { _id: new ObjectId(cartItem.productId) },
-            { $set: { stockQuantity: newStockQuantity } }
+            { $set: { stockQuantity: newStockQuantity } },
           );
         }
 
@@ -510,7 +510,7 @@ async function run() {
           .find({
             _id: {
               $in: paymentInfo.cartItems.map(
-                (item) => new ObjectId(item.productId)
+                (item) => new ObjectId(item.productId),
               ),
             },
           })
@@ -519,13 +519,13 @@ async function run() {
         const stockErrors = [];
         paymentInfo.cartItems.forEach((item) => {
           const product = products.find(
-            (p) => p._id.toString() === item.productId
+            (p) => p._id.toString() === item.productId,
           );
           if (!product) {
             stockErrors.push(`Product ${item.name} not found`);
           } else if (product.stockQuantity < item.orderedQuantity) {
             stockErrors.push(
-              `Not enough stock for ${item.name}. Available: ${product.stockQuantity}, Ordered: ${item.orderedQuantity}`
+              `Not enough stock for ${item.name}. Available: ${product.stockQuantity}, Ordered: ${item.orderedQuantity}`,
             );
           }
         });
@@ -583,7 +583,7 @@ async function run() {
 
       const result = await paymentCollection.updateOne(
         { _id: new ObjectId(id) },
-        { $set: { status: status } }
+        { $set: { status: status } },
       );
 
       res.send(result);
@@ -990,7 +990,7 @@ async function run() {
       try {
         // Retrieve cart data from temporary storage
         const { cartItems, cartIds, email } = tempCartStorage.get(
-          paymentIntent.tran_id
+          paymentIntent.tran_id,
         ) || {
           cartItems: [],
           cartIds: [],
@@ -1049,7 +1049,7 @@ async function run() {
         const stockErrors = [];
         cartItems.forEach((item) => {
           const product = products.find(
-            (p) => p._id.toString() === item.productId
+            (p) => p._id.toString() === item.productId,
           );
           if (!product) {
             stockErrors.push(`Product not found (ID: ${item.productId})`);
@@ -1057,7 +1057,7 @@ async function run() {
             stockErrors.push(
               `Not enough stock for ${item.name}. Available: ${
                 product.stockQuantity
-              }, Ordered: ${item.quantity || 1}`
+              }, Ordered: ${item.quantity || 1}`,
             );
           }
         });
@@ -1141,7 +1141,7 @@ async function run() {
       res.send("Agro is running");
     });
     console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
+      "Pinged your deployment. You successfully connected to MongoDB!",
     );
   } finally {
     // Ensures that the client will close when you finish/error
