@@ -1,9 +1,18 @@
 require("dotenv").config();
+
+// Prevent unhandled promise rejections from crashing the server
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
+const dns = require("dns");
+// Use Google DNS to avoid ISP DNS SRV resolution failures
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 const { Parser } = require("json2csv");
 const SSLCommerzPayment = require("sslcommerz-lts");
 const { v4: uuidv4 } = require("uuid");
@@ -26,13 +35,23 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
+  // Retry on transient network/DNS errors
+  retryWrites: true,
+  retryReads: true,
+  serverSelectionTimeoutMS: 10000,
+  connectTimeoutMS: 10000,
 });
 const tempCartStorage = new Map();
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    // Connect the client to the server
+    await client.connect();
     // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!",
+    );
+
     const usersCollection = client.db("AgroMart").collection("users");
     const productCollection = client.db("AgroMart").collection("products");
     const cartCollection = client.db("AgroMart").collection("carts");
@@ -1140,9 +1159,7 @@ async function run() {
     app.get("/", async (req, res) => {
       res.send("Agro is running");
     });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!",
-    );
+    // Connection confirmed above after ping
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
